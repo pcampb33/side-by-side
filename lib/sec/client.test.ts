@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchCompanyFacts, fetchTickerIndex, filingUrl, SecError } from "./client.ts";
+import { displayName, fetchCompanyFacts, fetchTickerIndex, filingUrl, SecError } from "./client.ts";
 import { searchTickers } from "./search.ts";
 
 const UA = "company-compare test@example.com";
@@ -57,6 +57,22 @@ describe("SEC client", () => {
   });
 });
 
+describe("displayName", () => {
+  it.each([
+    ["MICROSOFT CORP", "Microsoft Corp"],
+    ["BANK OF AMERICA CORP /DE/", "Bank of America Corp"],
+    ["COSTCO WHOLESALE CORP /NEW", "Costco Wholesale Corp"],
+    ["TOYOTA MOTOR CORP/", "Toyota Motor Corp"],
+    ["NOVO NORDISK A/S", "Novo Nordisk A/S"],
+    ["ASML HOLDING NV", "Asml Holding NV"],
+    ["INTERNATIONAL BUSINESS MACHINES CORP", "International Business Machines Corp"],
+    ["JOHNSON & JOHNSON", "Johnson & Johnson"],
+    ["Apple Inc.", "Apple Inc."],
+  ])("%s → %s", (title, expected) => {
+    expect(displayName(title)).toBe(expected);
+  });
+});
+
 describe("searchTickers", () => {
   const index = [
     { cik: 1, ticker: "MSFT", name: "Microsoft Corp" },
@@ -72,6 +88,16 @@ describe("searchTickers", () => {
 
   it("ranks an exact ticker above prefixes and names", () => {
     expect(searchTickers(index, "a").map((e) => e.ticker)).toEqual(["A", "AAPL", "APLE"]);
+  });
+
+  it("lists each company once, under its best-matching ticker", () => {
+    const withPreferred = [
+      { cik: 19617, ticker: "JPM", name: "Jpmorgan Chase & Co" },
+      { cik: 19617, ticker: "JPM-PC", name: "Jpmorgan Chase & Co" },
+      { cik: 19617, ticker: "JPM-PD", name: "Jpmorgan Chase & Co" },
+    ];
+    expect(searchTickers(withPreferred, "jpm").map((e) => e.ticker)).toEqual(["JPM"]);
+    expect(searchTickers(withPreferred, "jpm-pd").map((e) => e.ticker)).toEqual(["JPM-PD"]);
   });
 
   it("returns nothing for a blank query", () => {

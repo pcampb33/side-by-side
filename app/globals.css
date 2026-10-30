@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+/* Clean editorial: warm paper, near-black ink, one deep-blue accent. */
+:root {
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --ink: #1b1a17;
+  --muted: #66635c;
+  --rule: #e3dfd6;
+  --accent: #23439b;
+  --accent-ink: #ffffff;
+  --danger: #a3261b;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #131311;
+    --surface: #1c1b18;
+    --ink: #ecebe6;
+    --muted: #a19e96;
+    --rule: #34322d;
+    --accent: #93a9f2;
+    --accent-ink: #10162b;
+    --danger: #f08a7e;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-source-serif);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}

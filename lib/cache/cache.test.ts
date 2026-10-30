@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getFinancials } from "../financials.ts";
+import { getFinancials } from "../data.ts";
 import { cached, fsCache, upstashCache, type CacheBackend } from "./cache.ts";
 
 let dir: string;

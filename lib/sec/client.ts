@@ -79,7 +79,29 @@ export async function fetchTickerIndex(): Promise<TickerEntry[]> {
   const raw = await secJson<Record<string, { cik_str: number; ticker: string; title: string }>>(
     "https://www.sec.gov/files/company_tickers.json",
   );
-  return Object.values(raw).map((e) => ({ cik: e.cik_str, ticker: e.ticker, name: e.title }));
+  return Object.values(raw).map((e) => ({ cik: e.cik_str, ticker: e.ticker, name: displayName(e.title) }));
+}
+
+const LEGAL_FORMS = new Set(["NV", "SA", "AG", "SE", "PLC", "LP", "LLC", "ADR"]);
+const SMALL_WORDS = new Set(["CO", "INC", "LTD", "COM", "THE", "OF", "AND", "FOR", "NEW", "OIL", "GAS", "BIO", "TECH"]);
+
+// A third of EDGAR names are all caps ("MICROSOFT CORP", "BANK OF AMERICA
+// CORP /DE/"). Title-case those and drop the state suffix; mixed-case names
+// are left as filed. Inner brand casing can't be recovered (JPMORGAN →
+// Jpmorgan), and short unknown words stay upper on the guess they're acronyms.
+export function displayName(title: string): string {
+  const name = title.replace(/(\s+\/[A-Z]{1,5}\/?|\/)+$/, "").trim();
+  if (/[a-z]/.test(name)) return name;
+  return name
+    .split(" ")
+    .map((word, i) => {
+      const letters = word.replace(/[^A-Z]/g, "");
+      if (LEGAL_FORMS.has(letters) || /[&\d]/.test(word)) return word;
+      if (letters.length <= 3 && !SMALL_WORDS.has(letters)) return word;
+      if (i > 0 && (letters === "OF" || letters === "AND" || letters === "THE" || letters === "FOR")) return word.toLowerCase();
+      return word.charAt(0) + word.slice(1).toLowerCase();
+    })
+    .join(" ");
 }
 
 export function fetchSubmissions(cik: number): Promise<Submissions> {

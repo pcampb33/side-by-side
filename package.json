@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "fixtures:sec": "node --env-file-if-exists=.env.local scripts/refresh-sec-fixtures.mts"
   },
   "dependencies": {
     "next": "16.4.3",

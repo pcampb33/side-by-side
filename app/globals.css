@@ -10,6 +10,12 @@
   --accent: #23439b;
   --accent-ink: #ffffff;
   --danger: #a3261b;
+  /* Chart series: company A and B on every chart (validated on --surface). */
+  --series-a: #2a78d6;
+  --series-b: #eb6834;
+  --seg-1: #8a857b;
+  --seg-2: #b3aea3;
+  --seg-3: #d5d0c5;
   color-scheme: light;
 }
 
@@ -23,6 +29,11 @@
     --accent: #93a9f2;
     --accent-ink: #10162b;
     --danger: #f08a7e;
+    --series-a: #3987e5;
+    --series-b: #d95926;
+    --seg-1: #77736a;
+    --seg-2: #5a5750;
+    --seg-3: #44423c;
     color-scheme: dark;
   }
 }
@@ -36,6 +47,11 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-danger: var(--danger);
+  --color-series-a: var(--series-a);
+  --color-series-b: var(--series-b);
+  --color-seg-1: var(--seg-1);
+  --color-seg-2: var(--seg-2);
+  --color-seg-3: var(--seg-3);
   --font-sans: var(--font-inter);
   --font-serif: var(--font-source-serif);
 }

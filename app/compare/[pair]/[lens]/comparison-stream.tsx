@@ -1,0 +1,131 @@
+"use client";
+
+import { useEffect, useReducer, useState } from "react";
+import type { Component } from "@/agent/catalog";
+import type { CompanyInput } from "@/agent/prompt";
+import type { CompareEvent } from "@/lib/compare";
+import { ComponentView } from "./renderers";
+
+// Reads POST /api/compare's event stream: progress steps first, then each
+// component as the model shows it.
+
+type State = {
+  status: "loading" | "error" | "done";
+  step: "fetching" | "building";
+  companies: CompanyInput[] | null;
+  components: Component[];
+  cached: boolean;
+  error?: string;
+};
+
+const initial: State = { status: "loading", step: "fetching", companies: null, components: [], cached: false };
+
+function reduce(state: State, event: CompareEvent | { type: "closed" } | { type: "restart" }): State {
+  switch (event.type) {
+    case "restart":
+      return initial;
+    case "progress":
+      return { ...state, step: event.step };
+    case "data":
+      return { ...state, companies: event.companies };
+    case "component":
+      return { ...state, components: [...state.components, event.component] };
+    case "done":
+      return { ...state, status: "done", cached: event.cached };
+    case "error":
+      return { ...state, status: "error", error: event.message };
+    case "closed":
+      // A stream that ends without done or error was cut off.
+      return state.status === "loading" ? { ...state, status: "error", error: "The connection closed before the comparison finished." } : state;
+  }
+}
+
+const STEPS = [
+  { step: "fetching", label: "Fetching SEC data" },
+  { step: "building", label: "Building comparison" },
+] as const;
+
+export function ComparisonStream({ pair, lens }: { pair: string; lens: string }) {
+  const [state, dispatch] = useReducer(reduce, initial);
+  const [run, setRun] = useState({ n: 0, regenerate: false });
+
+  useEffect(() => {
+    const abort = new AbortController();
+    (async () => {
+      try {
+        const res = await fetch("/api/compare", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pair, lens, regenerate: run.regenerate }),
+          signal: abort.signal,
+        });
+        if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+        const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+        let buffer = "";
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const lines = (buffer + value).split("\n");
+          buffer = lines.pop()!;
+          for (const line of lines) if (line) dispatch(JSON.parse(line) as CompareEvent);
+        }
+        dispatch({ type: "closed" });
+      } catch {
+        if (!abort.signal.aborted) dispatch({ type: "error", message: "Couldn't reach the server. Check your connection and try again." });
+      }
+    })();
+    return () => abort.abort();
+  }, [pair, lens, run]);
+
+  const restart = (regenerate: boolean) => {
+    dispatch({ type: "restart" });
+    setRun((r) => ({ n: r.n + 1, regenerate }));
+  };
+  const currentStep = STEPS.findIndex((s) => s.step === state.step);
+
+  return (
+    <section className="mt-8 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
+      {state.status === "loading" && (
+        <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          {STEPS.map((s, i) => (
+            <li key={s.step} className={`flex items-center gap-2 ${i > currentStep ? "text-muted" : ""}`}>
+              {i < currentStep ? (
+                <span aria-hidden>✓</span>
+              ) : i === currentStep ? (
+                <span aria-hidden className="size-3 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+              ) : (
+                <span aria-hidden className="size-3 rounded-full border border-rule" />
+              )}
+              {s.label}
+              {i === currentStep && <span className="sr-only">(in progress)</span>}
+            </li>
+          ))}
+        </ol>
+      )}
+
+      {state.companies && state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} />)}
+
+      {state.status === "loading" && state.step === "building" && (
+        <div className="h-32 animate-pulse rounded-lg border border-rule bg-surface" aria-hidden />
+      )}
+
+      {state.status === "error" && (
+        <div className="rounded-lg border border-danger/40 bg-danger/5 px-5 py-4">
+          <p className="text-danger">{state.error}</p>
+          <button type="button" onClick={() => restart(false)} className="mt-3 text-sm text-accent hover:underline">
+            Try again
+          </button>
+        </div>
+      )}
+
+      {state.status === "done" && (
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
+          <span>{state.cached ? "Saved comparison, generated earlier by Claude." : "Generated by Claude just now."}</span>
+          <button type="button" onClick={() => restart(true)} className="rounded-md border border-rule px-3 py-1.5 text-ink hover:bg-paper">
+            Regenerate
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}

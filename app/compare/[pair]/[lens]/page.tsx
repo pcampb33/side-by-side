@@ -6,6 +6,7 @@ import { findTicker, getFinancials, getProfile } from "@/lib/data";
 import { findLens } from "@/lib/lenses";
 import { NoAnnualDataError } from "@/lib/normalize/normalize";
 import { CompanyHeader } from "./company-header";
+import { ComparisonStream } from "./comparison-stream";
 
 export default function ComparePage({ params }: PageProps<"/compare/[pair]/[lens]">) {
   return (
@@ -54,9 +55,13 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
           <CompanyHeader key={c.entry.cik} {...c} />
         ))}
       </div>
-      <section className="mt-8 rounded-lg border border-dashed border-rule px-6 py-10 text-center text-muted">
-        The {lens.label.toLowerCase()} comparison is not built yet.
-      </section>
+      {companies.every((c) => c.financials) ? (
+        <ComparisonStream pair={pair} lens={lens.slug} />
+      ) : (
+        <section className="mt-8 rounded-lg border border-dashed border-rule px-6 py-10 text-center text-muted">
+          A comparison needs 10-K financial statements for both companies.
+        </section>
+      )}
     </>
   );
 }

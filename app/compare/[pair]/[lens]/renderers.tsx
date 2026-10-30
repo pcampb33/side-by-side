@@ -1,10 +1,11 @@
 "use client";
 
-import type { Component } from "@/agent/catalog";
+import { findTextRef, type Component } from "@/agent/catalog";
 import type { CompanyInput } from "@/agent/prompt";
 import { formatTick, formatValue } from "@/lib/format";
+import { filingDocumentUrl } from "@/lib/sec/client";
 import { fiscalYearOf, valueDef, type ValueKey } from "@/lib/values";
-import { Cited, lookup, SERIES, Value, type Looked } from "./cited";
+import { Cited, lookup, SERIES, Value, type Citation, type Looked } from "./cited";
 import { Legend, TrendLine } from "./trend-line";
 
 // One renderer per catalog component. The model chose the metric keys and
@@ -23,6 +24,8 @@ export function ComponentView({ component, companies }: { component: Component; 
         {component.name === "grouped_bars" && <GroupedBars metrics={component.input.keys} year={component.input.year} companies={companies} />}
         {component.name === "ratio_gauge" && <RatioGauge metric={component.input.key} year={component.input.year} companies={companies} />}
         {component.name === "cost_breakdown" && <CostBreakdown year={component.input.year} companies={companies} />}
+        {component.name === "risk_themes" && <TextRows rows={component.input.rows} companies={companies} what="risk themes" />}
+        {component.name === "business_overlap" && <TextRows rows={component.input.rows} companies={companies} what="business areas" />}
       </div>
     </article>
   );
@@ -214,6 +217,56 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
   );
 }
 
+// One row per subject; under it, each company's matching items from its
+// condensed annual report, each with the filing's own words.
+function TextRows({ rows, companies, what }: { rows: { label: string; refs: string[] }[]; companies: CompanyInput[]; what: string }) {
+  return (
+    <div className="divide-y divide-rule">
+      {rows.map((row) => {
+        const found = row.refs.flatMap((ref) => findTextRef(companies, ref) ?? []);
+        return (
+          <section key={row.label} className="py-5 first:pt-0 last:pb-0">
+            <h4 className="font-medium">{row.label}</h4>
+            <div className="mt-3 grid gap-5 sm:grid-cols-2">
+              {companies.map((c, si) => {
+                const items = found.filter((f) => f.company === c).map((f) => f.item);
+                return (
+                  <div key={c.ticker}>
+                    <div className="flex items-center gap-2 text-sm text-muted">
+                      <span className="size-2.5 shrink-0 rounded-full" style={{ background: SERIES[si] }} />
+                      {c.ticker}
+                    </div>
+                    {items.length === 0 && <p className="mt-1.5 text-sm text-muted">Not among the {what} drawn from its 10-K.</p>}
+                    {items.map((item) => (
+                      <div key={item.id} className="mt-1.5">
+                        <p className="text-sm">
+                          <span className="font-medium">{"theme" in item ? item.theme : item.name}.</span>{" "}
+                          {"theme" in item ? item.summary : item.description}
+                        </p>
+                        {item.quotes.map((q) => (
+                          <blockquote key={q.text} className="mt-2 border-l-2 border-rule pl-3 text-sm leading-relaxed text-muted">
+                            “{q.text}” <Cited text={`10-K, ${q.section}`} citation={quoteCitation(c, q.section)} className="text-xs" />
+                          </blockquote>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+function quoteCitation(c: CompanyInput, section: string): Citation {
+  const { report, fiscalYear } = c.filing!;
+  const source = { accn: report.accn, form: "10-K", filingFy: fiscalYear, filed: report.filed, periodEnd: report.periodEnd, tag: "" };
+  return { cik: c.financials.cik, sources: [source], section, url: filingDocumentUrl(c.financials.cik, report.accn, report.document) };
+}
+
 function Takeaways({ items }: { items: string[] }) {
   return (
     <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
@@ -223,7 +276,7 @@ function Takeaways({ items }: { items: string[] }) {
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <p className="mt-4 text-xs text-muted">Written by Claude from the figures above. Neutral differences, not a recommendation.</p>
+      <p className="mt-4 text-xs text-muted">Written by Claude from the comparison above. Neutral differences, not a recommendation.</p>
     </article>
   );
 }

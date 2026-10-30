@@ -2,6 +2,8 @@
 
 import { useEffect, useReducer, useState } from "react";
 import type { Component } from "@/agent/catalog";
+import { LENS_GUIDANCE } from "@/agent/lenses";
+import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { CompareEvent } from "@/lib/compare";
 import { ComponentView } from "./renderers";
@@ -11,7 +13,7 @@ import { ComponentView } from "./renderers";
 
 type State = {
   status: "loading" | "error" | "done";
-  step: "fetching" | "building";
+  step: "fetching" | "reading" | "building";
   companies: CompanyInput[] | null;
   components: Component[];
   cached: boolean;
@@ -42,6 +44,7 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
 
 const STEPS = [
   { step: "fetching", label: "Fetching SEC data" },
+  { step: "reading", label: "Reading annual reports" },
   { step: "building", label: "Building comparison" },
 ] as const;
 
@@ -81,13 +84,14 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
     dispatch({ type: "restart" });
     setRun((r) => ({ n: r.n + 1, regenerate }));
   };
-  const currentStep = STEPS.findIndex((s) => s.step === state.step);
+  const steps = STEPS.filter((s) => s.step !== "reading" || LENS_GUIDANCE[lens as LensSlug]?.needsFilings);
+  const currentStep = steps.findIndex((s) => s.step === state.step);
 
   return (
     <section className="mt-8 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
       {state.status === "loading" && (
         <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {STEPS.map((s, i) => (
+          {steps.map((s, i) => (
             <li key={s.step} className={`flex items-center gap-2 ${i > currentStep ? "text-muted" : ""}`}>
               {i < currentStep ? (
                 <span aria-hidden>✓</span>

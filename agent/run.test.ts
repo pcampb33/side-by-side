@@ -15,6 +15,19 @@ const company = (ticker: string, name: string): CompanyInput => ({
   financials: normalize(JSON.parse(fs.readFileSync(new URL(`../lib/normalize/fixtures/${ticker}.json`, import.meta.url), "utf8"))),
 });
 const companies = [company("AAPL", "Apple Inc."), company("MSFT", "Microsoft Corp")];
+const quote = { text: "A passage the filing really contains.", section: "Item 1A" as const };
+const filing = (area: string, risk: string) => ({
+  report: { accn: "0000000000-26-000001", filed: "2026-01-30", periodEnd: "2025-12-31", document: "10k.htm" },
+  overview: "What the company does.",
+  areas: [{ id: "a1", name: area, description: "What it sells.", quotes: [quote] }],
+  risks: [{ id: "r1", theme: risk, summary: "What could go wrong.", quotes: [quote] }],
+  droppedQuotes: 0,
+  fiscalYear: 2025,
+});
+const withFilings = [
+  { ...companies[0], filing: filing("iPhone", "Supply chain") },
+  { ...companies[1], filing: filing("Cloud", "Competition") },
+];
 const takeaways = { items: ["Apple's fiscal year ends in September.", "Microsoft's ends in June.", "Both report R&D."] };
 const signal = new AbortController().signal;
 
@@ -40,6 +53,17 @@ describe("componentTools", () => {
     expect(shown).toHaveLength(1);
   });
 
+  it("accepts text rows only with ids that exist and are of the right kind", () => {
+    const shown: Component[] = [];
+    const tools = componentTools(withFilings, (c) => shown.push(c));
+    const rows = (refs: string[][]) => ({ title: "Risks", rows: refs.map((r, i) => ({ label: `Row ${i}`, refs: r })) });
+    expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["MSFT-r9"]])).text).toMatch(/Unknown risk ids: MSFT-r9/);
+    expect(call(tools, "risk_themes", rows([["AAPL-a1"], ["MSFT-r1"]])).text).toMatch(/Unknown risk ids: AAPL-a1/);
+    expect(call(tools, "business_overlap", rows([["AAPL-a1", "MSFT-a1"], ["AAPL-a1"]])).ok).toBe(true);
+    expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["AAPL-r1"]])).ok).toBe(true);
+    expect(shown.map((c) => c.name)).toEqual(["business_overlap", "risk_themes"]);
+  });
+
   it("caps components at the maximum but still accepts takeaways", () => {
     const tools = componentTools(companies, () => {});
     for (let i = 0; i < 8; i++) expect(call(tools, "trend_line", { title: `Revenue ${i}`, key: "revenue" }).ok).toBe(true);
@@ -51,11 +75,23 @@ describe("componentTools", () => {
 describe("generateComparison", () => {
   const usage = { inputTokens: 1, outputTokens: 1 };
 
-  it("refuses a text lens honestly without calling the model", async () => {
+  it("won't run a text lens without the condensed annual reports", async () => {
     let called = false;
     const backend: Backend = async () => ((called = true), usage);
-    await expect(generateComparison({ lens: "risk-exposure", companies, backend, signal, onComponent: () => {} })).rejects.toThrow(/annual-report reader/);
+    await expect(generateComparison({ lens: "risk-exposure", companies, backend, signal, onComponent: () => {} })).rejects.toThrow(/condensed annual report/);
     expect(called).toBe(false);
+  });
+
+  it("gives the model each company's annual-report ids for a text lens", async () => {
+    let user = "";
+    const backend: Backend = async (run) => {
+      user = run.user;
+      run.tools.find((t) => t.name === "takeaways")!.handle(takeaways);
+      return usage;
+    };
+    await generateComparison({ lens: "risk-exposure", companies: withFilings, backend, signal, onComponent: () => {} });
+    expect(user).toMatch(/AAPL-r1 \| Supply chain \| /);
+    expect(user).toMatch(/MSFT-a1 \| Cloud \| /);
   });
 
   it("is an error, not an empty comparison, when the model shows nothing", async () => {

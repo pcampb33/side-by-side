@@ -20,16 +20,18 @@ export interface Usage {
   outputTokens: number;
 }
 
+// Opus composes comparisons; Haiku condenses annual reports (lib/filings).
+export type ModelId = "claude-opus-5-5" | "claude-haiku-5-5";
+
 // A backend runs the model until it stops. It throws ComparisonError on a
 // refusal, the step limit or an API failure, and returns token usage.
-export type Backend = (run: { system: string; user: string; tools: ToolSpec[]; signal: AbortSignal }) => Promise<Usage>;
+export type Backend = (run: { model: ModelId; system: string; user: string; tools: ToolSpec[]; signal: AbortSignal }) => Promise<Usage>;
 
 export class ComparisonError extends Error {}
 
 export const MAX_STEPS = 12;
 
 export function componentTools(companies: CompanyInput[], onComponent: (c: Component) => void): ToolSpec[] {
-  const financials = companies.map((c) => c.financials);
   const shown: Component[] = [];
   return COMPONENT_NAMES.map((name) => ({
     name,
@@ -42,7 +44,7 @@ export function componentTools(companies: CompanyInput[], onComponent: (c: Compo
       const parsed = schema.safeParse(input);
       if (!parsed.success) return { ok: false, text: `Invalid input:\n${z.prettifyError(parsed.error)}` };
       const component = { name, input: parsed.data } as Component;
-      const problem = checkComponent(component, financials);
+      const problem = checkComponent(component, companies);
       if (problem) return { ok: false, text: problem };
       shown.push(component);
       onComponent(component);
@@ -58,15 +60,17 @@ export async function generateComparison(opts: {
   signal: AbortSignal;
   onComponent: (c: Component) => void;
 }): Promise<{ components: Component[]; usage: Usage }> {
-  if (LENS_GUIDANCE[opts.lens].needsFilings) {
-    throw new ComparisonError("This lens needs each company's annual report, and the annual-report reader is not built yet.");
+  // The caller reads the annual reports for a text lens; without them the
+  // model would have nothing to build from.
+  if (LENS_GUIDANCE[opts.lens].needsFilings && opts.companies.some((c) => !c.filing)) {
+    throw new Error(`The ${opts.lens} lens needs each company's condensed annual report.`);
   }
   const components: Component[] = [];
   const tools = componentTools(opts.companies, (c) => {
     components.push(c);
     opts.onComponent(c);
   });
-  const usage = await opts.backend({ system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
+  const usage = await opts.backend({ model: "claude-opus-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
   if (components.length === 0) throw new ComparisonError("The model finished without building a comparison.");
   return { components, usage };
 }

@@ -2,7 +2,8 @@ import type { Component } from "../agent/catalog.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
 import { ComparisonError, generateComparison, type Backend } from "../agent/run.ts";
 import { getCache } from "./cache/cache.ts";
-import { findTicker, getFinancials } from "./data.ts";
+import { LENS_GUIDANCE } from "../agent/lenses.ts";
+import { findTicker, getAnnualReport, getCondensedFiling, getFinancials } from "./data.ts";
 import type { LensSlug } from "./lenses.ts";
 import { NoAnnualDataError } from "./normalize/normalize.ts";
 
@@ -10,7 +11,7 @@ import { NoAnnualDataError } from "./normalize/normalize.ts";
 // both companies' data (the page looks every value up in it), components as
 // the model shows them, then done or error.
 export type CompareEvent =
-  | { type: "progress"; step: "fetching" | "building" }
+  | { type: "progress"; step: "fetching" | "reading" | "building" }
   | { type: "data"; companies: CompanyInput[] }
   | { type: "component"; component: Component }
   | { type: "done"; cached: boolean }
@@ -45,6 +46,20 @@ export async function runComparison(opts: {
         return { ticker, name: entry.name, financials };
       }),
     );
+    const backend = opts.backend ?? (await defaultBackend());
+    if (LENS_GUIDANCE[lens].needsFilings) {
+      emit({ type: "progress", step: "reading" });
+      await Promise.all(
+        companies.map(async (c) => {
+          const cik = c.financials.cik;
+          const report = await getAnnualReport(cik);
+          if (!report) throw new ComparisonError(`${c.ticker} has no 10-K annual report to read.`);
+          const filing = await getCondensedFiling({ cik, name: c.name, report, model: backend, signal: opts.signal });
+          const i = c.financials.periodEnds.indexOf(report.periodEnd);
+          c.filing = { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(report.periodEnd.slice(0, 4)) };
+        }),
+      );
+    }
     emit({ type: "data", companies });
 
     const cache = getCache();
@@ -64,7 +79,7 @@ export async function runComparison(opts: {
     const { components } = await generateComparison({
       lens,
       companies,
-      backend: opts.backend ?? (await defaultBackend()),
+      backend,
       signal: opts.signal,
       onComponent: (component) => emit({ type: "component", component }),
     });

@@ -16,7 +16,7 @@ function childEnv(): Record<string, string | undefined> {
   return { ...env, CLAUDE_HUB_HEADLESS: "1" };
 }
 
-export const loginBackend: Backend = async ({ system, user, tools, signal }) => {
+export const loginBackend: Backend = async ({ model, system, user, tools, signal }) => {
   const ui = createSdkMcpServer({
     name: "ui",
     tools: tools.map((t) =>
@@ -33,7 +33,7 @@ export const loginBackend: Backend = async ({ system, user, tools, signal }) => 
   const run = query({
     prompt: user,
     options: {
-      model: "claude-opus-5-5",
+      model,
       effort: "medium",
       systemPrompt: system,
       tools: [],

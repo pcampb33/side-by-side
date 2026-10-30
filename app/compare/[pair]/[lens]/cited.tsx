@@ -18,6 +18,8 @@ export interface Citation {
   cik: number;
   sources: Source[];
   formula?: string;
+  section?: string; // a quote's place in the filing ("Item 1A")
+  url?: string; // the document itself, when known; else the filing's folder
 }
 
 export type Looked =
@@ -104,9 +106,10 @@ export function Cited({ text, citation, className = "" }: { text: string; citati
             <span key={s.accn} className="block not-first:mt-2">
               <span className="block font-medium">
                 {s.form} for FY{s.filingFy}
+                {citation.section && `, ${citation.section}`}
               </span>
               <span className="block text-muted">Filed {s.filed}</span>
-              <a href={filingUrl(citation.cik, s.accn)} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+              <a href={citation.url ?? filingUrl(citation.cik, s.accn)} target="_blank" rel="noreferrer" className="text-accent hover:underline">
                 View filing on SEC.gov ↗
               </a>
             </span>

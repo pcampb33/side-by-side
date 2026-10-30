@@ -61,7 +61,7 @@ export class SecError extends Error {
 const MIN_INTERVAL_MS = 125;
 let nextSlot = 0;
 
-async function secJson<T>(url: string): Promise<T> {
+async function secFetch(url: string): Promise<Response> {
   const userAgent = process.env.SEC_USER_AGENT;
   if (!userAgent) throw new Error("SEC_USER_AGENT is not set");
   const now = Date.now();
@@ -70,8 +70,10 @@ async function secJson<T>(url: string): Promise<T> {
   if (wait) await new Promise((resolve) => setTimeout(resolve, wait));
   const res = await fetch(url, { headers: { "User-Agent": userAgent } });
   if (!res.ok) throw new SecError(url, res.status);
-  return (await res.json()) as T;
+  return res;
 }
+
+const secJson = async <T>(url: string) => (await (await secFetch(url)).json()) as T;
 
 const padCik = (cik: number) => String(cik).padStart(10, "0");
 
@@ -115,4 +117,11 @@ export function fetchCompanyFacts(cik: number): Promise<CompanyFacts> {
 
 export function filingUrl(cik: number, accn: string): string {
   return `https://www.sec.gov/Archives/edgar/data/${cik}/${accn.replaceAll("-", "")}/`;
+}
+
+export const filingDocumentUrl = (cik: number, accn: string, document: string) => `${filingUrl(cik, accn)}${document}`;
+
+// A filing's primary document (HTML; up to ~13 MB for a large bank's 10-K).
+export async function fetchFilingDocument(cik: number, accn: string, document: string): Promise<string> {
+  return (await secFetch(filingDocumentUrl(cik, accn, document))).text();
 }

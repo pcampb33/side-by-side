@@ -1,3 +1,4 @@
+import type { CondensedFiling } from "../lib/filings/condense.ts";
 import { formatValue } from "../lib/format.ts";
 import type { LensSlug } from "../lib/lenses.ts";
 import type { NormalizedFinancials } from "../lib/normalize/normalize.ts";
@@ -9,6 +10,8 @@ export interface CompanyInput {
   ticker: string;
   name: string;
   financials: NormalizedFinancials;
+  // Text lenses only. fiscalYear labels the report the way the financials do.
+  filing?: CondensedFiling & { fiscalYear: number };
 }
 
 export function systemPrompt(lens: LensSlug): string {
@@ -20,7 +23,7 @@ ${guidance}
 
 Rules:
 - Respond only through tool calls, in the order the reader should see them: usually 3 to 6 components, at most ${MAX_COMPONENTS}, then takeaways last. When takeaways succeeds, reply "done".
-- Components take metric keys and fiscal years, never numbers. The page looks every value up and cites its filing.
+- Components take metric keys and fiscal years, never numbers, and annual-report ids (AAPL-r2), never quotes. The page looks every value and quote up and cites its filing.
 - Takeaways are neutral differences, never a winner, a recommendation or a prediction. Any number you write must appear in the data tables exactly as shown.
 - "n/r" means the filing does not report it and "n/m" means the ratio is not meaningful (e.g. negative equity). Never estimate around them; say they are not reported when it matters.
 - The two companies may have different fiscal year ends; "latest" picks each company's own latest year.
@@ -41,6 +44,19 @@ function table(c: CompanyInput): string {
   return `${c.ticker}: ${c.name} (fiscal years end ${f.periodEnds.at(-1)!.slice(5)}; latest FY${f.fiscalYears.at(-1)})\n${header}\n${rows.join("\n")}`;
 }
 
+// The condensed annual report: the ids the text components take, with the
+// summaries Haiku wrote. The verified quotes stay with the page.
+function filing(c: CompanyInput): string {
+  const f = c.filing!;
+  const list = (items: { id: string; name: string; text: string }[]) => items.map((i) => `${c.ticker}-${i.id} | ${i.name} | ${i.text}`).join("\n");
+  return `${c.ticker} annual report (10-K for FY${f.fiscalYear}): ${f.overview}
+Business areas:
+${list(f.areas.map((a) => ({ id: a.id, name: a.name, text: a.description })))}
+Risk themes:
+${list(f.risks.map((r) => ({ id: r.id, name: r.theme, text: r.summary })))}`;
+}
+
 export function userPrompt(companies: CompanyInput[]): string {
-  return `Compare ${companies.map((c) => c.ticker).join(" and ")}.\n\n${companies.map(table).join("\n\n")}`;
+  const filings = companies.every((c) => c.filing) ? `\n\n${companies.map(filing).join("\n\n")}` : "";
+  return `Compare ${companies.map((c) => c.ticker).join(" and ")}.\n\n${companies.map(table).join("\n\n")}${filings}`;
 }

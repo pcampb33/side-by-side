@@ -7,10 +7,11 @@ import { ComparisonError, MAX_STEPS, type Backend } from "../run.ts";
 // Opus 5.5 rejects a forced tool_choice, so the prompt asks for tool calls
 // and tool_choice stays auto.
 
-export function apiBackend(model: LanguageModel = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY })("claude-opus-5-5")): Backend {
-  return async ({ system, user, tools, signal }) => {
+// `languageModel` replaces the requested model (tests pass a mock).
+export function apiBackend(languageModel?: LanguageModel): Backend {
+  return async ({ model, system, user, tools, signal }) => {
     const result = streamText({
-      model,
+      model: languageModel ?? createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY })(model),
       system,
       prompt: user,
       tools: Object.fromEntries(

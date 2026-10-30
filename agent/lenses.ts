@@ -23,12 +23,14 @@ export const LENS_GUIDANCE: Record<LensSlug, { question: string; guidance: strin
   },
   "risk-exposure": {
     question: "What risks does each company say could hurt it most?",
-    guidance: "Built from each company's 10-K risk factors.",
+    guidance:
+      "Built from each company's 10-K risk factors (the risk themes listed for each company). risk_themes is the core: rows for the subjects both companies name, then subjects only one names. Cash and long-term debt can add context where a risk is financial. Compare what each company says, never how likely a risk is.",
     needsFilings: true,
   },
   "where-they-compete": {
     question: "Where do the two businesses overlap, and where do they not?",
-    guidance: "Built from each company's 10-K business description.",
+    guidance:
+      "Built from each company's 10-K business description (the business areas listed for each company). business_overlap is the core: rows for the markets both serve, then each company's ground the other doesn't cover. Revenue and R&D can add scale. Describe overlap only as the filings state it; never infer market share.",
     needsFilings: true,
   },
 };

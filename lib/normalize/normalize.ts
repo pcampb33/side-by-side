@@ -2,6 +2,9 @@ import type { CompanyFacts, FactEntry } from "../sec/client.ts";
 import { METRICS, type MetricKey } from "./metrics.ts";
 
 export const YEARS = 5;
+// Part of the cache key: bump it when the output shape or a tag choice
+// changes, so payloads cached by the old code are not served.
+export const NORMALIZE_VERSION = 1;
 
 export interface Source {
   accn: string;

@@ -31,6 +31,11 @@ const schema = z
     MONTHLY_BUDGET_USD: z.coerce.number().positive().default(5),
   })
   .superRefine((env, ctx) => {
+    // Half a Redis config would silently fall back to the local file cache.
+    if ((env.UPSTASH_REDIS_REST_URL === undefined) !== (env.UPSTASH_REDIS_REST_TOKEN === undefined)) {
+      const missing = env.UPSTASH_REDIS_REST_URL === undefined ? "UPSTASH_REDIS_REST_URL" : "UPSTASH_REDIS_REST_TOKEN";
+      ctx.addIssue({ code: "custom", path: [missing], message: "missing (the other Upstash variable is set)" });
+    }
     if (!env.REQUIRE_SIGN_IN) return;
     for (const key of SIGN_IN_KEYS) {
       if (env[key] === undefined) {

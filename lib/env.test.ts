@@ -63,6 +63,12 @@ describe("parseEnv", () => {
     expect(errorOf({ ...local, REQUIRE_SIGN_IN: "yes" })).toContain("REQUIRE_SIGN_IN:");
   });
 
+  it("rejects half an Upstash configuration", () => {
+    expect(errorOf({ ...local, UPSTASH_REDIS_REST_URL: "https://example.upstash.io" })).toContain(
+      "UPSTASH_REDIS_REST_TOKEN: missing",
+    );
+  });
+
   it("rejects a non-positive budget", () => {
     expect(errorOf({ ...deployed, MONTHLY_BUDGET_USD: "0" })).toContain("MONTHLY_BUDGET_USD:");
   });

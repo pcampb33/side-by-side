@@ -40,13 +40,6 @@ const schema = z
       const missing = env.UPSTASH_REDIS_REST_URL === undefined ? "UPSTASH_REDIS_REST_URL" : "UPSTASH_REDIS_REST_TOKEN";
       ctx.addIssue({ code: "custom", path: [missing], message: "missing (the other Upstash variable is set)" });
     }
-    if (env.CLAUDE_AUTH === "api" && env.ANTHROPIC_API_KEY === undefined) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["ANTHROPIC_API_KEY"],
-        message: "missing (or set CLAUDE_AUTH=login to use a local Claude Code login)",
-      });
-    }
     if (!env.REQUIRE_SIGN_IN) return;
     if (env.CLAUDE_AUTH === "login") {
       ctx.addIssue({
@@ -60,7 +53,22 @@ const schema = z
         ctx.addIssue({ code: "custom", path: [key], message: "missing (required when REQUIRE_SIGN_IN=true)" });
       }
     }
-  });
+  })
+  // Runs even when other fields failed, so a fresh setup hears about the key
+  // in the same error as everything else. It reads only two fields that parse
+  // independently of the rest.
+  .superRefine(
+    (env, ctx) => {
+      if (env.CLAUDE_AUTH === "api" && env.ANTHROPIC_API_KEY === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["ANTHROPIC_API_KEY"],
+          message: "missing (or set CLAUDE_AUTH=login to use a local Claude Code login)",
+        });
+      }
+    },
+    { when: () => true },
+  );
 
 export type Env = z.infer<typeof schema>;
 

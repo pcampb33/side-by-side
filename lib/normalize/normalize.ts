@@ -26,22 +26,44 @@ const MAX_RUNWAY_YEARS = 10;
 
 // Computed in code, never by the model. Ratios are fractions (0.25 = 25%).
 export const DERIVED = {
-  grossMargin: { label: "Gross margin", inputs: ["grossProfit", "revenue"], compute: (m) => ratio(m.grossProfit, m.revenue) },
-  operatingMargin: { label: "Operating margin", inputs: ["operatingIncome", "revenue"], compute: (m) => ratio(m.operatingIncome, m.revenue) },
-  netMargin: { label: "Net margin", inputs: ["netIncome", "revenue"], compute: (m) => ratio(m.netIncome, m.revenue) },
+  grossMargin: {
+    label: "Gross margin",
+    formula: "Gross profit ÷ revenue",
+    inputs: ["grossProfit", "revenue"],
+    compute: (m) => ratio(m.grossProfit, m.revenue),
+  },
+  operatingMargin: {
+    label: "Operating margin",
+    formula: "Operating income ÷ revenue",
+    inputs: ["operatingIncome", "revenue"],
+    compute: (m) => ratio(m.operatingIncome, m.revenue),
+  },
+  netMargin: { label: "Net margin", formula: "Net income ÷ revenue", inputs: ["netIncome", "revenue"], compute: (m) => ratio(m.netIncome, m.revenue) },
   revenueGrowth: {
     label: "Revenue growth (YoY)",
+    formula: "Revenue vs the prior fiscal year",
     inputs: ["revenue"],
     compute: (m, prior) => (prior.revenue === undefined ? undefined : ratio(m.revenue - prior.revenue, prior.revenue)),
   },
-  freeCashFlow: { label: "Free cash flow", inputs: ["operatingCashFlow", "capex"], compute: (m) => m.operatingCashFlow - m.capex },
-  debtToEquity: { label: "Long-term debt to equity", inputs: ["longTermDebt", "equity"], compute: (m) => ratio(m.longTermDebt, m.equity) },
-  rndToRevenue: { label: "R&D % of revenue", inputs: ["rnd", "revenue"], compute: (m) => ratio(m.rnd, m.revenue) },
+  freeCashFlow: {
+    label: "Free cash flow",
+    formula: "Operating cash flow − capital expenditure",
+    inputs: ["operatingCashFlow", "capex"],
+    compute: (m) => m.operatingCashFlow - m.capex,
+  },
+  debtToEquity: {
+    label: "Long-term debt to equity",
+    formula: "Long-term debt ÷ shareholders' equity",
+    inputs: ["longTermDebt", "equity"],
+    compute: (m) => ratio(m.longTermDebt, m.equity),
+  },
+  rndToRevenue: { label: "R&D % of revenue", formula: "R&D ÷ revenue", inputs: ["rnd", "revenue"], compute: (m) => ratio(m.rnd, m.revenue) },
   // Years of cash at the current burn rate. Only meaningful while burning
   // cash fast enough for it to matter: F's FY2022 burn of $13M against $25B
   // of cash would otherwise read as a 1,933-year runway.
   cashRunwayYears: {
     label: "Cash runway (years)",
+    formula: "Cash ÷ annual cash burn (capex − operating cash flow), shown only up to 10 years",
     inputs: ["cash", "operatingCashFlow", "capex"],
     compute: (m) => {
       const burn = m.capex - m.operatingCashFlow;
@@ -53,6 +75,7 @@ export const DERIVED = {
   string,
   {
     label: string;
+    formula: string;
     inputs: readonly MetricKey[];
     // null = not meaningful, undefined = not reported (prior year missing)
     compute: (m: Record<MetricKey, number>, prior: Partial<Record<MetricKey, number>>) => number | null | undefined;

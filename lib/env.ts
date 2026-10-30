@@ -15,7 +15,11 @@ const SIGN_IN_KEYS = [
 
 const schema = z
   .object({
-    ANTHROPIC_API_KEY: z.string(),
+    // "login" runs Claude through the local Claude Code login (development
+    // only). Explicit rather than "no key set" because a stray user-level
+    // ANTHROPIC_API_KEY from another project would otherwise be picked up.
+    CLAUDE_AUTH: z.enum(["api", "login"]).default("api"),
+    ANTHROPIC_API_KEY: z.string().optional(),
     // The SEC rejects requests whose User-Agent lacks a name and an email.
     SEC_USER_AGENT: z.string().regex(/\S\s+\S+@\S+\.\S+/, "must be '<name> <email>'"),
     REQUIRE_SIGN_IN: z
@@ -36,7 +40,21 @@ const schema = z
       const missing = env.UPSTASH_REDIS_REST_URL === undefined ? "UPSTASH_REDIS_REST_URL" : "UPSTASH_REDIS_REST_TOKEN";
       ctx.addIssue({ code: "custom", path: [missing], message: "missing (the other Upstash variable is set)" });
     }
+    if (env.CLAUDE_AUTH === "api" && env.ANTHROPIC_API_KEY === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["ANTHROPIC_API_KEY"],
+        message: "missing (or set CLAUDE_AUTH=login to use a local Claude Code login)",
+      });
+    }
     if (!env.REQUIRE_SIGN_IN) return;
+    if (env.CLAUDE_AUTH === "login") {
+      ctx.addIssue({
+        code: "custom",
+        path: ["CLAUDE_AUTH"],
+        message: "login is for local development only; with sign-in on, use ANTHROPIC_API_KEY",
+      });
+    }
     for (const key of SIGN_IN_KEYS) {
       if (env[key] === undefined) {
         ctx.addIssue({ code: "custom", path: [key], message: "missing (required when REQUIRE_SIGN_IN=true)" });

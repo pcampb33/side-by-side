@@ -32,6 +32,16 @@ describe("parseEnv", () => {
     expect(env.MONTHLY_BUDGET_USD).toBe(5);
   });
 
+  it("accepts a Claude Code login instead of a key for local development", () => {
+    const env = parseEnv({ SEC_USER_AGENT: local.SEC_USER_AGENT, CLAUDE_AUTH: "login" });
+    expect(env.CLAUDE_AUTH).toBe("login");
+    expect(env.ANTHROPIC_API_KEY).toBeUndefined();
+  });
+
+  it("refuses the Claude Code login once sign-in is on", () => {
+    expect(errorOf({ ...deployed, CLAUDE_AUTH: "login" })).toContain("CLAUDE_AUTH: login is for local development only");
+  });
+
   it("names every missing required variable", () => {
     const message = errorOf({});
     expect(message).toContain("ANTHROPIC_API_KEY: missing");

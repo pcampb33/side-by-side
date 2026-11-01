@@ -86,6 +86,18 @@ describe("processSteps", () => {
     expect(view({ lens: "risk-exposure", step: "reading", companies: withFilings })[1]).toEqual(["reports", "done", `${risks} themes · ${quotes} quotes`]);
     expect(view({ lens: "risk-exposure", step: "reading", companies: withFilings.map((c) => ({ ...c, filing: undefined })) })[1]).toEqual(["reports", "run", "reading"]);
   });
+
+  it("says which steps a blocked request never ran", () => {
+    const noFilings = apple.map((c) => ({ ...c, filing: undefined }));
+    expect(view({ lens: "risk-exposure", status: "blocked", step: "reading", companies: noFilings })).toEqual([
+      ["data", "done", "16 metrics × 5 yrs"],
+      ["reports", "wait", "not run"],
+      ["brief", "wait", "not run"],
+      ["compose", "wait", "not run"],
+      ["checks", "wait", "not run"],
+    ]);
+    expect(view({ status: "blocked", step: "building", companies: apple })[1]).toEqual(["reports", "skip", "not needed"]);
+  });
 });
 
 describe("notReported", () => {

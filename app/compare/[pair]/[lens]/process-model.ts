@@ -159,7 +159,9 @@ export function processSteps(p: ProcessInput): StepView[] {
     backs: 0,
   };
 
-  return [data, reports, brief, compose, checks];
+  const steps = [data, reports, brief, compose, checks];
+  // A blocked request stops before Claude runs: the steps it never reached say so.
+  return p.status === "blocked" ? steps.map((s) => (s.state === "wait" ? { ...s, count: "not run" } : s)) : steps;
 }
 
 // The step a live run is on, for the panel to follow.

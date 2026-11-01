@@ -1,9 +1,10 @@
-// npm run eval -- [--model sonnet|opus] [--only <text>] [--score-only]
+// npm run eval -- [--model sonnet|opus] [--only <text>] [--score-only] [--out <dir>]
 // Generates every eval case (evals/cases.ts) in both modes from the saved
 // fixtures, runs the code-only checks (evals/checks.ts) and prints a
 // scorecard. Each run is saved to evals/out/<model>/, so --score-only
 // rescores the saved runs without calling Claude. --only keeps the cases whose
-// id contains the text (e.g. KO-PEP, freeform). Run by hand; never in CI.
+// id contains the text (e.g. KO-PEP, freeform). --out saves to evals/out/<dir>
+// instead (repeat runs, to see variance). Run by hand; never in CI.
 import fs from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
@@ -22,11 +23,13 @@ const MODELS = { opus: "claude-opus-5-5", sonnet: "claude-sonnet-5-5" } as const
 const MODES = ["components", "freeform"] as const;
 type Mode = (typeof MODES)[number];
 
-const { values: args } = parseArgs({ options: { model: { type: "string", default: "sonnet" }, only: { type: "string" }, "score-only": { type: "boolean", default: false } } });
+const { values: args } = parseArgs({
+  options: { model: { type: "string", default: "sonnet" }, only: { type: "string" }, "score-only": { type: "boolean", default: false }, out: { type: "string" } },
+});
 const model = MODELS[args.model as keyof typeof MODELS];
 if (!model) throw new Error(`--model must be one of ${Object.keys(MODELS).join(", ")}`);
 const root = path.join(import.meta.dirname, "..");
-const outDir = path.join(root, "evals", "out", args.model!);
+const outDir = path.join(root, "evals", "out", args.out ?? args.model!);
 
 interface Run {
   id: string;

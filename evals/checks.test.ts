@@ -55,6 +55,7 @@ describe("checkNotReported", () => {
     expect(checkNotReported(["Ford's long-term debt was $99.0B."], autos)).not.toEqual([]);
     expect(checkNotReported(["Ford's long-term debt is not reported; GM's was $99.0B."], autos)).toEqual([]);
     expect(checkNotReported(["Long-term debt is reported for GM ($99.0B) but not for Ford."], autos)).toEqual([]);
+    expect(checkNotReported(["GM reports long-term debt of $99.0B; Ford reports neither long-term debt nor its ratio."], autos)).toEqual([]);
     expect(checkNotReported(["Ford's revenue was $185.0B."], autos)).toEqual([]);
   });
 });

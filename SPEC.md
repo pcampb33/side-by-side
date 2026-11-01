@@ -77,7 +77,7 @@ company header (fixed, not generated), metric cards, trend line, grouped bars, r
 
 **Lens guidance** lives in `agent/`: what each lens is for and which components usually serve it. The agent chooses; the lens steers.
 
-**Freeform mode:** same payload, plus the site's color/font tokens for both themes. *2026-11-01:* visual first, minimal text (a one-sentence intro, at most one sentence per chart, one-sentence takeaways). Output is one self-contained HTML document rendered via `<iframe srcdoc sandbox="allow-scripts">` (no `allow-same-origin`). *2026-10-31:* no links or per-number citations inside it; the page names its sources in text and a note under it points to Components, which cites each number. Fonts fall back to system stacks (the sandbox can't load the site's fonts).
+**Freeform mode:** same payload, plus the site's color/font tokens for both themes. *2026-11-01:* visual first, minimal visible text (a one-sentence intro, at most one sentence per chart, one-sentence takeaways); longer explanations are fine in a closed `<details>` the reader can open (owner's preference). Output is one self-contained HTML document rendered via `<iframe srcdoc sandbox="allow-scripts">` (no `allow-same-origin`). *2026-10-31:* no links or per-number citations inside it; the page names its sources in text and a note under it points to Components, which cites each number. Fonts fall back to system stacks (the sandbox can't load the site's fonts).
 
 **Model settings:** Sonnet 5.5 with streaming; effort set explicitly (start at `medium`, tune via evals). Opus 5.5 can't disable thinking and rejects forced `tool_choice`, so use `auto` + instructions (kept for Sonnet too). Check `stop_reason` for `refusal` and show an honest error, not an empty result.
 

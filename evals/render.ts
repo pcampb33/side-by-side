@@ -39,7 +39,9 @@ export async function renderPage(browser: Browser, html: string): Promise<{ text
     // Axis ticks ($40B, 25%) are a chart's scale, not values from the data:
     // whole numbers alone in an SVG <text> are hidden from the text. A label
     // with decimals ($416.2B) is a value, and stays.
+    // Text in a closed <details> is still text the page states: open them all.
     const text = await page.evaluate(() => {
+      for (const d of document.querySelectorAll("details")) d.open = true;
       for (const t of document.querySelectorAll<SVGTextElement>("svg text")) {
         if (/^[−-]?\$?\d+[TBMK]?[%×]?$/.test((t.textContent ?? "").trim())) t.style.display = "none";
       }

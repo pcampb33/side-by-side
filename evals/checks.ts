@@ -167,8 +167,8 @@ export function checkNotReported(texts: string[], companies: CompanyInput[]): Fi
   const findings: Finding[] = [];
   for (const sentence of texts.flatMap((t) => t.split(/(?<=[.!?])\s+|\n+/))) {
     const lower = sentence.toLowerCase();
-    // "reported for Apple … but not for JPM" says it too.
-    if (/n\/r|not meaningful|n\/m/.test(lower) || (lower.includes("report") && /\bnot\b|n't\b/.test(lower)) || numberTokens(sentence).length === 0) continue;
+    // "reported for Apple … but not for JPM" and "JPM reports neither" say it too.
+    if (/n\/r|not meaningful|n\/m/.test(lower) || (lower.includes("report") && /\bnot\b|n't\b|\bneither\b/.test(lower)) || numberTokens(sentence).length === 0) continue;
     for (const m of missing) {
       if (lower.includes(m.label) && m.names.some((n) => new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(lower))) {
         findings.push({ check: "notReported", detail: `${m.ticker} ${m.key} is not reported, but: "${sentence.trim().slice(0, 200)}"` });

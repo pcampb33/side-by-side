@@ -29,7 +29,7 @@ export function valueDef(key: ValueKey): { label: string; unit: Unit; formula?: 
 }
 
 export type Value =
-  | { status: "value"; value: number; sources: Source[] }
+  | { status: "value"; value: number; sources: Source[]; formula?: string }
   | { status: "not_reported" }
   | { status: "not_meaningful" }
   | { status: "no_such_year" };
@@ -40,17 +40,17 @@ export function valueAt(f: NormalizedFinancials, key: ValueKey, fy: number | "la
   if (i < 0) return { status: "no_such_year" };
   if (!isDerived(key)) {
     const v = f.metrics[key][i];
-    return v.status === "reported" ? { status: "value", value: v.value, sources: [v.source] } : { status: "not_reported" };
+    return v.status === "reported" ? { status: "value", value: v.value, sources: v.sources, formula: v.formula } : { status: "not_reported" };
   }
   const v = f.derived[key][i];
   if (v.status !== "computed") return { status: v.status };
   // A derived value cites the filings of its inputs (and, for growth, the prior year's revenue).
   const sources = DERIVED[key].inputs.flatMap((input) => {
     const m = f.metrics[input][i];
-    return m.status === "reported" ? [m.source] : [];
+    return m.status === "reported" ? m.sources : [];
   });
   const prior = key === "revenueGrowth" && i > 0 ? f.metrics.revenue[i - 1] : undefined;
-  if (prior?.status === "reported") sources.push(prior.source);
+  if (prior?.status === "reported") sources.push(...prior.sources);
   return { status: "value", value: v.value, sources };
 }
 

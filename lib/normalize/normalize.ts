@@ -4,7 +4,9 @@ import { METRICS, type MetricKey } from "./metrics.ts";
 export const YEARS = 5;
 // Part of the cache key: bump it when the output shape or a tag choice
 // changes, so payloads cached by the old code are not served.
-export const NORMALIZE_VERSION = 1;
+// v2: values carry sources[] (and a formula when computed); total liabilities
+// falls back to total assets − total equity.
+export const NORMALIZE_VERSION = 2;
 
 export interface Source {
   accn: string;
@@ -15,7 +17,20 @@ export interface Source {
   tag: string;
 }
 
-export type MetricValue = { status: "reported"; value: number; source: Source } | { status: "not_reported" };
+// One source, except a value computed from other facts in place of a missing
+// line (see TOTAL_EQUITY), which cites each input and says how.
+export type MetricValue = { status: "reported"; value: number; sources: Source[]; formula?: string } | { status: "not_reported" };
+
+// A filer with no total-liabilities line (KO) still balances its balance
+// sheet, so liabilities = total assets − total equity including noncontrolling
+// interests. Not where it reports mezzanine (temporary) equity, which that
+// difference would count as a liability.
+const TOTAL_EQUITY = "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest";
+const MEZZANINE = [
+  "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterest",
+  "TemporaryEquityCarryingAmountAttributableToParent",
+  "RedeemableNoncontrollingInterestEquityCarryingAmount",
+];
 
 // not_reported: an input is not reported. not_meaningful: the inputs exist
 // but the ratio would mislead (e.g. debt-to-equity with negative equity).
@@ -151,8 +166,8 @@ export function normalize(facts: CompanyFacts): NormalizedFinancials {
   // One extra year so the oldest shown year still gets YoY growth.
   const allYears = [...endByFy.keys()].sort((a, b) => a - b).slice(-(YEARS + 1));
 
-  const lookup = (key: MetricKey, end: string): MetricValue => {
-    for (const { tag, entries } of entriesByMetric[key]) {
+  const lookup = (key: MetricKey, end: string, tags = entriesByMetric[key]): MetricValue => {
+    for (const { tag, entries } of tags) {
       let best: FactEntry | undefined;
       for (const e of entries) {
         if (e.end !== end || (e.start && !isAnnualDuration(e))) continue;
@@ -162,22 +177,42 @@ export function normalize(facts: CompanyFacts): NormalizedFinancials {
         return {
           status: "reported",
           value: best.val,
-          source: {
-            accn: best.accn,
-            form: best.form,
-            filingFy: fyByAccn.get(best.accn) ?? best.fy ?? Number(best.filed.slice(0, 4)),
-            filed: best.filed,
-            periodEnd: end,
-            tag,
-          },
+          sources: [
+            {
+              accn: best.accn,
+              form: best.form,
+              filingFy: fyByAccn.get(best.accn) ?? best.fy ?? Number(best.filed.slice(0, 4)),
+              filed: best.filed,
+              periodEnd: end,
+              tag,
+            },
+          ],
         };
       }
     }
     return { status: "not_reported" };
   };
 
+  const liabilities = (end: string): MetricValue => {
+    const reported = lookup("totalLiabilities", end);
+    if (reported.status === "reported") return reported;
+    if (MEZZANINE.some((tag) => gaap[tag]?.units.USD?.some((e) => e.end === end && isAnnualForm(e.form)))) return reported;
+    const assets = lookup("totalAssets", end);
+    const equity = lookup("equity", end, entriesByMetric.equity.filter((t) => t.tag === TOTAL_EQUITY));
+    if (assets.status !== "reported" || equity.status !== "reported") return reported;
+    return {
+      status: "reported",
+      value: assets.value - equity.value,
+      sources: [...assets.sources, ...equity.sources],
+      formula: "Total assets − total equity (incl. noncontrolling interests); the filing has no total-liabilities line",
+    };
+  };
+
   const allMetrics = Object.fromEntries(
-    (Object.keys(METRICS) as MetricKey[]).map((key) => [key, allYears.map((fy) => lookup(key, endByFy.get(fy)!))]),
+    (Object.keys(METRICS) as MetricKey[]).map((key) => [
+      key,
+      allYears.map((fy) => (key === "totalLiabilities" ? liabilities(endByFy.get(fy)!) : lookup(key, endByFy.get(fy)!))),
+    ]),
   ) as Record<MetricKey, MetricValue[]>;
 
   const valuesAt = (i: number): Partial<Record<MetricKey, number>> => {

@@ -29,7 +29,7 @@ export type Looked =
 export function lookup(c: CompanyInput, key: ValueKey, fy: number | "latest"): Looked {
   const v = valueAt(c.financials, key, fy);
   const { unit, formula } = valueDef(key);
-  if (v.status === "value") return { kind: "value", value: v.value, text: formatValue(v.value, unit), citation: { cik: c.financials.cik, sources: v.sources, formula } };
+  if (v.status === "value") return { kind: "value", value: v.value, text: formatValue(v.value, unit), citation: { cik: c.financials.cik, sources: v.sources, formula: v.formula ?? formula } };
   if (v.status === "not_meaningful") return { kind: "missing", text: "Not meaningful" };
   if (v.status === "no_such_year") return { kind: "missing", text: `No FY${fiscalYearOf(c.financials, fy)} data` };
   return { kind: "missing", text: "Not reported" };

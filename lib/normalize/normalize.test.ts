@@ -19,8 +19,8 @@ describe("normalize on the six R2 filers", () => {
     { ticker: "AAPL", years: [2021, 2022, 2023, 2024, 2025], notReported: [] },
     { ticker: "MSFT", years: [2022, 2023, 2024, 2025, 2026], notReported: [] },
     { ticker: "NVDA", years: [2022, 2023, 2024, 2025, 2026], notReported: [] },
-    // KO files no R&D line and no total-liabilities tag.
-    { ticker: "KO", years: [2021, 2022, 2023, 2024, 2025], notReported: ["rnd", "totalLiabilities"] },
+    // KO files no R&D line (and no total-liabilities line: computed, tested below).
+    { ticker: "KO", years: [2021, 2022, 2023, 2024, 2025], notReported: ["rnd"] },
     // F has no gross profit line; its long-term debt is only in Ford-specific tags.
     { ticker: "F", years: [2021, 2022, 2023, 2024, 2025], notReported: ["grossProfit", "longTermDebt"] },
     // A bank: no gross profit, operating income, R&D or capex.
@@ -38,13 +38,16 @@ describe("normalize on the six R2 filers", () => {
           expect(v, `${ticker} ${key} FY${years[i]}`).toEqual({ status: "not_reported" });
           return;
         }
-        const { value, source } = reported(v);
+        const { value, sources, formula } = reported(v);
         expect(Number.isFinite(value)).toBe(true);
-        expect(METRICS[key].tags).toContain(source.tag);
-        expect(source.accn).toMatch(/^\d{10}-\d{2}-\d{6}$/);
-        expect(source.form).toMatch(/^10-K/);
-        expect(source.periodEnd).toBe(n.periodEnds[i]);
-        expect(source.filingFy).toBeGreaterThanOrEqual(years[i]);
+        expect(sources).toHaveLength(formula ? 2 : 1);
+        for (const source of sources) {
+          if (!formula) expect(METRICS[key].tags).toContain(source.tag);
+          expect(source.accn).toMatch(/^\d{10}-\d{2}-\d{6}$/);
+          expect(source.form).toMatch(/^10-K/);
+          expect(source.periodEnd).toBe(n.periodEnds[i]);
+          expect(source.filingFy).toBeGreaterThanOrEqual(years[i]);
+        }
       });
     }
   });
@@ -73,8 +76,8 @@ describe("normalize on the six R2 filers", () => {
 
   it("cites the latest filing for a restated prior year", () => {
     const n = load("AAPL");
-    const { source } = reported(n.metrics.revenue[n.fiscalYears.indexOf(2024)]);
-    expect(source).toMatchObject({ accn: "0000320193-25-000079", filingFy: 2025, periodEnd: "2024-09-28" });
+    const { sources } = reported(n.metrics.revenue[n.fiscalYears.indexOf(2024)]);
+    expect(sources[0]).toMatchObject({ accn: "0000320193-25-000079", filingFy: 2025, periodEnd: "2024-09-28" });
   });
 
   it("gives the oldest shown year YoY growth from the year before it", () => {
@@ -83,7 +86,7 @@ describe("normalize on the six R2 filers", () => {
 
   it("falls back per year when a filer switches tags", () => {
     const ko = load("KO");
-    expect(ko.metrics.longTermDebt.map((v) => reported(v).source.tag)).toEqual([
+    expect(ko.metrics.longTermDebt.map((v) => reported(v).sources[0].tag)).toEqual([
       "LongTermDebtNoncurrent",
       "LongTermDebtNoncurrent",
       "LongTermDebtNoncurrent",
@@ -94,12 +97,24 @@ describe("normalize on the six R2 filers", () => {
     const fy2025 = f.fiscalYears.indexOf(2025);
     expect(reported(f.metrics.revenue[fy2025])).toMatchObject({
       value: 187_267_000_000,
-      source: { tag: "RevenueFromContractWithCustomerExcludingAssessedTax" },
+      sources: [{ tag: "RevenueFromContractWithCustomerExcludingAssessedTax" }],
     });
     expect(reported(f.metrics.netIncome[fy2025])).toMatchObject({
       value: -8_182_000_000,
-      source: { tag: "NetIncomeLossAvailableToCommonStockholdersBasic" },
+      sources: [{ tag: "NetIncomeLossAvailableToCommonStockholdersBasic" }],
     });
+  });
+
+  it("computes KO's total liabilities as total assets minus total equity, citing both", () => {
+    const ko = load("KO");
+    // FY2025 10-K balance sheet: total assets 104,816; total equity (incl.
+    // noncontrolling interests) 34,275 ($M); no total-liabilities line.
+    const v = reported(ko.metrics.totalLiabilities[ko.fiscalYears.indexOf(2025)]);
+    expect(v.value).toBe(70_541_000_000);
+    expect(v.sources.map((s) => s.tag)).toEqual(["Assets", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"]);
+    expect(v.formula).toMatch(/^Total assets − total equity/);
+    // Reported lines stay as filed, with no formula.
+    expect(load("AAPL").metrics.totalLiabilities.every((m) => m.status === "reported" && !m.formula && m.sources[0].tag === "Liabilities")).toBe(true);
   });
 
   it("labels fiscal years the way the filer does", () => {

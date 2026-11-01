@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import { parsePair } from "@/lib/compare-url";
+import { Suspense, ViewTransition } from "react";
+import { parsePair, titleTransitionName } from "@/lib/compare-url";
 import { findTicker, getFinancials, getProfile } from "@/lib/data";
 import { findFeatured } from "@/lib/featured";
 import { findLens } from "@/lib/lenses";
@@ -16,8 +16,19 @@ export default function ComparePage({ params }: PageProps<"/compare/[pair]/[lens
     // itself out by its own width (container queries), not the viewport's.
     <main data-wide className="mx-auto max-w-5xl px-4 py-10 sm:px-6 min-[1100px]:grid min-[1100px]:max-w-[90rem] min-[1100px]:grid-cols-[minmax(0,1fr)_auto] min-[1100px]:items-start min-[1100px]:gap-6">
       <div className="@container min-w-0">
-        <Suspense fallback={<ComparisonSkeleton />}>
-          <Comparison params={params} />
+        {/* The skeleton rises in, then fades out as the comparison rises in its place. */}
+        <Suspense
+          fallback={
+            <ViewTransition enter="vt-rise" exit="vt-out" default="none">
+              <ComparisonSkeleton />
+            </ViewTransition>
+          }
+        >
+          <ViewTransition enter="vt-rise" default="none">
+            <div>
+              <Comparison params={params} />
+            </div>
+          </ViewTransition>
         </Suspense>
       </div>
       <ProcessAside />
@@ -38,10 +49,12 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h1 className="font-display text-3xl font-semibold tracking-tight @xl:text-4xl">
-          {companies[0].entry.ticker} <span className="text-muted">vs</span> {companies[1].entry.ticker}
-          <span className="text-muted">: {lens.label}</span>
-        </h1>
+        <ViewTransition name={titleTransitionName(companies[0].entry.ticker, companies[1].entry.ticker, lens.slug)} share="morph" default="none">
+          <h1 className="font-display text-3xl font-semibold tracking-tight @xl:text-4xl">
+            {companies[0].entry.ticker} <span className="text-muted">vs</span> {companies[1].entry.ticker}
+            <span className="text-muted">: {lens.label}</span>
+          </h1>
+        </ViewTransition>
         <Link href="/" className="text-sm text-accent hover:underline">
           New comparison
         </Link>

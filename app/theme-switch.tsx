@@ -30,14 +30,22 @@ const setAttribute = (choice: ThemeChoice) => {
   else document.documentElement.dataset.theme = choice;
 };
 
-function choose(choice: ThemeChoice) {
+function choose(choice: ThemeChoice, from: HTMLElement) {
   try {
     if (choice === "system") localStorage.removeItem(THEME_KEY);
     else localStorage.setItem(THEME_KEY, choice);
   } catch {}
-  // A crossfade between the two themes, where the browser has one.
-  if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.startViewTransition(() => setAttribute(choice));
-  else setAttribute(choice);
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return setAttribute(choice);
+  // The new theme spreads out in a circle from the button (globals.css), where
+  // the browser has transition types; a crossfade where it has only the basics.
+  if (!("types" in ViewTransition.prototype)) return document.startViewTransition(() => setAttribute(choice));
+  const r = from.getBoundingClientRect();
+  const [x, y] = [r.left + r.width / 2, r.top + r.height / 2];
+  const style = document.documentElement.style;
+  style.setProperty("--reveal-x", `${x}px`);
+  style.setProperty("--reveal-y", `${y}px`);
+  style.setProperty("--reveal-r", `${Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))}px`);
+  document.startViewTransition({ update: () => setAttribute(choice), types: ["theme"] });
 }
 
 export function ThemeSwitch() {
@@ -63,7 +71,7 @@ export function ThemeSwitch() {
           aria-label={label}
           title={label}
           data-choice={c}
-          onClick={() => theme !== c && choose(c)}
+          onClick={(e) => theme !== c && choose(c, e.currentTarget)}
           className="theme-option relative z-10 grid size-7 place-items-center rounded-full"
         >
           <Icon aria-hidden className="size-3.5" strokeWidth={2} />

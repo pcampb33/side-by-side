@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { addTransitionType, startTransition, useEffect, useReducer, useRef, useState, ViewTransition } from "react";
 import type { Component } from "@/agent/catalog";
 import type { BlockReason } from "@/lib/access";
 import type { LensSlug } from "@/lib/lenses";
@@ -82,7 +82,11 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
     const url = new URL(window.location.href);
     if (next === "freeform") url.searchParams.set("mode", "freeform");
     else url.searchParams.delete("mode");
-    window.history.pushState(null, "", url);
+    // A transition, so the old mode slides out the way the toggle moves and the new one in.
+    startTransition(() => {
+      addTransitionType(next === "freeform" ? "mode-next" : "mode-prev");
+      window.history.pushState(null, "", url);
+    });
   };
   return (
     <>
@@ -90,10 +94,18 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
         <ModeNote key={mode} mode={mode} />
         <ModeSwitch mode={mode} onChange={choose} />
       </div>
-      <Stream key={mode} pair={pair} lens={lens} mode={mode} />
+      <ViewTransition key={mode} enter={MODE_SLIDE.enter} exit={MODE_SLIDE.exit} default="none">
+        <Stream pair={pair} lens={lens} mode={mode} />
+      </ViewTransition>
     </>
   );
 }
+
+// Switching modes: Freeform is to the right of Components on the toggle.
+const MODE_SLIDE = {
+  enter: { "mode-next": "vt-from-right", "mode-prev": "vt-from-left", default: "none" },
+  exit: { "mode-next": "vt-to-left", "mode-prev": "vt-to-right", default: "none" },
+};
 
 const MODE_NOTE: Record<Mode, string> = {
   components: "Claude picks from the site's charts and cards; every number is looked up and links to its filing.",

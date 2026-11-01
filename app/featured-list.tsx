@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { LENS_GUIDANCE } from "@/agent/lenses";
-import { comparePath } from "@/lib/compare-url";
+import { comparePath, titleTransitionName } from "@/lib/compare-url";
 import { FEATURED } from "@/lib/featured";
 import { findLens } from "@/lib/lenses";
 
@@ -20,19 +21,23 @@ export function FeaturedList() {
             <li key={`${f.tickers.join()}-${f.lens}`} className={`featured-in ${i === 0 ? "sm:col-span-2" : ""}`} style={{ animationDelay: `${120 + i * 70}ms` }}>
               <Link
                 href={comparePath(f.tickers[0], f.tickers[1], f.lens)}
+                // The whole page, not just the shell: it arrives with the click, so the title can morph.
+                prefetch={true}
                 className="featured-card group flex h-full flex-col gap-2 card p-5 outline-accent focus-visible:outline-2"
               >
                 <span className="flex items-center justify-between text-sm text-muted">
                   {findLens(f.lens)?.label}
                   <span aria-hidden className="featured-arrow text-accent">→</span>
                 </span>
-                <span className="flex items-center gap-2 font-display text-2xl font-semibold tracking-tight">
-                  <span className="size-2.5 rounded-full bg-series-a" aria-hidden />
-                  {a.ticker}
-                  <span className="text-lg font-normal text-muted">vs</span>
-                  <span className="size-2.5 rounded-full bg-series-b" aria-hidden />
-                  {b.ticker}
-                </span>
+                <ViewTransition name={titleTransitionName(a.ticker, b.ticker, f.lens)} share="morph" default="none">
+                  <span className="flex items-center gap-2 font-display text-2xl font-semibold tracking-tight">
+                    <span className="size-2.5 rounded-full bg-series-a" aria-hidden />
+                    {a.ticker}
+                    <span className="text-lg font-normal text-muted">vs</span>
+                    <span className="size-2.5 rounded-full bg-series-b" aria-hidden />
+                    {b.ticker}
+                  </span>
+                </ViewTransition>
                 <span className="text-sm text-muted">
                   {a.name} and {b.name}
                 </span>

@@ -273,6 +273,31 @@ body {
 .process-scrim { animation: fade-in var(--dur-base) var(--ease-out); }
 .process-strip { scrollbar-width: none; }
 
+/* View transitions: React <ViewTransition> (page.tsx, featured-list.tsx, comparison-stream.tsx) and the theme switch. */
+::view-transition { pointer-events: none; }
+::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: var(--dur-base); animation-timing-function: var(--ease-out); }
+/* A featured card's title travels into the page title. */
+::view-transition-group(.morph) { animation-duration: var(--dur-slow); }
+/* The comparison rises in; the skeleton it replaces fades out first. */
+::view-transition-new(.vt-rise) { animation: vt-rise var(--dur-slow) var(--ease-out) both; }
+::view-transition-old(.vt-out) { animation: vt-fade var(--dur-fast) ease-in both reverse; }
+@keyframes vt-rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes vt-fade { from { opacity: 0; } }
+/* Components / Freeform: the old view leaves the way the toggle moved, the new one follows. */
+::view-transition-old(.vt-to-left) { --vt-dx: -14px; }
+::view-transition-old(.vt-to-right), ::view-transition-new(.vt-from-right) { --vt-dx: 14px; }
+::view-transition-new(.vt-from-left) { --vt-dx: -14px; }
+::view-transition-old(.vt-to-left), ::view-transition-old(.vt-to-right) { animation: vt-slide var(--dur-base) ease-in both reverse; }
+::view-transition-new(.vt-from-right), ::view-transition-new(.vt-from-left) { animation: vt-slide var(--dur-slow) var(--ease-out) var(--dur-fast) both; }
+@keyframes vt-slide { from { opacity: 0; translate: var(--vt-dx) 0; } }
+/* Theme switch: the new theme spreads out in a circle from the button (theme-switch.tsx sets the circle). */
+:root:active-view-transition-type(theme)::view-transition-old(root) { animation: none; }
+:root:active-view-transition-type(theme)::view-transition-new(root) { animation: vt-reveal var(--dur-slow) var(--ease-out); }
+@keyframes vt-reveal {
+  from { clip-path: circle(0 at var(--reveal-x) var(--reveal-y)); }
+  to { clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mode-thumb, .theme-thumb, .freeform { transition: none; }
   .venn-panel, .venn-chip, .venn-tab, .pop-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
@@ -282,4 +307,5 @@ body {
   .featured-card:hover, .featured-card:hover .featured-arrow { transform: none; }
   .step-dot, .step-dot::after, .tick-in, .mode-note, .theme-in, .popover-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
   .step-body, .step-body > div > div, .step-chevron, .process-aside, .process-full, .process-rail, .process-step::before { transition: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0s !important; animation-delay: 0s !important; }
 }

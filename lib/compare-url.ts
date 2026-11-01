@@ -16,6 +16,10 @@ export function comparePath(a: string, b: string, lens: string): string {
   return `/compare/${first}-vs-${second}/${lens}`;
 }
 
+// The view-transition name a featured card's title shares with its page's
+// title, so opening the card carries the title into the page.
+export const titleTransitionName = (a: string, b: string, lens: string) => "title" + comparePath(a, b, lens).replace(/[^A-Za-z0-9]+/g, "-");
+
 // The canonical form of a /compare/<pair>/<lens> path, or null when the pair
 // can't be parsed (the page then 404s on its own).
 export function canonicalComparePath(pathname: string): string | null {

@@ -8,7 +8,7 @@ import { DAILY_LIMIT, type BlockReason } from "@/lib/access";
 // (lib/access.ts). Not an error: it says what's still open and how to run the
 // app without limits.
 
-const REPO = "https://github.com/pcampb33/company-compare";
+const REPO = "https://github.com/pcampb33/side-by-side";
 
 const TEXT: Record<BlockReason, string> = {
   "sign-in": "Claude hasn't built this comparison yet. Sign in with Google to have it built.",

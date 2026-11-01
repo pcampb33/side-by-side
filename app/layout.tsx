@@ -10,7 +10,7 @@ import { ThemeSwitch } from "./theme-switch";
 const sans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
-  title: "company-compare",
+  title: "side-by-side",
   description: "Compare two US public companies, grounded in their SEC filings.",
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <header className="border-b border-rule">
           <div className="site-width mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
             <Link href="/" className="font-display text-lg font-semibold tracking-tight">
-              company-compare
+              side-by-side
             </Link>
             <div className="flex items-center gap-5">
               {signInOn && (

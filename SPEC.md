@@ -26,8 +26,8 @@ Decided 2026-10-29. Each decision below was made explicitly; don't reopen one wi
 | Logging | Per run: email, time, pair, lens, mode, tokens, cost, IP. 14-day TTL. Short privacy note on the site |
 | URLs | `/compare/AAPL-vs-MSFT/growth` (`?mode=freeform`). Pair order canonicalized alphabetically (redirect) so one cache entry per pair |
 | Citations | Per number and per quote: hover/tap shows the filing (form, FY, filed date) with a link to it on SEC.gov |
-| Loading | Progress steps (Fetching SEC data → Reading annual reports → Building comparison), then components stream in |
-| Style | Clean editorial. Light + dark following system, manual switch. Fully responsive |
+| Loading | Progress steps (Fetching SEC data → Reading annual reports → Building comparison), then components stream in. *2026-10-31:* at ~1s, a code-drawn headline strip of 3-4 cited numbers per company, chosen per lens in code; Claude is told it is already shown. Text lenses show each 10-K's themes as soon as it is read |
+| Style | Clean editorial. Light + dark following system, manual switch (built before step 8; the freeform frame follows it). Fully responsive. Company names: EDGAR's all-caps names are title-cased, with a hand-kept override map for well-known names (JPMorgan, NVIDIA, Coca-Cola…) |
 | Cache backend | Local: gitignored `.cache/` folder. Deployed: Upstash Redis (also holds limits, spend, logs) |
 | Hosting | Vercel Hobby |
 | Repo | Public, `pcampb33/company-compare`, MIT, GitHub Actions CI (lint + typecheck + tests; never calls the API) |
@@ -58,7 +58,7 @@ Request flow for a new comparison: auth check → limit + budget check → norma
 **Metrics** (annual, 10-K, last 5 FY). Each metric has an ordered list of fallback XBRL tags; build and test this first:
 revenue, gross profit, operating income, net income, R&D, cash, total assets, total liabilities, long-term debt, shareholders' equity, operating cash flow, capex, dividends paid, buybacks, diluted EPS, shares outstanding.
 
-**Derived in code, never by the model:** gross/operating/net margin, YoY revenue growth, free cash flow, debt-to-equity, R&D % of revenue, cash runway where meaningful.
+**Derived in code, never by the model:** gross/operating/net margin, YoY revenue growth, free cash flow, debt-to-equity, R&D % of revenue, cash runway where meaningful (≤10 years). *2026-10-31:* total liabilities falls back to total assets − total equity when a filer reports no liabilities line (KO), cited to both inputs.
 
 **Missing values:** a metric with no matching tag is `not reported`, never 0 or blank, and propagates as such into derived ratios.
 
@@ -77,7 +77,7 @@ company header (fixed, not generated), metric cards, trend line, grouped bars, r
 
 **Lens guidance** lives in `agent/`: what each lens is for and which components usually serve it. The agent chooses; the lens steers.
 
-**Freeform mode:** same payload, plus the site's color/font tokens for both themes. Output is one self-contained HTML document rendered via `<iframe srcdoc sandbox="allow-scripts">` (no `allow-same-origin`).
+**Freeform mode:** same payload, plus the site's color/font tokens for both themes. Output is one self-contained HTML document rendered via `<iframe srcdoc sandbox="allow-scripts">` (no `allow-same-origin`). *2026-10-31:* no links or per-number citations inside it; the page names its sources in text and a note under it points to Components, which cites each number. Fonts fall back to system stacks (the sandbox can't load the site's fonts).
 
 **Model settings:** Opus 5.5 with streaming; effort set explicitly (start at `medium`, tune via evals). Opus 5.5 can't disable thinking and rejects forced `tool_choice`, so use `auto` + instructions. Check `stop_reason` for `refusal` and show an honest error, not an empty result.
 
@@ -122,7 +122,7 @@ Model-graded checks ("does this answer the lens?") only after real output has be
 - **R1, AI SDK coverage.** Before building the agent, confirm `@ai-sdk/anthropic` accepts `claude-opus-5-5` and passes effort (and ideally refusal fallbacks) through provider options. If it can't, keep the AI SDK for UI streaming and call `@anthropic-ai/sdk` inside `agent/`. *2026-10-29, offline:* `@ai-sdk/anthropic` 3.0.132 lists `claude-opus-5-5`, has an `effort` provider option and maps `refusal` to finish reason `content-filter`. Still to confirm with a live call once the key exists, before the first deploy. Token counts from the login backend carry ~32k tokens of Claude Code overhead per request, so R6 cost estimates must come from the API backend.
 - **R2, XBRL tag variance.** The normalization layer is the real work. Test on AAPL, MSFT, NVDA, KO, F, JPM before any UI.
 - **R3, 10-K extraction.** Large filings exceed 100k tokens (Haiku's higher price tier above 100k); still about a cent per filing. Quote verification is mandatory.
-- **R4, Vercel function duration.** A streamed generation runs 20-40s; confirm the current Hobby max duration and set `maxDuration` on the route.
+- **R4, Vercel function duration.** A streamed generation runs 20-40s; confirm the current Hobby max duration and set `maxDuration` on the route. *2026-10-31:* Vercel's docs (updated 2026-08-24) give Hobby with Fluid compute (default) 300s default and max. Measured: freeform 88-97s, uncached text lens 49-71s. Set `maxDuration = 300` and stream a heartbeat while the model works (HTTP/1.1 clients may close idle connections).
 - **R5, Spend-limit floor.** Confirm the Anthropic console accepts a ~$6 workspace limit.
 - **R6, Cost estimates are unmeasured** (~$0.15-0.40 per Opus comparison). The eval run records real usage; revisit the budget after it.
 

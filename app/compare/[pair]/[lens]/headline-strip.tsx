@@ -8,6 +8,7 @@ import type { LensSlug } from "@/lib/lenses";
 import { valueDef, type ValueKey } from "@/lib/values";
 import { Cited, lookup, SERIES, Value } from "./cited";
 import { reducedMotion } from "./morph";
+import { MetricInfo } from "./popover";
 
 // The lens's headline numbers, drawn in code as soon as the financials arrive
 // (~1s), before Claude starts. Both prompts say the page shows them.
@@ -19,7 +20,10 @@ export function HeadlineStrip({ lens, companies }: { lens: LensSlug; companies: 
     <dl className="grid grid-cols-2 gap-3 @4xl:grid-cols-4">
       {LENS_GUIDANCE[lens].headline.map((key, i) => (
         <div key={key} className="pill-in card px-4 py-3" style={{ animationDelay: `${i * 70}ms` }}>
-          <dt className="text-sm text-muted">{valueDef(key).label}</dt>
+          <dt className="text-sm text-muted">
+            {valueDef(key).label}
+            <MetricInfo keys={[key]} />
+          </dt>
           {companies.map((c, si) => (
             <dd key={c.ticker} className="mt-1.5 flex items-baseline justify-between gap-2">
               <span className="flex items-center gap-1.5 text-xs text-muted">

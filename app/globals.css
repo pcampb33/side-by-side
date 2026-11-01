@@ -173,6 +173,7 @@ body {
 @keyframes sheet-up { from { transform: translateY(100%); } }
 @keyframes sheet-down { to { transform: translateY(100%); } }
 @keyframes fade-in { from { opacity: 0; } }
+.popover-in { animation: fade-in 0.15s var(--ease-out); }
 
 /* Components / Freeform switch: the thumb slides under the chosen mode. */
 .mode-thumb { width: calc(50% - 0.25rem); transition: transform 0.45s var(--ease-out); }
@@ -222,6 +223,7 @@ body {
 .process-step[data-open] > button .step-chevron, .guideline[open] .step-chevron { transform: rotate(90deg); }
 .guideline summary::-webkit-details-marker { display: none; }
 @keyframes tick-in { from { transform: translateY(5px); opacity: 0; } }
+.mode-note { animation: tick-in 0.4s var(--ease-out); }
 .tick-in { animation: tick-in 0.35s var(--ease-spring); }
 @keyframes dot-in { from { transform: scale(0); } }
 .dot-in { animation: dot-in 0.4s var(--ease-spring) backwards; }
@@ -255,6 +257,6 @@ body {
   .featured-in { animation: none; }
   .featured-card, .featured-arrow { transition: none; }
   .featured-card:hover, .featured-card:hover .featured-arrow { transform: none; }
-  .step-dot, .step-dot::after, .tick-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
+  .step-dot, .step-dot::after, .tick-in, .mode-note, .popover-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
   .step-body, .step-body > div > div, .step-chevron, .process-aside, .process-full, .process-rail, .process-step::before { transition: none; }
 }

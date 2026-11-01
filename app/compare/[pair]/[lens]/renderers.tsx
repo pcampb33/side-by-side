@@ -5,6 +5,7 @@ import type { CompanyInput } from "@/agent/prompt";
 import { formatTick, formatValue } from "@/lib/format";
 import { fiscalYearOf, valueDef, type ValueKey } from "@/lib/values";
 import { Cited, lookup, SERIES, Value, type Looked } from "./cited";
+import { MetricInfo } from "./popover";
 import { TextTiles, type Morph } from "./text-tiles";
 import { Legend, TrendLine } from "./trend-line";
 
@@ -19,7 +20,13 @@ export function ComponentView({ component, companies, morph }: { component: Comp
   const text = component.name === "risk_themes" || component.name === "business_overlap";
   return (
     <article className={`card p-5 @xl:p-6 ${text ? "" : "pop-in"}`}>
-      <h3 className="font-display text-xl font-semibold tracking-tight">{title}</h3>
+      <h3 className="font-display text-xl font-semibold tracking-tight">
+        {title}
+        {component.name === "trend_line" && <MetricInfo keys={[component.input.key]} />}
+        {component.name === "grouped_bars" && <MetricInfo keys={component.input.keys} />}
+        {component.name === "ratio_gauge" && <MetricInfo keys={[component.input.key]} />}
+        {component.name === "cost_breakdown" && <MetricInfo keys={["revenue", "grossProfit", "operatingIncome"]} lead={COST_LEAD} />}
+      </h3>
       {caption && <p className="mt-1 text-sm text-muted">{caption}</p>}
       <div className="mt-4">
         {component.name === "metric_cards" && <MetricCards items={component.input.items} companies={companies} />}
@@ -34,6 +41,8 @@ export function ComponentView({ component, companies, morph }: { component: Comp
   );
 }
 
+const COST_LEAD = "Each bar splits one year's revenue into the cost of revenue, R&D, other operating expense, and what's left as operating income.";
+
 type Year = number | "latest";
 const fyLabel = (c: CompanyInput, year: Year) => `FY${fiscalYearOf(c.financials, year)}`;
 
@@ -42,7 +51,10 @@ function MetricCards({ items, companies }: { items: { key: ValueKey; year: Year 
     <div className="grid gap-3 @xl:grid-cols-2 @3xl:grid-cols-3">
       {items.map((item) => (
         <div key={`${item.key}-${item.year}`} className="rounded-xl bg-paper px-4 py-3">
-          <div className="text-sm text-muted">{valueDef(item.key).label}</div>
+          <div className="text-sm text-muted">
+            {valueDef(item.key).label}
+            <MetricInfo keys={[item.key]} />
+          </div>
           <dl className="mt-2 space-y-1.5">
             {companies.map((c, si) => (
               <div key={c.ticker} className="flex items-baseline justify-between gap-3">

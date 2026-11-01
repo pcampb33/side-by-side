@@ -14,6 +14,7 @@ import { fullWidth, loadingCardFull } from "./chart-pairs";
 import { FreeformFrame } from "./freeform-frame";
 import { useProcess } from "./process-context";
 import { HeadlineStrip } from "./headline-strip";
+import { Info } from "./popover";
 import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
 import { FilingPills, type TextKind } from "./text-tiles";
@@ -85,11 +86,38 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
   };
   return (
     <>
-      <div className="mt-8 flex justify-end">
+      <div className="mt-8 flex flex-wrap-reverse items-center justify-end gap-x-6 gap-y-3">
+        <ModeNote key={mode} mode={mode} />
         <ModeSwitch mode={mode} onChange={choose} />
       </div>
       <Stream key={mode} pair={pair} lens={lens} mode={mode} />
     </>
+  );
+}
+
+const MODE_NOTE: Record<Mode, string> = {
+  components: "Claude picks from the site's charts and cards; every number is looked up and links to its filing.",
+  freeform: "Claude writes the whole page itself from the same data; its numbers are checked but not linked.",
+};
+
+// One line on what the selected mode means (it fades in on each switch), and both modes side by side on demand.
+function ModeNote({ mode }: { mode: Mode }) {
+  return (
+    <p className="mode-note min-w-0 flex-1 basis-72 text-sm text-muted">
+      {MODE_NOTE[mode]}
+      <Info label="How Components and Freeform differ" width={300}>
+        <span className="block font-medium">Components</span>
+        <span className="block">
+          Claude builds the page from a fixed set of tested charts and cards, naming metrics and years. The site looks every value up, so each number cites its filing.
+        </span>
+        <span className="mt-2 block font-medium">Freeform</span>
+        <span className="block">
+          Claude writes a page of its own HTML, with the site&apos;s cards and a chart helper that looks values up. Layouts vary more; the numbers it writes are checked against the
+          filings afterwards, but aren&apos;t linked.
+        </span>
+        <span className="mt-2 block text-muted">Both use the same data, rules and checks.</span>
+      </Info>
+    </p>
   );
 }
 

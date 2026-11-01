@@ -19,8 +19,10 @@
   color-scheme: light;
 }
 
+/* Dark follows the system unless the header switch chose a theme
+   (<html data-theme>, app/theme-switch.tsx). */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #131311;
     --surface: #1c1b18;
     --ink: #ecebe6;
@@ -36,6 +38,23 @@
     --seg-3: #44423c;
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --paper: #131311;
+  --surface: #1c1b18;
+  --ink: #ecebe6;
+  --muted: #a19e96;
+  --rule: #34322d;
+  --accent: #93a9f2;
+  --accent-ink: #10162b;
+  --danger: #f08a7e;
+  --series-a: #3987e5;
+  --series-b: #d95926;
+  --seg-1: #77736a;
+  --seg-2: #5a5750;
+  --seg-3: #44423c;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -118,12 +137,22 @@ body {
 .mode-thumb { width: calc(50% - 0.25rem); transition: transform 0.45s var(--ease-out); }
 .mode-thumb[data-second] { transform: translateX(100%); }
 
+/* Theme switch: the thumb and the lit icon follow <html data-theme>. */
+.theme-thumb { width: calc((100% - 0.25rem) / 3); transition: transform 0.45s var(--ease-out); }
+:root[data-theme="light"] .theme-thumb { transform: translateX(100%); }
+:root[data-theme="dark"] .theme-thumb { transform: translateX(200%); }
+.theme-option { color: var(--muted); transition: color 0.3s; }
+.theme-option:hover { color: var(--ink); }
+:root:not([data-theme]) .theme-option[data-choice="system"],
+:root[data-theme="light"] .theme-option[data-choice="light"],
+:root[data-theme="dark"] .theme-option[data-choice="dark"] { color: var(--paper); }
+
 /* A freeform page fades in once it has reported its height, then follows it. */
 .freeform { opacity: 0; transform: translateY(8px); transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), height 0.4s var(--ease-out); }
 .freeform[data-ready] { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .mode-thumb, .freeform { transition: none; }
+  .mode-thumb, .theme-thumb, .freeform { transition: none; }
   .tile, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .tile:hover { transform: none; }
 }

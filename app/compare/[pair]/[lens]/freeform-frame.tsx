@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { themeCss } from "@/lib/theme";
+import { themeCss, type ThemeChoice } from "@/lib/theme";
+import { useTheme } from "@/app/theme-switch";
 
 // A page Claude wrote, in a sandbox without allow-same-origin: its scripts
 // run, but it can't touch this page, its cookies or the network.
@@ -14,15 +15,17 @@ const HEIGHT_SCRIPT = `addEventListener("DOMContentLoaded",function(){var b=docu
 
 // The model's page with the CSP, the site's theme variables and the height
 // reporter first in its <head> (agent/freeform.ts checks it has one).
-export function framePage(html: string): string {
-  const head = `<meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${themeCss()}</style><script>${HEIGHT_SCRIPT}</script>`;
+export function framePage(html: string, theme: ThemeChoice = "system"): string {
+  const head = `<meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${themeCss(theme)}</style><script>${HEIGHT_SCRIPT}</script>`;
   return html.replace(/<head(\s[^>]*)?>/i, (tag) => tag + head);
 }
 
 export function FreeformFrame({ html }: { html: string }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number | null>(null);
-  const srcDoc = useMemo(() => framePage(html), [html]);
+  // A theme switch reloads the page, so colors it computed in script follow too.
+  const theme = useTheme();
+  const srcDoc = useMemo(() => framePage(html, theme), [html, theme]);
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {

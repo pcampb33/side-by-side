@@ -14,9 +14,12 @@ import { Legend, TrendLine } from "./trend-line";
 export function ComponentView({ component, companies, morph }: { component: Component; companies: CompanyInput[]; morph?: Morph }) {
   if (component.name === "takeaways") return <Takeaways items={component.input.items} />;
   const { title, caption } = component.input;
+  // Text components morph in from the pills instead (text-tiles.tsx), which
+  // measures where each subject lands: no scale animation under it.
+  const text = component.name === "risk_themes" || component.name === "business_overlap";
   return (
-    <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
-      <h3 className="font-serif text-xl font-semibold tracking-tight">{title}</h3>
+    <article className={`card p-5 sm:p-6 ${text ? "" : "pop-in"}`}>
+      <h3 className="font-display text-xl font-semibold tracking-tight">{title}</h3>
       {caption && <p className="mt-1 text-sm text-muted">{caption}</p>}
       <div className="mt-4">
         {component.name === "metric_cards" && <MetricCards items={component.input.items} companies={companies} />}
@@ -38,7 +41,7 @@ function MetricCards({ items, companies }: { items: { key: ValueKey; year: Year 
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
-        <div key={`${item.key}-${item.year}`} className="rounded-md bg-paper px-4 py-3">
+        <div key={`${item.key}-${item.year}`} className="rounded-xl bg-paper px-4 py-3">
           <div className="text-sm text-muted">{valueDef(item.key).label}</div>
           <dl className="mt-2 space-y-1.5">
             {companies.map((c, si) => (
@@ -86,7 +89,7 @@ function GroupedBars({ metrics, year, companies }: { metrics: ValueKey[]; year: 
                   <div className="relative h-5 flex-1">
                     {l.kind === "value" && (
                       <div
-                        className={`absolute inset-y-0 ${l.value < 0 ? "rounded-l" : "rounded-r"}`}
+                        className={`absolute inset-y-0 ${l.value < 0 ? "rounded-l-full" : "rounded-r-full"}`}
                         style={{ background: SERIES[si], width: pct(l.value), ...(l.value < 0 ? { right: `calc(100% - ${zero})` } : { left: zero }) }}
                       />
                     )}
@@ -193,7 +196,7 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
               <p className="mt-1.5 text-sm text-muted">{b}</p>
             ) : (
               <>
-                <div className="mt-1.5 flex h-6 gap-0.5 overflow-hidden rounded">
+                <div className="mt-1.5 flex h-5 gap-0.5 overflow-hidden rounded-full">
                   {b.segments.map((s) => (
                     <div key={s.label} title={`${s.label}: ${formatValue(s.value, "usd")}`} style={{ width: `${(s.value / b.revenue) * 100}%`, background: s.color }} />
                   ))}
@@ -201,7 +204,7 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
                 <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
                   {b.segments.map((s) => (
                     <li key={s.label} className="flex items-center gap-2">
-                      <span className="size-2.5 shrink-0 rounded-sm" style={{ background: s.color }} />
+                      <span className="size-2.5 shrink-0 rounded-full" style={{ background: s.color }} />
                       <span className="flex-1">{s.label}</span>
                       <span className="text-muted tabular-nums">{formatValue(s.value / b.revenue, "percent")}</span>
                       <Cited text={formatValue(s.value, "usd")} citation={s.citation} className="w-16 text-right" />
@@ -219,8 +222,8 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
 
 function Takeaways({ items }: { items: string[] }) {
   return (
-    <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
-      <h3 className="font-serif text-xl font-semibold tracking-tight">Key differences</h3>
+    <article className="card pop-in p-5 sm:p-6">
+      <h3 className="font-display text-xl font-semibold tracking-tight">Key differences</h3>
       <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed marker:text-muted">
         {items.map((item) => (
           <li key={item}>{item}</li>

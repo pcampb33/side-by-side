@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { CompanyInput } from "@/agent/prompt";
 import { formatTick, formatValue } from "@/lib/format";
 import { valueDef, type ValueKey } from "@/lib/values";
@@ -35,6 +35,8 @@ const M = { top: 12, right: 24, bottom: 28, left: 52 };
 export function TrendLine({ metric, companies }: { metric: ValueKey; companies: CompanyInput[] }) {
   const [ref, width] = useWidth();
   const [active, setActive] = useState<number | null>(null);
+  // useId can contain characters a url(#id) reference would need escaped.
+  const gradient = `area${useId().replace(/[^\w-]/g, "")}`;
   const { unit } = valueDef(metric);
   // The union of both companies' fiscal-year labels: their years need not match.
   const years = [...new Set(companies.flatMap((c) => c.financials.fiscalYears))].sort();
@@ -53,6 +55,16 @@ export function TrendLine({ metric, companies }: { metric: ValueKey; companies: 
   // A missing year breaks the line rather than bridging it.
   const path = (s: typeof series[number]) =>
     s.map((l, i) => (l.kind === "value" ? `${i > 0 && s[i - 1].kind === "value" ? "L" : "M"}${x(i)},${y(l.value)}` : "")).join("");
+  // The same runs, closed down to zero: a soft fill under each line.
+  const area = (s: typeof series[number]) => {
+    const runs: number[][] = [];
+    s.forEach((l, i) => (l.kind !== "value" ? null : i > 0 && s[i - 1].kind === "value" ? runs.at(-1)!.push(i) : runs.push([i])));
+    const base = y(Math.max(lo, Math.min(0, hi)));
+    return runs
+      .filter((r) => r.length > 1)
+      .map((r) => `M${x(r[0])},${base}${r.map((i) => `L${x(i)},${y((s[i] as { value: number }).value)}`).join("")}L${x(r.at(-1)!)},${base}Z`)
+      .join("");
+  };
   const lastIndex = (s: typeof series[number]) => s.findLastIndex((l) => l.kind === "value");
 
   const pick = (clientX: number, rect: DOMRect) => {
@@ -96,9 +108,20 @@ export function TrendLine({ metric, companies }: { metric: ValueKey; companies: 
               </text>
             ))}
             {active !== null && <line x1={x(active)} x2={x(active)} y1={M.top} y2={M.top + innerH} stroke="var(--muted)" strokeWidth={1} />}
+            <defs>
+              {SERIES.map((color, si) => (
+                <linearGradient key={si} id={`${gradient}-${si}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" style={{ stopColor: color, stopOpacity: 0.12 }} />
+                  <stop offset="0.85" style={{ stopColor: color, stopOpacity: 0 }} />
+                </linearGradient>
+              ))}
+            </defs>
+            {series.map((s, si) => (
+              <path key={si} d={area(s)} fill={`url(#${gradient}-${si})`} />
+            ))}
             {series.map((s, si) => (
               <g key={si}>
-                <path d={path(s)} fill="none" stroke={SERIES[si]} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+                <path d={path(s)} fill="none" stroke={SERIES[si]} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
                 {s.map((l, i) =>
                   l.kind === "value" && (i === lastIndex(s) || i === active) ? (
                     <circle key={i} cx={x(i)} cy={y(l.value)} r={4.5} fill={SERIES[si]} stroke="var(--surface)" strokeWidth={2} />
@@ -110,7 +133,7 @@ export function TrendLine({ metric, companies }: { metric: ValueKey; companies: 
         )}
         {active !== null && width > 0 && (
           <div
-            className="pointer-events-none absolute top-0 z-10 rounded-md border border-rule bg-surface px-3 py-2 text-xs shadow-md"
+            className="pointer-events-none absolute top-0 z-10 rounded-xl border border-rule bg-surface px-3 py-2 text-xs shadow-md"
             style={x(active) > width / 2 ? { right: width - x(active) + 10 } : { left: x(active) + 10 }}
           >
             <div className="text-muted">FY{years[active]}</div>

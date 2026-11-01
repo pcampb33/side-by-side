@@ -4,43 +4,43 @@
 
 export const THEME = {
   light: {
-    paper: "#fbfaf7",
+    paper: "#f2f3f8",
     surface: "#ffffff",
-    ink: "#1b1a17",
-    muted: "#66635c",
-    rule: "#e3dfd6",
-    accent: "#23439b",
+    ink: "#191c28",
+    muted: "#646a80",
+    rule: "#e3e6ee",
+    accent: "#2b5fd9",
     "accent-ink": "#ffffff",
-    danger: "#a3261b",
-    "series-a": "#2a78d6",
-    "series-b": "#eb6834",
-    "seg-1": "#8a857b",
-    "seg-2": "#b3aea3",
-    "seg-3": "#d5d0c5",
+    danger: "#c0362c",
+    "series-a": "#5b5bd6",
+    "series-b": "#0e9585",
+    "seg-1": "#868ba3",
+    "seg-2": "#c0c4d2",
+    "seg-3": "#e0e2ea",
   },
   dark: {
-    paper: "#131311",
-    surface: "#1c1b18",
-    ink: "#ecebe6",
-    muted: "#a19e96",
-    rule: "#34322d",
-    accent: "#93a9f2",
-    "accent-ink": "#10162b",
+    paper: "#0e1016",
+    surface: "#181b24",
+    ink: "#eceef6",
+    muted: "#969cb2",
+    rule: "#272b37",
+    accent: "#86a8ff",
+    "accent-ink": "#0e1016",
     danger: "#f08a7e",
-    "series-a": "#3987e5",
-    "series-b": "#d95926",
-    "seg-1": "#77736a",
-    "seg-2": "#5a5750",
-    "seg-3": "#44423c",
+    "series-a": "#8d8ef7",
+    "series-b": "#2fd1bb",
+    "seg-1": "#7b8099",
+    "seg-2": "#4a4f62",
+    "seg-3": "#2e3240",
   },
 } as const;
 
-// The site loads Inter and Source Serif 4 with next/font; a sandboxed page
-// can't fetch them, so it gets them only where they are installed.
-export const FONTS = {
-  sans: 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif',
-  serif: '"Source Serif 4", "Source Serif Pro", Georgia, Cambria, serif',
-} as const;
+// The site loads Plus Jakarta Sans with next/font; a sandboxed page can't
+// fetch it, so it gets it only where it is installed. Headings use the same
+// family: the name `serif` stays because committed freeform pages use
+// var(--font-serif) for their headings.
+const SANS = '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
+export const FONTS = { sans: SANS, serif: SANS } as const;
 
 const vars = (t: Record<string, string>) =>
   Object.entries(t)

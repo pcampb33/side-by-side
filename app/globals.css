@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
-/* Clean editorial: warm paper, near-black ink, one deep-blue accent. */
+/* Product app: white cards on a cool grey, one sans family, indigo and teal series. */
 :root {
-  --paper: #fbfaf7;
+  --paper: #f2f3f8;
   --surface: #ffffff;
-  --ink: #1b1a17;
-  --muted: #66635c;
-  --rule: #e3dfd6;
-  --accent: #23439b;
+  --ink: #191c28;
+  --muted: #646a80;
+  --rule: #e3e6ee;
+  --accent: #2b5fd9;
   --accent-ink: #ffffff;
-  --danger: #a3261b;
+  --danger: #c0362c;
   /* Chart series: company A and B on every chart (validated on --surface). */
-  --series-a: #2a78d6;
-  --series-b: #eb6834;
-  --seg-1: #8a857b;
-  --seg-2: #b3aea3;
-  --seg-3: #d5d0c5;
+  --series-a: #5b5bd6;
+  --series-b: #0e9585;
+  --seg-1: #868ba3;
+  --seg-2: #c0c4d2;
+  --seg-3: #e0e2ea;
   color-scheme: light;
 }
 
@@ -23,37 +23,37 @@
    (<html data-theme>, app/theme-switch.tsx). */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #131311;
-    --surface: #1c1b18;
-    --ink: #ecebe6;
-    --muted: #a19e96;
-    --rule: #34322d;
-    --accent: #93a9f2;
-    --accent-ink: #10162b;
+    --paper: #0e1016;
+    --surface: #181b24;
+    --ink: #eceef6;
+    --muted: #969cb2;
+    --rule: #272b37;
+    --accent: #86a8ff;
+    --accent-ink: #0e1016;
     --danger: #f08a7e;
-    --series-a: #3987e5;
-    --series-b: #d95926;
-    --seg-1: #77736a;
-    --seg-2: #5a5750;
-    --seg-3: #44423c;
+    --series-a: #8d8ef7;
+    --series-b: #2fd1bb;
+    --seg-1: #7b8099;
+    --seg-2: #4a4f62;
+    --seg-3: #2e3240;
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #131311;
-  --surface: #1c1b18;
-  --ink: #ecebe6;
-  --muted: #a19e96;
-  --rule: #34322d;
-  --accent: #93a9f2;
-  --accent-ink: #10162b;
+  --paper: #0e1016;
+  --surface: #181b24;
+  --ink: #eceef6;
+  --muted: #969cb2;
+  --rule: #272b37;
+  --accent: #86a8ff;
+  --accent-ink: #0e1016;
   --danger: #f08a7e;
-  --series-a: #3987e5;
-  --series-b: #d95926;
-  --seg-1: #77736a;
-  --seg-2: #5a5750;
-  --seg-3: #44423c;
+  --series-a: #8d8ef7;
+  --series-b: #2fd1bb;
+  --seg-1: #7b8099;
+  --seg-2: #4a4f62;
+  --seg-3: #2e3240;
   color-scheme: dark;
 }
 
@@ -71,8 +71,8 @@
   --color-seg-1: var(--seg-1);
   --color-seg-2: var(--seg-2);
   --color-seg-3: var(--seg-3);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-source-serif);
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-jakarta);
 }
 
 body {
@@ -80,39 +80,75 @@ body {
   color: var(--ink);
 }
 
-/* Text lenses: tiles tinted by who names the subject (text-tiles.tsx). */
+/* Cards: white on the grey page, a soft shadow instead of a border. */
 :root {
-  --tint-a: color-mix(in srgb, var(--series-a) 15%, var(--surface));
-  --tint-b: color-mix(in srgb, var(--series-b) 15%, var(--surface));
+  --shadow: 0 1px 2px rgb(25 28 40 / 0.05), 0 6px 20px rgb(25 28 40 / 0.06);
+  --tint-a: color-mix(in srgb, var(--series-a) 9%, transparent);
+  --tint-b: color-mix(in srgb, var(--series-b) 9%, transparent);
+  --edge-a: color-mix(in srgb, var(--series-a) 70%, transparent);
+  --edge-b: color-mix(in srgb, var(--series-b) 70%, transparent);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-@media (min-width: 1024px) {
-  .tiles { grid-template-columns: var(--cols); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25); }
 }
-.tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (min-width: 1024px) {
-  .tile-grid { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); }
+:root[data-theme="dark"] { --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25); }
+.card { background: var(--surface); border-radius: 1rem; box-shadow: var(--shadow); }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.96) translateY(8px); } }
+.pop-in { animation: pop-in 0.56s var(--ease-spring) backwards; }
+
+/* Text lenses (text-tiles.tsx): each company's 10-K is an outlined panel, the
+   two offset so they visibly cross; subjects both name sit where they cross. */
+.venn-wrap { container-type: inline-size; }
+.venn { position: relative; display: grid; grid-template-columns: 26% 48% 26%; padding: 34px 0 26px; isolation: isolate; }
+.venn-panel { position: absolute; width: 74%; border: 2px solid; border-radius: 22px; z-index: -1; transition: opacity 0.35s, border-width 0.2s; animation: venn-draw 0.7s var(--ease-out) backwards; }
+.venn-a { left: 0; top: 0; bottom: 12px; border-color: var(--edge-a); background: var(--tint-a); }
+.venn-b { right: 0; top: 12px; bottom: 0; border-color: var(--edge-b); background: var(--tint-b); animation-delay: 0.16s; }
+@keyframes venn-draw { from { clip-path: inset(0 100% 0 0 round 22px); } to { clip-path: inset(0 0 0 0 round 22px); } }
+.venn-tab {
+  position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 99px;
+  background: var(--surface); border: 1.5px solid; font-size: 0.75rem; font-weight: 600; line-height: 1; cursor: pointer;
+  transition: transform 0.2s var(--ease-spring);
 }
-.tile {
-  display: flex; flex-direction: column; justify-content: space-between; gap: 0.875rem;
-  min-height: 6.5rem; padding: 0.875rem; border-radius: 14px; text-align: left;
-  font-size: 0.875rem; font-weight: 600; line-height: 1.25; cursor: pointer;
-  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+.venn-tab:hover { transform: translateY(-1px); }
+.venn-tab small { font-weight: 500; color: var(--muted); font-size: 0.72rem; }
+.venn-tab-a { left: 16px; top: -12px; border-color: var(--edge-a); }
+.venn-tab-b { right: 16px; top: 0; border-color: var(--edge-b); }
+.venn-col { display: grid; gap: 8px; align-content: start; min-width: 0; padding: 0 12px; }
+.venn-mid { grid-template-columns: 1fr 1fr; }
+.venn-mid > h4 { grid-column: 1 / -1; }
+.venn[data-focus="0"] .venn-b, .venn[data-focus="1"] .venn-a { opacity: 0.2; }
+.venn[data-focus="0"] .venn-a, .venn[data-focus="1"] .venn-b { border-width: 3px; }
+.venn[data-focus="0"] .venn-only-1 [data-tile], .venn[data-focus="1"] .venn-only-0 [data-tile] { opacity: 0.25; }
+.venn-chip {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow);
+  font-size: 0.8125rem; font-weight: 500; line-height: 1.25; text-align: left; min-width: 0; cursor: pointer;
+  transition: opacity 0.3s, transform 0.25s var(--ease-spring), box-shadow 0.25s;
 }
-.tile:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgb(0 0 0 / 0.12); }
-.tile:active { transform: scale(0.97); transition-duration: 0.1s; }
-.tile-first { background: var(--tint-a); } .tile-first svg { color: var(--series-a); }
-.tile-second { background: var(--tint-b); } .tile-second svg { color: var(--series-b); }
-.tile-both { background: linear-gradient(to bottom right, var(--tint-a) 50%, var(--tint-b) 50%); }
-.tile[data-pre] { background: transparent; box-shadow: none; }
-.tile[data-pre] > * { opacity: 0; }
+.venn-chip svg { flex: none; color: var(--muted); }
+.venn-chip:hover { transform: translateY(-2px); }
+.venn-chip:active { transform: scale(0.97); transition-duration: 0.1s; }
+.venn-key { display: flex; align-items: center; gap: 10px; font-size: 0.8125rem; color: var(--muted); }
+/* Narrow: no room for side-by-side panels, so three stacked sections, each
+   saying whose 10-K it comes from. */
+@container (max-width: 640px) {
+  .venn { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 0; }
+  .venn-panel, .venn-tab, .venn-key { display: none; }
+  .venn-col { padding: 12px; border: 2px solid; border-radius: 18px; }
+  .venn-only-0 { border-color: var(--edge-a); background: var(--tint-a); }
+  .venn-only-1 { border-color: var(--edge-b); background: var(--tint-b); order: 3; }
+  .venn-mid { grid-template-columns: minmax(0, 1fr); border-color: color-mix(in srgb, var(--series-a) 50%, var(--series-b)); background: linear-gradient(to right, var(--tint-a), var(--tint-b)); order: 2; }
+}
+[data-tile][data-pre] { background: transparent; box-shadow: none; }
+[data-tile][data-pre] > * { opacity: 0; }
 .morph-ghost {
   position: absolute; z-index: 5; pointer-events: none; overflow: hidden; display: flex; align-items: center;
-  padding: 0 0.75rem; border: 1px solid var(--rule); background: var(--surface); white-space: nowrap;
+  padding: 0 0.75rem; border: 1px solid var(--rule); background: var(--surface); white-space: nowrap; box-shadow: var(--shadow);
   font-size: 13px; line-height: 1.25;
 }
-@keyframes pill-in { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
-.pill-in { animation: pill-in 0.52s var(--ease-out) backwards; }
+@keyframes pill-in { from { opacity: 0; transform: translateY(10px) scale(0.94); } }
+.pill-in { animation: pill-in 0.56s var(--ease-spring) backwards; }
 @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 .shimmer {
   background: linear-gradient(90deg, var(--rule) 30%, color-mix(in srgb, var(--rule) 40%, var(--surface)) 50%, var(--rule) 70%);
@@ -154,15 +190,15 @@ body {
 /* Homepage: featured cards rise in turn; the arrow nudges on hover. */
 @keyframes featured-in { from { opacity: 0; transform: translateY(12px); } }
 .featured-in { animation: featured-in 0.6s var(--ease-out) backwards; }
-.featured-card { transition: border-color 0.3s, transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out); }
-.featured-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 18px rgb(0 0 0 / 0.08); }
+.featured-card { transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-out); }
+.featured-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgb(25 28 40 / 0.06), 0 14px 34px rgb(25 28 40 / 0.12); }
 .featured-arrow { transition: transform 0.35s var(--ease-out); }
 .featured-card:hover .featured-arrow { transform: translateX(4px); }
 
 @media (prefers-reduced-motion: reduce) {
   .mode-thumb, .theme-thumb, .freeform { transition: none; }
-  .tile, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
-  .tile:hover { transform: none; }
+  .venn-panel, .venn-chip, .venn-tab, .pop-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
+  .venn-chip:hover, .venn-tab:hover { transform: none; }
   .featured-in { animation: none; }
   .featured-card, .featured-arrow { transition: none; }
   .featured-card:hover, .featured-card:hover .featured-arrow { transform: none; }

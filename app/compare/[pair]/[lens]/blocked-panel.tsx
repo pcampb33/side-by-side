@@ -18,11 +18,11 @@ const TEXT: Record<BlockReason, string> = {
 
 export function BlockedPanel({ reason }: { reason: BlockReason }) {
   return (
-    <div className="featured-in rounded-lg border border-rule bg-surface px-5 py-5">
+    <div className="featured-in card px-5 py-5">
       <p>{TEXT[reason]}</p>
       {reason === "sign-in" && (
         <form action={() => signInWithGoogle(window.location.pathname + window.location.search)} className="mt-4">
-          <button type="submit" className="rounded-md bg-ink px-4 py-2 text-sm text-paper transition-opacity hover:opacity-85">
+          <button type="submit" className="rounded-full bg-ink px-5 py-2.5 text-sm text-paper transition-opacity hover:opacity-85">
             Sign in with Google
           </button>
         </form>

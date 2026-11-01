@@ -202,11 +202,11 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
       {showPills && <FilingPills companies={state.companies!} kind={textKind} freeform={mode === "freeform"} />}
 
       {state.status === "loading" && state.step === "building" && !showPills && !state.html && (
-        <div className="h-32 animate-pulse rounded-lg border border-rule bg-surface" aria-hidden />
+        <div className="h-32 animate-pulse card" aria-hidden />
       )}
 
       {state.status === "error" && (
-        <div className="rounded-lg border border-danger/40 bg-danger/5 px-5 py-4">
+        <div className="rounded-2xl border border-danger/40 bg-danger/5 px-5 py-4">
           <p className="text-danger">{state.error}</p>
           <button type="button" onClick={() => restart(false)} className="mt-3 text-sm text-accent hover:underline">
             Try again
@@ -227,7 +227,7 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
           </span>
           {/* A featured comparison is fixed; the other lenses of the pair can be generated. */}
           {!state.featured && (
-            <button type="button" onClick={() => restart(true)} className="rounded-md border border-rule px-3 py-1.5 text-ink hover:bg-paper">
+            <button type="button" onClick={() => restart(true)} className="rounded-full border border-rule px-4 py-1.5 text-ink hover:bg-paper">
               Regenerate
             </button>
           )}

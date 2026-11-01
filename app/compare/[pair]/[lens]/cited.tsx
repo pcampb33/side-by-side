@@ -105,7 +105,7 @@ export function Cited({ text, citation, className = "" }: { text: string; citati
       {open && (
         <span
           role="note"
-          className="fixed z-30 block rounded-md border border-rule bg-surface p-3 text-left font-sans text-xs leading-relaxed font-normal text-ink shadow-lg"
+          className="fixed z-30 block rounded-xl border border-rule bg-surface p-3 text-left font-sans text-xs leading-relaxed font-normal text-ink shadow-lg"
           style={{ ...at, width: POPOVER_WIDTH }}
         >
           {citation.formula && <span className="mb-2 block text-muted">{citation.formula}</span>}

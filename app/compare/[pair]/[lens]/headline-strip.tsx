@@ -18,7 +18,7 @@ export function HeadlineStrip({ lens, companies }: { lens: LensSlug; companies: 
   return (
     <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {LENS_GUIDANCE[lens].headline.map((key, i) => (
-        <div key={key} className="pill-in rounded-lg border border-rule bg-surface px-4 py-3" style={{ animationDelay: `${i * 70}ms` }}>
+        <div key={key} className="pill-in card px-4 py-3" style={{ animationDelay: `${i * 70}ms` }}>
           <dt className="text-sm text-muted">{valueDef(key).label}</dt>
           {companies.map((c, si) => (
             <dd key={c.ticker} className="mt-1.5 flex items-baseline justify-between gap-2">

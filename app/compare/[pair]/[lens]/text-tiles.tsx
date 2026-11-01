@@ -5,7 +5,7 @@ import {
   Leaf, Lock, Megaphone, Receipt, Server, Shapes, ShoppingCart, Smartphone, Sparkles, Swords, TrendingDown, Truck, Users, Wrench, Zap,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { findTextRef, type RowIcon } from "@/agent/catalog";
 import type { CompanyInput } from "@/agent/prompt";
 import { Cited, quoteCitation, SERIES } from "./cited";
@@ -13,8 +13,9 @@ import { playMorph, reducedMotion, type PillSnapshot } from "./morph";
 import { tileGroups, type TileKind } from "./tile-groups";
 
 // The text lenses: each 10-K's own themes as pills while Claude groups them,
-// then tiles grouped into shared and one-company subjects. Tapping either
-// opens a sheet with the filing's own words.
+// then the overlap: each company's 10-K an outlined panel, subjects both name
+// where the panels cross. Tapping a pill or a subject opens a sheet with the
+// filing's own words.
 
 const ICONS: Record<RowIcon, LucideIcon> = {
   competition: Swords, trade: Globe, "supply-chain": Truck, security: Lock, regulation: Gavel, "intellectual-property": Copyright, tax: Receipt,
@@ -47,8 +48,8 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
   const [sheet, setSheet] = useState<SheetContent | null>(null);
   const what = kind === "risks" ? "risk themes" : "business areas";
   return (
-    <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
-      <h3 className="font-serif text-xl font-semibold tracking-tight">{kind === "risks" ? "Risk themes" : "Business areas"} in each 10-K</h3>
+    <article className="card p-5 sm:p-6">
+      <h3 className="font-display text-xl font-semibold tracking-tight">{kind === "risks" ? "Risk themes" : "Business areas"} in each 10-K</h3>
       <p className="mt-1 text-sm text-muted">
         {!companies.every((c) => c.filing)
           ? "Each list appears as its annual report is read."
@@ -86,24 +87,23 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
   );
 }
 
-// ---- Grouped: tiles ----
-
-const GROUP_ORDER: TileKind[] = ["first", "both", "second"];
+// ---- Grouped: the overlap ----
 
 export function TextTiles({ rows, companies, what, morph }: { rows: { label: string; icon: RowIcon; refs: string[] }[]; companies: CompanyInput[]; what: string; morph?: Morph }) {
   const [sheet, setSheet] = useState<SheetContent | null>(null);
   const root = useRef<HTMLDivElement>(null);
   const tickers = [companies[0].ticker, companies[1].ticker] as const;
   const groups = tileGroups(rows, tickers);
-  const shown = GROUP_ORDER.filter((k) => groups[k].length);
-  const width = (k: TileKind) => (k === "both" ? "2fr" : "1fr");
+  // Tapping or hovering a company's name keeps its panel lit and fades the other's.
+  const [focus, setFocus] = useState<0 | 1 | null>(null);
+  const unit = what.split(" ").at(-1)!; // "themes" | "areas"
+  const named = [groups.first.length + groups.both.length, groups.second.length + groups.both.length];
 
   useLayoutEffect(() => {
     const pills = morph?.pills.current;
     const stage = morph?.stage.current;
     if (!pills?.length || !stage || !root.current || reducedMotion()) return;
     const tileOf = new Map<string, HTMLElement>();
-    const sharedRefs = new Set(groups.both.flatMap((t) => t.row.refs));
     root.current.querySelectorAll<HTMLElement>("[data-tile]").forEach((el) => rows[Number(el.dataset.tile)].refs.forEach((r) => tileOf.set(r, el)));
     // Strict mode runs this twice in development: the cancel restores the
     // layout and the second run starts the morph again.
@@ -112,7 +112,6 @@ export function TextTiles({ rows, companies, what, morph }: { rows: { label: str
       root: root.current,
       pills,
       tileFor: (ref) => tileOf.get(ref) ?? null,
-      shared: (ref) => sharedRefs.has(ref),
       onDone: () => (morph!.pills.current = null),
     });
     // Runs once, when the tiles first mount.
@@ -130,31 +129,68 @@ export function TextTiles({ rows, companies, what, morph }: { rows: { label: str
     });
   };
 
+  const chip = ({ row, index }: (typeof groups)[TileKind][number]) => {
+    const Icon = ICONS[row.icon] ?? Shapes;
+    return (
+      <button key={index} type="button" data-tile={index} onClick={() => open(index)} className="venn-chip">
+        <Icon aria-hidden size={18} strokeWidth={1.75} />
+        <span data-reveal>{row.label}</span>
+      </button>
+    );
+  };
+  const heading = (kind: TileKind, label: string) => (
+    <h4 data-reveal className="flex items-center gap-1.5 text-xs font-semibold text-muted">
+      {kind !== "second" && <span className="size-2 shrink-0 rounded-full" style={{ background: SERIES[0] }} />}
+      {kind !== "first" && <span className="size-2 shrink-0 rounded-full" style={{ background: SERIES[1] }} />}
+      {label}
+      <span data-count={groups[kind].length} className="ml-auto text-ink tabular-nums">
+        {groups[kind].length}
+      </span>
+    </h4>
+  );
+  const none = <p className="text-xs text-muted">None</p>;
+
   return (
-    <div ref={root} className="tiles grid gap-5 lg:gap-4" style={{ "--cols": shown.map(width).join(" ") } as CSSProperties}>
-      {shown.map((kind) => (
-        <section key={kind} className={`grid min-w-0 content-start gap-2.5 ${kind === "both" ? "max-lg:order-first" : ""}`}>
-          <h4 data-reveal className="flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
-            {kind !== "second" && <span className="size-2.5 shrink-0 rounded-full" style={{ background: SERIES[0] }} />}
-            {kind !== "first" && <span className="size-2.5 shrink-0 rounded-full" style={{ background: SERIES[1] }} />}
-            {kind === "both" ? "Both" : `Only ${tickers[kind === "first" ? 0 : 1]}`}
-            <span data-count={groups[kind].length} className="ml-auto font-serif text-[15px] tracking-normal tabular-nums">
-              {groups[kind].length}
-            </span>
-          </h4>
-          <div className="tile-grid grid gap-2">
-            {groups[kind].map(({ row, index }) => {
-              const Icon = ICONS[row.icon] ?? Shapes;
-              return (
-                <button key={index} type="button" data-tile={index} onClick={() => open(index)} className={`tile tile-${kind}`}>
-                  <Icon aria-hidden size={26} strokeWidth={1.75} />
-                  <span data-reveal>{row.label}</span>
-                </button>
-              );
-            })}
-          </div>
+    <div className="venn-wrap">
+      <p className="venn-key mb-4">
+        <svg width="30" height="18" viewBox="0 0 30 18" aria-hidden className="shrink-0">
+          <circle cx="10" cy="9" r="7.5" fill="none" stroke="var(--series-a)" strokeWidth="2" />
+          <circle cx="20" cy="9" r="7.5" fill="none" stroke="var(--series-b)" strokeWidth="2" />
+        </svg>
+        Left panel: {tickers[0]}&apos;s 10-K ({named[0]} {unit}). Right panel: {tickers[1]}&apos;s ({named[1]}). The {groups.both.length} in the middle are in both.
+      </p>
+      <div ref={root} className="venn" data-focus={focus ?? undefined}>
+        <span aria-hidden className="venn-panel venn-a" />
+        <span aria-hidden className="venn-panel venn-b" />
+        {([0, 1] as const).map((si) => (
+          <button
+            key={si}
+            type="button"
+            aria-pressed={focus === si}
+            className={`venn-tab ${si === 0 ? "venn-tab-a" : "venn-tab-b"}`}
+            onMouseEnter={() => setFocus(si)}
+            onMouseLeave={() => setFocus(null)}
+            onFocus={() => setFocus(si)}
+            onBlur={() => setFocus(null)}
+            onClick={() => setFocus((f) => (f === si ? null : si))}
+          >
+            <span className="size-2 rounded-full" style={{ background: SERIES[si] }} />
+            {tickers[si]}&apos;s 10-K <small>{named[si]} {unit}</small>
+          </button>
+        ))}
+        <section className="venn-col venn-only-0">
+          {heading("first", `Only ${tickers[0]}`)}
+          {groups.first.length ? groups.first.map(chip) : none}
         </section>
-      ))}
+        <section className="venn-col venn-mid">
+          {heading("both", "Both name these")}
+          {groups.both.length ? groups.both.map(chip) : none}
+        </section>
+        <section className="venn-col venn-only-1">
+          {heading("second", `Only ${tickers[1]}`)}
+          {groups.second.length ? groups.second.map(chip) : none}
+        </section>
+      </div>
       {sheet && <Sheet content={sheet} onClosed={() => setSheet(null)} />}
     </div>
   );
@@ -193,7 +229,7 @@ function Sheet({ content, onClosed }: { content: SheetContent; onClosed: () => v
       <div className="px-5 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] sm:px-6">
         <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-rule" />
         <div className="flex items-center justify-between gap-3">
-          <h3 id="sheet-title" className="flex items-center gap-2.5 font-serif text-xl font-semibold tracking-tight">
+          <h3 id="sheet-title" className="flex items-center gap-2.5 font-display text-xl font-semibold tracking-tight">
             {Icon && <Icon aria-hidden size={22} strokeWidth={1.75} className="shrink-0 text-muted" />}
             {content.title}
           </h3>
@@ -228,7 +264,7 @@ function ItemBody({ item, company, showName }: { item: Item; company: CompanyInp
         <span className="text-muted">{item.text}</span>
       </p>
       {item.quotes.map((q) => (
-        <blockquote key={q.text} className="mt-2 font-serif text-[15px] leading-relaxed">
+        <blockquote key={q.text} className="mt-2 font-display text-[15px] leading-relaxed">
           “{q.text}” <Cited text={`10-K, ${q.section}`} citation={quoteCitation(company, q.section)} className="font-sans text-xs text-muted" />
         </blockquote>
       ))}

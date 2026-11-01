@@ -23,12 +23,12 @@ export function CompanyHeader({
   ];
 
   return (
-    <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
+    <article className="card p-5 sm:p-6">
       <p className="text-sm font-medium tracking-wide text-muted">
         {entry.ticker}
         {exchange && ` · ${exchange}`}
       </p>
-      <h2 className="mt-1 font-serif text-2xl font-semibold tracking-tight">{entry.name}</h2>
+      <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">{entry.name}</h2>
       {!financials && (
         <p className="mt-3 inline-block rounded bg-danger/10 px-2 py-1 text-sm text-danger">
           Limited data: no 10-K financial statements on file

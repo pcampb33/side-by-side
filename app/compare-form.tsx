@@ -24,7 +24,7 @@ export function CompareForm() {
     >
       <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-start">
         <TickerSearch id="company-a" label="First company" value={a} onChange={setA} />
-        <span className="hidden pt-9 font-serif text-lg text-muted italic sm:block">vs</span>
+        <span className="hidden pt-9 font-display text-lg text-muted sm:block">vs</span>
         <TickerSearch id="company-b" label="Second company" value={b} onChange={setB} />
       </div>
       {same && <p className="text-sm text-danger">Pick two different companies.</p>}
@@ -54,7 +54,7 @@ export function CompareForm() {
       <button
         type="submit"
         disabled={!a || !b || same}
-        className="w-full rounded-md bg-accent px-6 py-3 font-medium text-accent-ink transition-opacity disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+        className="w-full rounded-full bg-accent px-7 py-3 font-medium text-accent-ink transition-opacity disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
       >
         Compare
       </button>

@@ -32,8 +32,8 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
-          {companies[0].entry.ticker} <span className="text-muted italic">vs</span> {companies[1].entry.ticker}
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {companies[0].entry.ticker} <span className="text-muted">vs</span> {companies[1].entry.ticker}
           <span className="text-muted">: {lens.label}</span>
         </h1>
         <Link href="/" className="text-sm text-accent hover:underline">
@@ -48,7 +48,7 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
       {companies.every((c) => c.financials) ? (
         <ComparisonStream pair={pair} lens={lens.slug} />
       ) : (
-        <section className="mt-8 rounded-lg border border-dashed border-rule px-6 py-10 text-center text-muted">
+        <section className="mt-8 rounded-2xl border border-dashed border-rule px-6 py-10 text-center text-muted">
           A comparison needs 10-K financial statements for both companies.
         </section>
       )}
@@ -80,7 +80,7 @@ function ComparisonSkeleton() {
       <div className="h-10 w-2/3 animate-pulse rounded bg-rule" />
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         {[0, 1].map((i) => (
-          <div key={i} className="h-48 animate-pulse rounded-lg bg-rule/60" />
+          <div key={i} className="h-48 animate-pulse rounded-2xl bg-rule/60" />
         ))}
       </div>
     </div>

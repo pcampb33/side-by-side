@@ -1,7 +1,7 @@
 // The text lens's one orchestrated motion: each pill read from a 10-K morphs
-// into its tile once Claude's grouping arrives. A shared subject's tile is
-// filled half by each company's pill, split on the diagonal. Then labels rise,
-// icons draw and group counts tick up. Plain Web Animations, no library.
+// into its subject once Claude's grouping arrives; a shared subject takes one
+// pill from each company. Then labels rise, icons draw and group counts tick
+// up. Plain Web Animations, no library.
 
 export interface PillSnapshot {
   ref: string; // "AAPL-r3"
@@ -14,11 +14,6 @@ export interface PillSnapshot {
 }
 
 const EASE = "cubic-bezier(.16, 1, .3, 1)";
-const FULL = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
-// The tile's background splits "to bottom right" at 50%: the line from its
-// top-right to its bottom-left corner. Each half as a four-point polygon, so
-// it interpolates from FULL.
-const HALF = ["polygon(0% 0%, 100% 0%, 0% 100%, 0% 100%)", "polygon(100% 0%, 100% 0%, 100% 100%, 0% 100%)"];
 
 export const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -46,7 +41,7 @@ function resolveColor(stage: HTMLElement, value: string): string {
  * ref to its tile element. Returns a cancel function that leaves the final
  * layout fully visible, so an interrupted morph never hides content.
  */
-export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: PillSnapshot[]; tileFor: (ref: string) => HTMLElement | null; shared: (ref: string) => boolean; onDone: () => void }): () => void {
+export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: PillSnapshot[]; tileFor: (ref: string) => HTMLElement | null; onDone: () => void }): () => void {
   const { stage, root, pills } = opts;
   const anims: Animation[] = [];
   const ghosts: HTMLElement[] = [];
@@ -74,9 +69,7 @@ export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: 
   reveal.forEach((el) => (el.style.opacity = "0"));
 
   const box = stage.getBoundingClientRect();
-  const surface = resolveColor(stage, "var(--surface)");
   const rule = resolveColor(stage, "var(--rule)");
-  const tint = [resolveColor(stage, "var(--tint-a)"), resolveColor(stage, "var(--tint-b)")];
 
   // Cascade by destination: top to bottom, then left to right.
   const jobs = pills
@@ -84,12 +77,12 @@ export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: 
       const tile = opts.tileFor(p.ref);
       if (!tile) return null;
       const r = tile.getBoundingClientRect();
-      return { p, to: { x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height }, shared: opts.shared(p.ref) };
+      return { p, to: { x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height } };
     })
     .filter((j) => j !== null)
     .sort((a, b) => a.to.y - b.to.y || a.to.x - b.to.x);
 
-  const moves = jobs.map(({ p, to, shared }, n) => {
+  const moves = jobs.map(({ p, to }, n) => {
     const g = document.createElement("div");
     g.className = "morph-ghost";
     const label = g.appendChild(document.createElement("span"));
@@ -101,8 +94,8 @@ export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: 
     anims.push(label.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, delay, fill: "forwards" }));
     const move = g.animate(
       [
-        { left: `${p.x}px`, top: `${p.y}px`, width: `${p.w}px`, height: `${p.h}px`, backgroundColor: surface, borderColor: rule, borderRadius: `${p.h / 2}px`, clipPath: FULL },
-        { left: `${to.x}px`, top: `${to.y}px`, width: `${to.w}px`, height: `${to.h}px`, backgroundColor: tint[p.side], borderColor: "transparent", borderRadius: "14px", clipPath: shared ? HALF[p.side] : FULL },
+        { left: `${p.x}px`, top: `${p.y}px`, width: `${p.w}px`, height: `${p.h}px`, borderColor: rule, borderRadius: `${p.h / 2}px` },
+        { left: `${to.x}px`, top: `${to.y}px`, width: `${to.w}px`, height: `${to.h}px`, borderColor: "transparent", borderRadius: "12px" },
       ],
       { duration: 820, delay, easing: EASE, fill: "forwards" },
     );

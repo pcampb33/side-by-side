@@ -1,5 +1,6 @@
 import type { Component } from "../agent/catalog.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
+import type { Trace } from "../agent/trace.ts";
 import amdNvda from "../featured/AMD-vs-NVDA-growth.json";
 import koPep from "../featured/KO-vs-PEP-profitability.json";
 import fGm from "../featured/F-vs-GM-balance-sheet-risk.json";
@@ -21,6 +22,7 @@ export interface Featured {
   companies: (CompanyInput & { profile: CompanyProfile })[];
   components: Component[];
   html: string;
+  traces?: Partial<Record<Mode, Trace>>; // from the step-11 regeneration on
 }
 
 // In the order the homepage lists them.
@@ -34,5 +36,6 @@ export function featuredEvents(f: Featured, mode: Mode): CompareEvent[] {
   const companies: CompanyInput[] = f.companies.map(({ ticker, name, financials }) => ({ ticker, name, financials }));
   const filings = f.companies.flatMap((c): CompareEvent[] => (c.filing ? [{ type: "filing", ticker: c.ticker, filing: c.filing }] : []));
   const result: CompareEvent[] = mode === "freeform" ? [{ type: "page", html: f.html }] : f.components.map((component) => ({ type: "component", component }));
-  return [{ type: "data", companies }, ...filings, ...result, { type: "done", cached: true, featured: f.generatedAt }];
+  const trace = f.traces?.[mode];
+  return [{ type: "data", companies }, ...filings, ...result, ...(trace ? [{ type: "trace", trace } as const] : []), { type: "done", cached: true, featured: f.generatedAt }];
 }

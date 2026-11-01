@@ -7,6 +7,7 @@ import { LENS_GUIDANCE } from "@/agent/lenses";
 import type { BlockReason } from "@/lib/access";
 import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
+import type { Trace, TraceCall } from "@/agent/trace";
 import type { CompareEvent } from "@/lib/compare";
 import { parseMode, type Mode } from "@/lib/compare-url";
 import { BlockedPanel } from "./blocked-panel";
@@ -26,9 +27,11 @@ const isText = (c: Component) => c.name === "risk_themes" || c.name === "busines
 
 type State = {
   status: "loading" | "error" | "done" | "blocked";
-  step: "fetching" | "reading" | "building";
+  step: "fetching" | "reading" | "building" | "checking";
   companies: CompanyInput[] | null;
   components: Component[];
+  calls: TraceCall[]; // live: every tool call as it is made
+  trace: Trace | null;
   html: string | null;
   cached: boolean;
   featured: string | null; // generation date
@@ -36,7 +39,7 @@ type State = {
   blocked?: BlockReason;
 };
 
-const initial: State = { status: "loading", step: "fetching", companies: null, components: [], html: null, cached: false, featured: null };
+const initial: State = { status: "loading", step: "fetching", companies: null, components: [], calls: [], trace: null, html: null, cached: false, featured: null };
 
 function reduce(state: State, event: CompareEvent | { type: "closed" } | { type: "restart" }): State {
   switch (event.type) {
@@ -54,6 +57,10 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
       return { ...state, components: [...state.components, event.component] };
     case "page":
       return { ...state, html: event.html };
+    case "call":
+      return { ...state, calls: [...state.calls, event.call] };
+    case "trace":
+      return { ...state, trace: event.trace };
     case "done":
       return { ...state, status: "done", cached: event.cached, featured: event.featured ?? null };
     case "error":

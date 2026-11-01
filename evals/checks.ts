@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { CATALOG, checkComponent, type Component, type ComponentName } from "../agent/catalog.ts";
+import { checkPage } from "../agent/freeform.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
-import { canonical } from "../lib/filings/text.ts";
+import type { CheckResult } from "../agent/trace.ts";
+import { canonical, htmlToText } from "../lib/filings/text.ts";
 import type { LensSlug } from "../lib/lenses.ts";
 import { VALUE_KEYS, valueAt, valueDef, type Unit, type ValueKey } from "../lib/values.ts";
 
@@ -244,4 +246,37 @@ export function checkLens(lens: LensSlug, components: Component[], companies: Co
     if (prefix === "r" && twice.length) add(`In more than one row: ${twice.join(", ")}.`);
   }
   return findings;
+}
+
+// --- Results as a page shows them (SPEC §4a step 5) -----------------------
+
+// One row per check: lens findings count under components.
+export function checkResults(findings: Finding[], counts: { numbers: number; quotes: number }, mode: "components" | "freeform"): CheckResult[] {
+  const of = (...checks: CheckName[]) => findings.filter((f) => checks.includes(f.check)).map((f) => f.detail);
+  return [
+    { check: "numbers", checked: counts.numbers, findings: of("numbers") },
+    { check: "notReported", findings: of("notReported") },
+    { check: "quotes", checked: counts.quotes, findings: of("quotes") },
+    mode === "freeform" ? { check: "page", findings: of("page") } : { check: "components", findings: of("components", "lens") },
+  ];
+}
+
+// The checks every live run shows. A freeform page is read as its static
+// text here (no browser), so text its scripts draw is not checked; the evals
+// render it (evals/render.ts).
+export function liveChecks(output: { components: Component[] } | { html: string }, lens: LensSlug, companies: CompanyInput[]): CheckResult[] {
+  const findings: Finding[] = [];
+  let prose: string[];
+  if ("html" in output) {
+    const problem = checkPage(output.html);
+    if (problem) findings.push({ check: "page", detail: problem });
+    prose = [htmlToText(output.html)];
+  } else {
+    findings.push(...checkComponents(output.components, companies), ...checkLens(lens, output.components, companies));
+    prose = componentProse(output.components);
+  }
+  const numbers = checkNumbers(prose, companies);
+  const quotes = checkQuotes(prose, companies);
+  findings.push(...numbers.findings, ...quotes.findings, ...checkNotReported(prose, companies));
+  return checkResults(findings, { numbers: numbers.checked, quotes: quotes.checked }, "html" in output ? "freeform" : "components");
 }

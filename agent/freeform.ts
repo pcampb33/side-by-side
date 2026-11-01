@@ -4,6 +4,7 @@ import { FONTS, THEME } from "../lib/theme.ts";
 import { LENS_GUIDANCE } from "./lenses.ts";
 import { headlineNote, userPrompt, type CompanyInput } from "./prompt.ts";
 import { ComparisonError, type Backend, type ModelId, type ToolSpec, type Usage } from "./run.ts";
+import { recordCalls, type TraceCall } from "./trace.ts";
 
 // Freeform mode: from the same data, Claude writes one self-contained HTML
 // page, which the site shows in <iframe srcdoc sandbox="allow-scripts">. The
@@ -61,8 +62,9 @@ export async function generatePage(opts: {
   companies: CompanyInput[];
   backend: Backend;
   signal: AbortSignal;
+  onCall?: (call: Omit<TraceCall, "ms">) => void;
   model?: ModelId;
-}): Promise<{ html: string; usage: Usage }> {
+}): Promise<{ html: string; usage: Usage; model: ModelId; prompt: { system: string; user: string }; offered: string[] }> {
   if (LENS_GUIDANCE[opts.lens].needsFilings && opts.companies.some((c) => !c.filing)) {
     throw new Error(`The ${opts.lens} lens needs each company's condensed annual report.`);
   }
@@ -83,13 +85,14 @@ export async function generatePage(opts: {
       return { ok: true, text: "Shown." };
     },
   };
+  const prompt = { system: freeformSystemPrompt(opts.lens), user: userPrompt(opts.companies, { quotes: true }) };
+  const model = opts.model ?? "claude-sonnet-5-5";
   const usage = await opts.backend({
-    model: opts.model ?? "claude-sonnet-5-5",
-    system: freeformSystemPrompt(opts.lens),
-    user: userPrompt(opts.companies, { quotes: true }),
-    tools: [submit],
+    model,
+    ...prompt,
+    tools: opts.onCall ? recordCalls([submit], opts.onCall) : [submit],
     signal: opts.signal,
   });
   if (!html) throw new ComparisonError("The model finished without writing a page.");
-  return { html, usage };
+  return { html, usage, model, prompt, offered: [submit.name] };
 }

@@ -3,6 +3,7 @@ import type { LensSlug } from "../lib/lenses.ts";
 import { CATALOG, COMPONENT_NAMES, MAX_COMPONENTS, checkComponent, type Component } from "./catalog.ts";
 import { LENS_GUIDANCE } from "./lenses.ts";
 import { systemPrompt, userPrompt, type CompanyInput } from "./prompt.ts";
+import { recordCalls, type TraceCall } from "./trace.ts";
 
 // The one place a comparison is generated, whichever backend runs the model.
 // Each catalog entry becomes a tool; a call that passes every check is shown
@@ -61,8 +62,9 @@ export async function generateComparison(opts: {
   backend: Backend;
   signal: AbortSignal;
   onComponent: (c: Component) => void;
+  onCall?: (call: Omit<TraceCall, "ms">) => void;
   model?: ModelId;
-}): Promise<{ components: Component[]; usage: Usage }> {
+}): Promise<{ components: Component[]; usage: Usage; model: ModelId; prompt: { system: string; user: string }; offered: string[] }> {
   // The caller reads the annual reports for a text lens; without them the
   // model would have nothing to build from.
   if (LENS_GUIDANCE[opts.lens].needsFilings && opts.companies.some((c) => !c.filing)) {
@@ -73,7 +75,9 @@ export async function generateComparison(opts: {
     components.push(c);
     opts.onComponent(c);
   });
-  const usage = await opts.backend({ model: opts.model ?? "claude-sonnet-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
+  const prompt = { system: systemPrompt(opts.lens), user: userPrompt(opts.companies) };
+  const model = opts.model ?? "claude-sonnet-5-5";
+  const usage = await opts.backend({ model, ...prompt, tools: opts.onCall ? recordCalls(tools, opts.onCall) : tools, signal: opts.signal });
   if (components.length === 0) throw new ComparisonError("The model finished without building a comparison.");
-  return { components, usage };
+  return { components, usage, model, prompt, offered: tools.map((t) => t.name) };
 }

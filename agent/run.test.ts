@@ -7,7 +7,9 @@ import { normalize } from "../lib/normalize/normalize.ts";
 import { apiBackend } from "./backends/api.ts";
 import type { Component } from "./catalog.ts";
 import type { CompanyInput } from "./prompt.ts";
+import { systemPrompt, userPrompt } from "./prompt.ts";
 import { ComparisonError, componentTools, generateComparison, type Backend } from "./run.ts";
+import type { TraceCall } from "./trace.ts";
 
 const company = (ticker: string, name: string): CompanyInput => ({
   ticker,
@@ -157,5 +159,25 @@ describe("apiBackend (mock model)", () => {
   it("reports a refusal as an error", async () => {
     const model = new MockLanguageModelV3({ doStream: [step(finish("content-filter"))] });
     await expect(generateComparison({ lens: "growth", companies, backend: apiBackend(model), signal, onComponent: () => {} })).rejects.toThrow(/declined/);
+  });
+});
+
+describe("generateComparison's trace", () => {
+  it("reports each call, shown or sent back, and returns the prompt as sent and the tools offered", async () => {
+    const backend: Backend = async ({ tools }) => {
+      const run = (name: string, input: unknown) => tools.find((t) => t.name === name)!.handle(input);
+      run("trend_line", { title: "Revenue", key: "revenu" });
+      run("trend_line", { title: "Revenue", key: "revenue" });
+      run("takeaways", takeaways);
+      return { inputTokens: 10, outputTokens: 2 };
+    };
+    const calls: Omit<TraceCall, "ms">[] = [];
+    const out = await generateComparison({ lens: "growth", companies, backend, signal, onComponent: () => {}, onCall: (c) => calls.push(c) });
+    expect(calls.map((c) => [c.tool, c.ok])).toEqual([["trend_line", false], ["trend_line", true], ["takeaways", true]]);
+    expect(calls[0].message).toMatch(/revenu/);
+    expect(out.prompt).toEqual({ system: systemPrompt("growth"), user: userPrompt(companies) });
+    expect(out.model).toBe("claude-sonnet-5-5");
+    expect(out.offered).not.toContain("risk_themes");
+    expect(out.offered).toContain("takeaways");
   });
 });

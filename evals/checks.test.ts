@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import type { Component } from "../agent/catalog.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
-import { checkComponents, checkLens, checkNotReported, checkNumbers, checkQuotes, componentProse, numberTokens } from "./checks.ts";
+import { checkComponents, checkLens, checkNotReported, checkNumbers, checkQuotes, componentProse, liveChecks, numberTokens } from "./checks.ts";
 
 const fixture = (ticker: string): CompanyInput => JSON.parse(fs.readFileSync(path.join(import.meta.dirname, "fixtures", `${ticker}.json`), "utf8"));
 const apple = [fixture("AAPL"), fixture("MSFT")];
@@ -87,5 +87,25 @@ describe("checkComponents and checkLens", () => {
     const details = checkLens("risk-exposure", [some, takeaways], apple).map((f) => f.detail);
     expect(details[0]).toBe(`Not placed in any row: ${ids.slice(3).join(", ")}.`);
     expect(details[1]).toBe(`In more than one row: ${ids[1]}.`);
+  });
+});
+
+describe("liveChecks", () => {
+  it("gives one row per check for components, lens findings under components", () => {
+    const components: Component[] = [{ name: "trend_line", input: { title: "Revenue", key: "revenue" } }];
+    const rows = liveChecks({ components }, "growth", apple);
+    expect(rows.map((r) => r.check)).toEqual(["numbers", "notReported", "quotes", "components"]);
+    expect(rows[0]).toEqual({ check: "numbers", checked: 0, findings: [] });
+    expect(rows[3].findings).toEqual(["Takeaways must appear exactly once, last."]);
+  });
+
+  it("reads a freeform page's static text and checks the page", () => {
+    const html = "<!doctype html><html><head><style>p{color:red}</style></head><body><p>Apple's revenue was $416.2B in FY2025, about $999.9B less than claimed.</p><script>const x = 123.45;</script></body></html>";
+    const rows = liveChecks({ html }, "growth", apple);
+    expect(rows.map((r) => r.check)).toEqual(["numbers", "notReported", "quotes", "page"]);
+    expect(rows[0].checked).toBe(3); // $416.2B, $999.9B and FY2025; script text is not read
+    expect(rows[0].findings).toHaveLength(1);
+    expect(rows[0].findings[0]).toMatch(/\$999\.9B/);
+    expect(rows[3].findings).toEqual([]);
   });
 });

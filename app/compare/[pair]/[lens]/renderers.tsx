@@ -18,7 +18,7 @@ export function ComponentView({ component, companies, morph }: { component: Comp
   // measures where each subject lands: no scale animation under it.
   const text = component.name === "risk_themes" || component.name === "business_overlap";
   return (
-    <article className={`card p-5 sm:p-6 ${text ? "" : "pop-in"}`}>
+    <article className={`card p-5 @xl:p-6 ${text ? "" : "pop-in"}`}>
       <h3 className="font-display text-xl font-semibold tracking-tight">{title}</h3>
       {caption && <p className="mt-1 text-sm text-muted">{caption}</p>}
       <div className="mt-4">
@@ -39,7 +39,7 @@ const fyLabel = (c: CompanyInput, year: Year) => `FY${fiscalYearOf(c.financials,
 
 function MetricCards({ items, companies }: { items: { key: ValueKey; year: Year }[]; companies: CompanyInput[] }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 @xl:grid-cols-2 @3xl:grid-cols-3">
       {items.map((item) => (
         <div key={`${item.key}-${item.year}`} className="rounded-xl bg-paper px-4 py-3">
           <div className="text-sm text-muted">{valueDef(item.key).label}</div>
@@ -201,7 +201,7 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
                     <div key={s.label} title={`${s.label}: ${formatValue(s.value, "usd")}`} style={{ width: `${(s.value / b.revenue) * 100}%`, background: s.color }} />
                   ))}
                 </div>
-                <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
+                <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm @xl:grid-cols-2">
                   {b.segments.map((s) => (
                     <li key={s.label} className="flex items-center gap-2">
                       <span className="size-2.5 shrink-0 rounded-full" style={{ background: s.color }} />
@@ -222,7 +222,7 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
 
 function Takeaways({ items }: { items: string[] }) {
   return (
-    <article className="card pop-in p-5 sm:p-6">
+    <article className="card pop-in p-5 @xl:p-6">
       <h3 className="font-display text-xl font-semibold tracking-tight">Key differences</h3>
       <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed marker:text-muted">
         {items.map((item) => (

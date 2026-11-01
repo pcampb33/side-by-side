@@ -48,7 +48,7 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
   const [sheet, setSheet] = useState<SheetContent | null>(null);
   const what = kind === "risks" ? "risk themes" : "business areas";
   return (
-    <article className="card p-5 sm:p-6">
+    <article className="card p-5 @xl:p-6">
       <h3 className="font-display text-xl font-semibold tracking-tight">{kind === "risks" ? "Risk themes" : "Business areas"} in each 10-K</h3>
       <p className="mt-1 text-sm text-muted">
         {!companies.every((c) => c.filing)
@@ -57,7 +57,7 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
             ? "Claude is writing a page from these."
             : "Claude is lining these up into shared and one-company subjects."}
       </p>
-      <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:gap-x-12">
+      <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 @xl:gap-x-12">
         {companies.map((c, si) => (
           <div key={c.ticker} className="grid min-w-0 content-start gap-1.5">
             <div className="mb-0.5 flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">

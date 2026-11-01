@@ -34,10 +34,12 @@ export function getAnnualReport(cik: number, backend = getCache()) {
 
 // Condensed once per filing: a filing never changes, and a newer 10-K has a
 // new accession number.
+export const condensedFilingKey = (accn: string) => `filing:v${CONDENSE_VERSION}:${accn}`;
+
 export function getCondensedFiling(opts: { cik: number; name: string; report: AnnualReport; model: Backend; signal: AbortSignal }, backend = getCache()) {
   const { cik, report } = opts;
   return cached(
-    `filing:v${CONDENSE_VERSION}:${report.accn}`,
+    condensedFilingKey(report.accn),
     undefined,
     async () =>
       condenseAnnualReport({

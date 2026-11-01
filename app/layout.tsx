@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col font-sans antialiased">
         <header className="border-b border-rule">
-          <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
+          <div className="site-width mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
             <Link href="/" className="font-display text-lg font-semibold tracking-tight">
               company-compare
             </Link>
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </header>
         <div className="flex-1">{children}</div>
         <footer className="border-t border-rule text-sm text-muted">
-          <div className="mx-auto max-w-5xl space-y-2 px-4 py-6 sm:px-6">
+          <div className="site-width mx-auto max-w-5xl space-y-2 px-4 py-6 sm:px-6">
             <p>Data from SEC EDGAR filings. Not financial advice.</p>
             {signInOn && (
               <p>

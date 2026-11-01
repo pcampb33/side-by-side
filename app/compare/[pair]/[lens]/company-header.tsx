@@ -23,7 +23,7 @@ export function CompanyHeader({
   ];
 
   return (
-    <article className="card p-5 sm:p-6">
+    <article className="card p-5 @xl:p-6">
       <p className="text-sm font-medium tracking-wide text-muted">
         {entry.ticker}
         {exchange && ` · ${exchange}`}

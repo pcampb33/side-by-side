@@ -3,7 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { Component } from "@/agent/catalog";
-import { LENS_GUIDANCE } from "@/agent/lenses";
 import type { BlockReason } from "@/lib/access";
 import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
@@ -12,6 +11,7 @@ import type { CompareEvent } from "@/lib/compare";
 import { parseMode, type Mode } from "@/lib/compare-url";
 import { BlockedPanel } from "./blocked-panel";
 import { FreeformFrame } from "./freeform-frame";
+import { useProcess } from "./process-context";
 import { HeadlineStrip } from "./headline-strip";
 import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
@@ -73,12 +73,6 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
   }
 }
 
-const STEPS = [
-  { step: "fetching", label: "Fetching SEC data" },
-  { step: "reading", label: "Reading annual reports" },
-  { step: "building", label: "Building comparison" },
-] as const;
-
 export function ComparisonStream({ pair, lens }: { pair: string; lens: string }) {
   const mode = parseMode(useSearchParams().get("mode"));
   // The URL is the toggle's state, so Back switches modes too.
@@ -127,6 +121,21 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
   const [run, setRun] = useState({ n: 0, regenerate: false });
   const stage = useRef<HTMLElement>(null);
   const pills = useRef<PillSnapshot[] | null>(null);
+  const { setInput } = useProcess();
+
+  // The process panel, strip and overlay show this run as it happens.
+  useEffect(() => {
+    setInput({
+      lens: lens as LensSlug,
+      mode,
+      status: state.status,
+      step: state.step,
+      companies: state.companies,
+      shown: state.html ? 1 : state.components.length,
+      calls: state.calls,
+      trace: state.trace,
+    });
+  }, [state, lens, mode, setInput]);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -166,8 +175,6 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
     dispatch({ type: "restart" });
     setRun((r) => ({ n: r.n + 1, regenerate }));
   };
-  const steps = STEPS.filter((s) => s.step !== "reading" || LENS_GUIDANCE[lens as LensSlug]?.needsFilings);
-  const currentStep = steps.findIndex((s) => s.step === state.step);
   const textKind = TEXT_KIND[lens as LensSlug];
   const firstText = state.components.findIndex(isText);
   const showPills = textKind && state.companies && state.status === "loading" && firstText < 0 && !state.html;
@@ -176,23 +183,6 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
     <section ref={stage} className="relative mt-4 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
       {state.companies && <HeadlineStrip lens={lens as LensSlug} companies={state.companies} />}
 
-      {state.status === "loading" && (
-        <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {steps.map((s, i) => (
-            <li key={s.step} className={`flex items-center gap-2 ${i > currentStep ? "text-muted" : ""}`}>
-              {i < currentStep ? (
-                <span aria-hidden>✓</span>
-              ) : i === currentStep ? (
-                <span aria-hidden className="size-3 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-              ) : (
-                <span aria-hidden className="size-3 rounded-full border border-rule" />
-              )}
-              {s.label}
-              {i === currentStep && <span className="sr-only">(in progress)</span>}
-            </li>
-          ))}
-        </ol>
-      )}
 
       {state.companies &&
         state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />)}

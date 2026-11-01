@@ -8,13 +8,19 @@ import { findLens } from "@/lib/lenses";
 import { NoAnnualDataError } from "@/lib/normalize/normalize";
 import { CompanyHeader } from "./company-header";
 import { ComparisonStream } from "./comparison-stream";
+import { ProcessAside, ProcessStrip } from "./process-views";
 
 export default function ComparePage({ params }: PageProps<"/compare/[pair]/[lens]">) {
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <Suspense fallback={<ComparisonSkeleton />}>
-        <Comparison params={params} />
-      </Suspense>
+    // From ~1100px the process panel sits beside the comparison, which lays
+    // itself out by its own width (container queries), not the viewport's.
+    <main data-wide className="mx-auto max-w-5xl px-4 py-10 sm:px-6 min-[1100px]:grid min-[1100px]:max-w-[90rem] min-[1100px]:grid-cols-[minmax(0,1fr)_auto] min-[1100px]:items-start min-[1100px]:gap-6">
+      <div className="@container min-w-0">
+        <Suspense fallback={<ComparisonSkeleton />}>
+          <Comparison params={params} />
+        </Suspense>
+      </div>
+      <ProcessAside />
     </main>
   );
 }
@@ -32,7 +38,7 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="font-display text-3xl font-semibold tracking-tight @xl:text-4xl">
           {companies[0].entry.ticker} <span className="text-muted">vs</span> {companies[1].entry.ticker}
           <span className="text-muted">: {lens.label}</span>
         </h1>
@@ -40,13 +46,16 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
           New comparison
         </Link>
       </div>
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-4 @2xl:grid-cols-2">
         {companies.map((c) => (
           <CompanyHeader key={c.entry.cik} {...c} />
         ))}
       </div>
       {companies.every((c) => c.financials) ? (
-        <ComparisonStream pair={pair} lens={lens.slug} />
+        <>
+          <ComparisonStream pair={pair} lens={lens.slug} />
+          <ProcessStrip />
+        </>
       ) : (
         <section className="mt-8 rounded-2xl border border-dashed border-rule px-6 py-10 text-center text-muted">
           A comparison needs 10-K financial statements for both companies.

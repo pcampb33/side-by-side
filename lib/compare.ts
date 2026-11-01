@@ -8,7 +8,8 @@ import { Blocked, type BlockReason } from "./access.ts";
 import { getCache } from "./cache/cache.ts";
 import type { Mode } from "./compare-url.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
-import { findTicker, getAnnualReport, getCondensedFiling, getFinancials } from "./data.ts";
+import { condensedFilingKey, findTicker, getAnnualReport, getCondensedFiling, getFinancials } from "./data.ts";
+import type { CondensedFiling } from "./filings/condense.ts";
 import type { LensSlug } from "./lenses.ts";
 import { NoAnnualDataError } from "./normalize/normalize.ts";
 
@@ -38,7 +39,7 @@ export type CompareEvent =
 const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 2 };
 const resultKey = (tickers: readonly string[], lens: LensSlug, mode: Mode) => `result:v${RESULT_VERSION[mode]}:${tickers.join("|")}|${lens}|${mode}`;
 // A result saved before traces existed has none.
-type Result = ({ components: Component[] } | { html: string }) & { trace?: Trace };
+export type Result = ({ components: Component[] } | { html: string }) & { trace?: Trace };
 
 export async function defaultBackend(): Promise<Backend> {
   if (process.env.CLAUDE_AUTH === "login") return (await import("../agent/backends/login.ts")).loginBackend;
@@ -58,14 +59,34 @@ export async function loadCompany(ticker: string): Promise<CompanyInput> {
   return { ticker, name: entry.name, financials };
 }
 
+const withFiscalYear = (c: CompanyInput, filing: CondensedFiling) => {
+  const i = c.financials.periodEnds.indexOf(filing.report.periodEnd);
+  return { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(filing.report.periodEnd.slice(0, 4)) };
+};
+
 // Reads the company's latest 10-K into c.filing (text lenses).
 export async function attachFiling(c: CompanyInput, backend: Backend, signal: AbortSignal): Promise<void> {
   const cik = c.financials.cik;
   const report = await getAnnualReport(cik);
   if (!report) throw new ComparisonError(`${c.ticker} has no 10-K annual report to read.`);
-  const filing = await getCondensedFiling({ cik, name: c.name, report, model: backend, signal });
-  const i = c.financials.periodEnds.indexOf(report.periodEnd);
-  c.filing = { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(report.periodEnd.slice(0, 4)) };
+  c.filing = withFiscalYear(c, await getCondensedFiling({ cik, name: c.name, report, model: backend, signal }));
+}
+
+// A comparison as saved, for its standalone process page: never runs Claude.
+// A 10-K that was never condensed stays unread.
+export async function savedComparison(tickers: readonly [string, string], lens: LensSlug, mode: Mode): Promise<{ companies: CompanyInput[]; result: Result | null }> {
+  const companies = await Promise.all(tickers.map(loadCompany));
+  const cache = getCache();
+  if (LENS_GUIDANCE[lens].needsFilings) {
+    await Promise.all(
+      companies.map(async (c) => {
+        const report = await getAnnualReport(c.financials.cik);
+        const filing = report && ((await cache.get(condensedFilingKey(report.accn))) as CondensedFiling | undefined);
+        if (filing) c.filing = withFiscalYear(c, filing);
+      }),
+    );
+  }
+  return { companies, result: ((await cache.get(resultKey(tickers, lens, mode))) as Result | undefined) ?? null };
 }
 
 export async function runComparison(opts: {

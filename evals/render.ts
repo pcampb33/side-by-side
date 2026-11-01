@@ -36,14 +36,14 @@ export async function renderPage(browser: Browser, html: string): Promise<{ text
       });
     await scrollThrough();
     await page.waitForTimeout(1500);
-    // Axis ticks ($40B, 25%) are a chart's scale, not values from the data:
-    // whole numbers alone in an SVG <text> are hidden from the text. A label
-    // with decimals ($416.2B) is a value, and stays.
+    // Axis ticks ($40B, 25%, 0.5×) are a chart's scale, not values from the
+    // data: round numbers (whole, or .0/.5) alone in an SVG <text> are hidden
+    // from the text. A label like $416.2B or 28.3% is a value, and stays.
     // Text in a closed <details> is still text the page states: open them all.
     const text = await page.evaluate(() => {
       for (const d of document.querySelectorAll("details")) d.open = true;
       for (const t of document.querySelectorAll<SVGTextElement>("svg text")) {
-        if (/^[−-]?\$?\d+[TBMK]?[%×]?$/.test((t.textContent ?? "").trim())) t.style.display = "none";
+        if (/^[−-]?\$?\d+(?:\.[05])?[TBMK]?[%×]?$/.test((t.textContent ?? "").trim())) t.style.display = "none";
       }
       return document.body.innerText;
     });

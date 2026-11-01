@@ -87,12 +87,43 @@ export async function fetchTickerIndex(): Promise<TickerEntry[]> {
 const LEGAL_FORMS = new Set(["NV", "SA", "AG", "SE", "PLC", "LP", "LLC", "ADR"]);
 const SMALL_WORDS = new Set(["CO", "INC", "LTD", "COM", "THE", "OF", "AND", "FOR", "NEW", "OIL", "GAS", "BIO", "TECH"]);
 
+// EDGAR name (state suffix dropped) → how the company writes it.
+const NAMES: Record<string, string> = {
+  "AMAZON COM INC": "Amazon.com Inc",
+  "ASML HOLDING NV": "ASML Holding NV",
+  "ASTRAZENECA PLC": "AstraZeneca PLC",
+  "CAPITAL ONE FINANCIAL CORP": "Capital One Financial Corp",
+  "COCA COLA CO": "Coca-Cola Co",
+  "CONOCOPHILLIPS": "ConocoPhillips",
+  "CVS HEALTH Corp": "CVS Health Corp",
+  "ELI LILLY & Co": "Eli Lilly & Co",
+  "HDFC BANK LTD": "HDFC Bank Ltd",
+  "HSBC HOLDINGS PLC": "HSBC Holdings PLC",
+  "JPMORGAN CHASE & CO": "JPMorgan Chase & Co",
+  "LAM RESEARCH CORP": "Lam Research Corp",
+  "LOWES COMPANIES INC": "Lowe's Companies Inc",
+  "MCDONALDS CORP": "McDonald's Corp",
+  "MCKESSON CORP": "McKesson Corp",
+  "NEXTERA ENERGY INC": "NextEra Energy Inc",
+  "NVIDIA CORP": "NVIDIA Corp",
+  "PEPSICO INC": "PepsiCo Inc",
+  "PROCTER & GAMBLE Co": "Procter & Gamble Co",
+  "QUALCOMM INC/DE": "Qualcomm Inc",
+  "RIO TINTO LTD": "Rio Tinto Ltd",
+  "RIO TINTO PLC": "Rio Tinto PLC",
+  "SCHWAB CHARLES CORP": "Charles Schwab Corp",
+  "UNITEDHEALTH GROUP INC": "UnitedHealth Group Inc",
+  "WELLS FARGO & COMPANY/MN": "Wells Fargo & Company",
+};
+
 // A third of EDGAR names are all caps ("MICROSOFT CORP", "BANK OF AMERICA
 // CORP /DE/"). Title-case those and drop the state suffix; mixed-case names
 // are left as filed. Inner brand casing can't be recovered (JPMORGAN →
-// Jpmorgan), and short unknown words stay upper on the guess they're acronyms.
+// Jpmorgan), and short unknown words stay upper on the guess they're acronyms,
+// so well-known names whose rules come out wrong are kept by hand in NAMES.
 export function displayName(title: string): string {
   const name = title.replace(/(\s+\/[A-Z]{1,5}\/?|\/)+$/, "").trim();
+  if (NAMES[name]) return NAMES[name];
   if (/[a-z]/.test(name)) return name;
   return name
     .split(" ")

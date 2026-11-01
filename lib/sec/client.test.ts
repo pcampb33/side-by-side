@@ -64,10 +64,15 @@ describe("displayName", () => {
     ["COSTCO WHOLESALE CORP /NEW", "Costco Wholesale Corp"],
     ["TOYOTA MOTOR CORP/", "Toyota Motor Corp"],
     ["NOVO NORDISK A/S", "Novo Nordisk A/S"],
-    ["ASML HOLDING NV", "Asml Holding NV"],
+    ["ASML HOLDING NV", "ASML Holding NV"],
     ["INTERNATIONAL BUSINESS MACHINES CORP", "International Business Machines Corp"],
     ["JOHNSON & JOHNSON", "Johnson & Johnson"],
     ["Apple Inc.", "Apple Inc."],
+    ["JPMORGAN CHASE & CO", "JPMorgan Chase & Co"],
+    ["NVIDIA CORP", "NVIDIA Corp"],
+    ["COCA COLA CO", "Coca-Cola Co"],
+    ["ELI LILLY & Co", "Eli Lilly & Co"],
+    ["QUALCOMM INC/DE", "Qualcomm Inc"],
   ])("%s → %s", (title, expected) => {
     expect(displayName(title)).toBe(expected);
   });

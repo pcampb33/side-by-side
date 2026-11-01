@@ -9,7 +9,7 @@ import { toProfile } from "./sec/profile.ts";
 const DAY = 86_400;
 
 export function getTickerIndex(backend = getCache()) {
-  return cached("tickers:v2", DAY, fetchTickerIndex, backend);
+  return cached("tickers:v3", DAY, fetchTickerIndex, backend);
 }
 
 export async function findTicker(ticker: string, backend = getCache()) {

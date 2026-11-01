@@ -60,7 +60,7 @@ revenue, gross profit, operating income, net income, R&D, cash, total assets, to
 
 **Derived in code, never by the model:** gross/operating/net margin, YoY revenue growth, free cash flow, debt-to-equity, R&D % of revenue, cash runway where meaningful (≤10 years). *2026-10-31:* total liabilities falls back to total assets − total equity when a filer reports no liabilities line (KO), cited to both inputs.
 
-**Missing values:** a metric with no matching tag is `not reported`, never 0 or blank, and propagates as such into derived ratios.
+**Missing values:** a metric with no matching tag is `not reported`, never 0 or blank, and propagates as such into derived ratios. *2026-10-31:* Ford's long-term debt stays `not reported`: its 10-Ks since FY2020 tag it only per segment (dimensional facts, which companyfacts omits), so there is no consolidated figure to cite; summing the segments was considered and declined.
 
 **Every value carries its source:** accession number, form, fiscal year, filed date, tag used. Citations are built from this, not from the model.
 

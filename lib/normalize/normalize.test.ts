@@ -21,7 +21,7 @@ describe("normalize on the six R2 filers", () => {
     { ticker: "NVDA", years: [2022, 2023, 2024, 2025, 2026], notReported: [] },
     // KO files no R&D line (and no total-liabilities line: computed, tested below).
     { ticker: "KO", years: [2021, 2022, 2023, 2024, 2025], notReported: ["rnd"] },
-    // F has no gross profit line; its long-term debt is only in Ford-specific tags.
+    // F has no gross profit line, and tags long-term debt only per segment (dimensional, absent from companyfacts).
     { ticker: "F", years: [2021, 2022, 2023, 2024, 2025], notReported: ["grossProfit", "longTermDebt"] },
     // A bank: no gross profit, operating income, R&D or capex.
     { ticker: "JPM", years: [2021, 2022, 2023, 2024, 2025], notReported: ["grossProfit", "operatingIncome", "rnd", "capex"] },

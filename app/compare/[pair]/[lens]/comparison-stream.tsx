@@ -9,6 +9,7 @@ import type { CompanyInput } from "@/agent/prompt";
 import type { CompareEvent } from "@/lib/compare";
 import { parseMode, type Mode } from "@/lib/compare-url";
 import { FreeformFrame } from "./freeform-frame";
+import { HeadlineStrip } from "./headline-strip";
 import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
 import { FilingPills, type TextKind } from "./text-tiles";
@@ -160,6 +161,8 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
 
   return (
     <section ref={stage} className="relative mt-4 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
+      {state.companies && <HeadlineStrip lens={lens as LensSlug} companies={state.companies} />}
+
       {state.status === "loading" && (
         <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {steps.map((s, i) => (

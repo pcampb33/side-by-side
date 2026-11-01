@@ -14,9 +14,14 @@ export interface CompanyInput {
   filing?: CondensedFiling & { fiscalYear: number };
 }
 
+// What the page shows before Claude's part: named in both prompts so it
+// isn't repeated.
+export const headlineNote = (lens: LensSlug) =>
+  `a headline strip of each company's latest-year ${LENS_GUIDANCE[lens].headline.map((key) => valueDef(key).label).join(", ")}`;
+
 export function systemPrompt(lens: LensSlug): string {
   const { question, guidance } = LENS_GUIDANCE[lens];
-  return `You build a comparison of two public companies by calling UI component tools. The page already shows each company's name, industry and headquarters.
+  return `You build a comparison of two public companies by calling UI component tools. The page already shows each company's name, industry and headquarters and, above your components, ${headlineNote(lens)}: don't repeat those latest-year values as metric cards (trends and other years are fine).
 
 Lens: ${question}
 ${guidance}

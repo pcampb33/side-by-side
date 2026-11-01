@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { LensSlug } from "../lib/lenses.ts";
 import { FONTS, THEME } from "../lib/theme.ts";
 import { LENS_GUIDANCE } from "./lenses.ts";
-import { userPrompt, type CompanyInput } from "./prompt.ts";
+import { headlineNote, userPrompt, type CompanyInput } from "./prompt.ts";
 import { ComparisonError, type Backend, type ToolSpec, type Usage } from "./run.ts";
 
 // Freeform mode: from the same data, Claude writes one self-contained HTML
@@ -35,7 +35,7 @@ const tokenList = (t: Record<string, string>) =>
 
 export function freeformSystemPrompt(lens: LensSlug): string {
   const { question, guidance } = LENS_GUIDANCE[lens];
-  return `You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters (don't repeat those).
+  return `You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters and ${headlineNote(lens)} (don't repeat those; trends and other years are fine).
 
 Lens: ${question}
 Guidance written for the site's component mode, which names its own components; treat it as what to show, in whatever form serves the reader: ${guidance}

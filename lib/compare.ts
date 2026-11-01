@@ -13,14 +13,15 @@ import { NoAnnualDataError } from "./normalize/normalize.ts";
 // both companies' financials (the page looks every value up in them), each
 // condensed annual report as soon as it is read (text lenses), components as
 // the model shows them (or, in freeform mode, the one page it writes), then
-// done or error. The route adds a heartbeat every 15s.
+// done or error. The route adds a heartbeat every 15s, and serves a featured
+// comparison (lib/featured.ts) itself.
 export type CompareEvent =
   | { type: "progress"; step: "fetching" | "reading" | "building" }
   | { type: "data"; companies: CompanyInput[] }
   | { type: "filing"; ticker: string; filing: NonNullable<CompanyInput["filing"]> }
   | { type: "component"; component: Component }
   | { type: "page"; html: string }
-  | { type: "done"; cached: boolean }
+  | { type: "done"; cached: boolean; featured?: boolean }
   | { type: "error"; message: string }
   | { type: "heartbeat" };
 

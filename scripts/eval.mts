@@ -16,8 +16,8 @@ import type { CompanyInput } from "../agent/prompt.ts";
 import { generateComparison, type Backend, type Usage } from "../agent/run.ts";
 import { defaultBackend } from "../lib/compare.ts";
 import { CASES, caseId } from "../evals/cases.ts";
-import { checkComponents, checkLens, checkNotReported, checkNumbers, checkQuotes, componentProse, type CheckName, type Finding } from "../evals/checks.ts";
-import { renderPage } from "../evals/render.ts";
+import type { CheckName, Finding } from "../evals/checks.ts";
+import { scoreOutput } from "../evals/score.ts";
 
 const MODELS = { opus: "claude-opus-5-5", sonnet: "claude-sonnet-5-5" } as const;
 const MODES = ["components", "freeform"] as const;
@@ -83,20 +83,7 @@ async function generate(id: string, c: (typeof CASES)[number], mode: Mode, compa
 
 async function score(run: Run, c: (typeof CASES)[number], companies: CompanyInput[], browser: Browser) {
   if (run.error) return { findings: [] as Finding[], numbers: 0, quotes: 0 };
-  let prose: string[];
-  const findings: Finding[] = [];
-  if (run.html) {
-    const page = await renderPage(browser, run.html);
-    findings.push(...page.findings);
-    prose = [page.text];
-  } else {
-    findings.push(...checkComponents(run.components!, companies), ...checkLens(c.lens, run.components!, companies));
-    prose = componentProse(run.components!);
-  }
-  const numbers = checkNumbers(prose, companies);
-  const quotes = checkQuotes(prose, companies);
-  findings.push(...numbers.findings, ...quotes.findings, ...checkNotReported(prose, companies));
-  return { findings, numbers: numbers.checked, quotes: quotes.checked };
+  return scoreOutput(run.html ? { html: run.html } : { components: run.components! }, c.lens, companies, browser);
 }
 
 fs.mkdirSync(outDir, { recursive: true });

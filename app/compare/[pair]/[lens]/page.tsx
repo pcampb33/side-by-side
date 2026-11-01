@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { parsePair } from "@/lib/compare-url";
 import { findTicker, getFinancials, getProfile } from "@/lib/data";
+import { findFeatured } from "@/lib/featured";
 import { findLens } from "@/lib/lenses";
 import { NoAnnualDataError } from "@/lib/normalize/normalize";
 import { CompanyHeader } from "./company-header";
@@ -23,21 +24,10 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
   const tickers = parsePair(pair);
   const lens = findLens(lensSlug);
   if (!tickers || !lens) notFound();
-  const entries = await Promise.all(tickers.map((t) => findTicker(t)));
-  const companies = await Promise.all(
-    entries.map(async (entry) => {
-      if (!entry) notFound();
-      const [profile, financials] = await Promise.all([
-        getProfile(entry.cik),
-        // No 10-K data is a fact about the filer (e.g. a 20-F filer), not a failure.
-        getFinancials(entry.cik).catch((err) => {
-          if (err instanceof NoAnnualDataError) return null;
-          throw err;
-        }),
-      ]);
-      return { entry, profile, financials };
-    }),
-  );
+  const featured = findFeatured(tickers, lens.slug);
+  const companies = featured
+    ? featured.companies.map((c) => ({ entry: { cik: c.financials.cik, ticker: c.ticker, name: c.name }, profile: c.profile, financials: c.financials }))
+    : await loadCompanies(tickers);
 
   return (
     <>
@@ -63,6 +53,24 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
         </section>
       )}
     </>
+  );
+}
+
+async function loadCompanies(tickers: [string, string]) {
+  const entries = await Promise.all(tickers.map((t) => findTicker(t)));
+  return Promise.all(
+    entries.map(async (entry) => {
+      if (!entry) notFound();
+      const [profile, financials] = await Promise.all([
+        getProfile(entry.cik),
+        // No 10-K data is a fact about the filer (e.g. a 20-F filer), not a failure.
+        getFinancials(entry.cik).catch((err) => {
+          if (err instanceof NoAnnualDataError) return null;
+          throw err;
+        }),
+      ]);
+      return { entry, profile, financials };
+    }),
   );
 }
 

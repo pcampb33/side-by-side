@@ -11,7 +11,8 @@
     "test": "vitest run",
     "fixtures:sec": "node --env-file-if-exists=.env.local scripts/refresh-sec-fixtures.mts",
     "eval:fixtures": "node --env-file-if-exists=.env.local scripts/eval-fixtures.mts",
-    "eval": "node --env-file-if-exists=.env.local scripts/eval.mts"
+    "eval": "node --env-file-if-exists=.env.local scripts/eval.mts",
+    "featured": "node --env-file-if-exists=.env.local scripts/featured.mts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "3.0.132",

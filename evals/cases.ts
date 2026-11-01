@@ -1,14 +1,18 @@
 import type { LensSlug } from "../lib/lenses.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
 
-// What the evals generate: the featured comparisons (SPEC §1), each in its
-// own lens, plus one awkward filer. Tickers in canonical (alphabetical) order.
-export const CASES: { tickers: [string, string]; lens: LensSlug }[] = [
+// The featured comparisons (SPEC §1, npm run featured), each in its own lens,
+// and what the evals generate: those plus one awkward filer. Tickers in
+// canonical (alphabetical) order.
+export const FEATURED: { tickers: [string, string]; lens: LensSlug }[] = [
   { tickers: ["AMD", "NVDA"], lens: "growth" },
   { tickers: ["KO", "PEP"], lens: "profitability" },
   { tickers: ["F", "GM"], lens: "balance-sheet-risk" },
   { tickers: ["AAPL", "MSFT"], lens: "risk-exposure" },
   { tickers: ["GOOGL", "META"], lens: "where-they-compete" },
+];
+export const CASES: { tickers: [string, string]; lens: LensSlug }[] = [
+  ...FEATURED,
   // A bank: no gross profit, so no gross margin or cost breakdown.
   { tickers: ["AAPL", "JPM"], lens: "profitability" },
 ];

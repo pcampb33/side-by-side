@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { runComparison, type CompareEvent } from "@/lib/compare";
 import { MODES, parsePair } from "@/lib/compare-url";
+import { featuredEvents, findFeatured } from "@/lib/featured";
 import { findLens } from "@/lib/lenses";
 
 // A freeform page or an uncached text lens takes up to ~100 seconds; Hobby
@@ -17,6 +18,11 @@ export async function POST(request: Request) {
   if (!parsed.success || !tickers || !lens || tickers.join() !== [...tickers].sort().join()) {
     return Response.json({ error: "Expected { pair: 'AAPL-vs-MSFT', lens, mode?, regenerate? } with the pair in alphabetical order." }, { status: 400 });
   }
+
+  const headers = { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" };
+  // A featured comparison is fixed: served as committed, Regenerate or not.
+  const featured = findFeatured(tickers, lens.slug);
+  if (featured) return new Response(featuredEvents(featured, parsed.data.mode).map((e) => JSON.stringify(e) + "\n").join(""), { headers });
 
   // The client going away (including React strict mode's double mount in
   // development) aborts the model run.
@@ -35,5 +41,5 @@ export async function POST(request: Request) {
     },
     cancel: () => abort.abort(),
   });
-  return new Response(stream, { headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" } });
+  return new Response(stream, { headers });
 }

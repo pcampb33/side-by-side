@@ -1,0 +1,3423 @@
+{
+ "tickers": [
+  "AAPL",
+  "MSFT"
+ ],
+ "lens": "risk-exposure",
+ "model": "claude-sonnet-5-5",
+ "generatedAt": "2026-11-01",
+ "companies": [
+  {
+   "ticker": "AAPL",
+   "name": "Apple Inc.",
+   "financials": {
+    "cik": 320193,
+    "name": "Apple Inc.",
+    "fiscalYears": [
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "periodEnds": [
+     "2021-09-25",
+     "2022-09-24",
+     "2023-09-30",
+     "2024-09-28",
+     "2025-09-27"
+    ],
+    "metrics": {
+     "revenue": [
+      {
+       "status": "reported",
+       "value": 365817000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 394328000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 383285000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 391035000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 416161000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      }
+     ],
+     "grossProfit": [
+      {
+       "status": "reported",
+       "value": 152836000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 170782000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 169148000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 180683000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 195201000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "GrossProfit"
+        }
+       ]
+      }
+     ],
+     "operatingIncome": [
+      {
+       "status": "reported",
+       "value": 108949000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 119437000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 114301000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 123216000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 133050000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      }
+     ],
+     "netIncome": [
+      {
+       "status": "reported",
+       "value": 94680000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 99803000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 96995000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 93736000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 112010000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      }
+     ],
+     "rnd": [
+      {
+       "status": "reported",
+       "value": 21914000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 26251000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 29915000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 31370000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 34550000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      }
+     ],
+     "cash": [
+      {
+       "status": "reported",
+       "value": 34940000000,
+       "sources": [
+        {
+         "accn": "0000320193-22-000108",
+         "form": "10-K",
+         "filingFy": 2022,
+         "filed": "2022-10-28",
+         "periodEnd": "2021-09-25",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 23646000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2022-09-24",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 29965000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2023-09-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 29943000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 35934000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      }
+     ],
+     "totalAssets": [
+      {
+       "status": "reported",
+       "value": 351002000000,
+       "sources": [
+        {
+         "accn": "0000320193-22-000108",
+         "form": "10-K",
+         "filingFy": 2022,
+         "filed": "2022-10-28",
+         "periodEnd": "2021-09-25",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 352755000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2022-09-24",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 352583000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2023-09-30",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 364980000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 359241000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "Assets"
+        }
+       ]
+      }
+     ],
+     "totalLiabilities": [
+      {
+       "status": "reported",
+       "value": 287912000000,
+       "sources": [
+        {
+         "accn": "0000320193-22-000108",
+         "form": "10-K",
+         "filingFy": 2022,
+         "filed": "2022-10-28",
+         "periodEnd": "2021-09-25",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 302083000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2022-09-24",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 290437000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2023-09-30",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 308030000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 285508000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "Liabilities"
+        }
+       ]
+      }
+     ],
+     "longTermDebt": [
+      {
+       "status": "reported",
+       "value": 109106000000,
+       "sources": [
+        {
+         "accn": "0000320193-22-000108",
+         "form": "10-K",
+         "filingFy": 2022,
+         "filed": "2022-10-28",
+         "periodEnd": "2021-09-25",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 98959000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2022-09-24",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 95281000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2023-09-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 85750000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 78328000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      }
+     ],
+     "equity": [
+      {
+       "status": "reported",
+       "value": 63090000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2021-09-25",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 50672000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2022-09-24",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 62146000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 56950000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 73733000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      }
+     ],
+     "operatingCashFlow": [
+      {
+       "status": "reported",
+       "value": 104038000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 122151000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 110543000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 118254000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 111482000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      }
+     ],
+     "capex": [
+      {
+       "status": "reported",
+       "value": 11085000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 10708000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 10959000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 9447000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 12715000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      }
+     ],
+     "dividendsPaid": [
+      {
+       "status": "reported",
+       "value": 14467000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "PaymentsOfDividends"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 14841000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "PaymentsOfDividends"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15025000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "PaymentsOfDividends"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15234000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "PaymentsOfDividends"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15421000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "PaymentsOfDividends"
+        }
+       ]
+      }
+     ],
+     "buybacks": [
+      {
+       "status": "reported",
+       "value": 85971000000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 89402000000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 77550000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 94949000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 90711000000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      }
+     ],
+     "dilutedEps": [
+      {
+       "status": "reported",
+       "value": 5.61,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2021-09-25",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 6.11,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2022-09-24",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 6.13,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2023-09-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 6.08,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 7.46,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      }
+     ],
+     "sharesOutstanding": [
+      {
+       "status": "reported",
+       "value": 16426786000,
+       "sources": [
+        {
+         "accn": "0000320193-22-000108",
+         "form": "10-K",
+         "filingFy": 2022,
+         "filed": "2022-10-28",
+         "periodEnd": "2021-09-25",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15943425000,
+       "sources": [
+        {
+         "accn": "0000320193-23-000106",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-11-03",
+         "periodEnd": "2022-09-24",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15550061000,
+       "sources": [
+        {
+         "accn": "0000320193-24-000123",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-11-01",
+         "periodEnd": "2023-09-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 15116786000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2024-09-28",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 14773260000,
+       "sources": [
+        {
+         "accn": "0000320193-25-000079",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-10-31",
+         "periodEnd": "2025-09-27",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      }
+     ]
+    },
+    "derived": {
+     "grossMargin": [
+      {
+       "status": "computed",
+       "value": 0.4177935962516778
+      },
+      {
+       "status": "computed",
+       "value": 0.43309630561360085
+      },
+      {
+       "status": "computed",
+       "value": 0.4413112957720756
+      },
+      {
+       "status": "computed",
+       "value": 0.4620634981523393
+      },
+      {
+       "status": "computed",
+       "value": 0.4690516410716045
+      }
+     ],
+     "operatingMargin": [
+      {
+       "status": "computed",
+       "value": 0.29782377527561593
+      },
+      {
+       "status": "computed",
+       "value": 0.30288744395528594
+      },
+      {
+       "status": "computed",
+       "value": 0.2982141226502472
+      },
+      {
+       "status": "computed",
+       "value": 0.31510222870075566
+      },
+      {
+       "status": "computed",
+       "value": 0.31970799762591884
+      }
+     ],
+     "netMargin": [
+      {
+       "status": "computed",
+       "value": 0.2588179335569424
+      },
+      {
+       "status": "computed",
+       "value": 0.2530964070519973
+      },
+      {
+       "status": "computed",
+       "value": 0.2530623426432028
+      },
+      {
+       "status": "computed",
+       "value": 0.23971255769943867
+      },
+      {
+       "status": "computed",
+       "value": 0.2691506412181824
+      }
+     ],
+     "revenueGrowth": [
+      {
+       "status": "computed",
+       "value": 0.33259384733074693
+      },
+      {
+       "status": "computed",
+       "value": 0.07793787604184606
+      },
+      {
+       "status": "computed",
+       "value": -0.028004605303199367
+      },
+      {
+       "status": "computed",
+       "value": 0.020219940775141214
+      },
+      {
+       "status": "computed",
+       "value": 0.0642551178283274
+      }
+     ],
+     "freeCashFlow": [
+      {
+       "status": "computed",
+       "value": 92953000000
+      },
+      {
+       "status": "computed",
+       "value": 111443000000
+      },
+      {
+       "status": "computed",
+       "value": 99584000000
+      },
+      {
+       "status": "computed",
+       "value": 108807000000
+      },
+      {
+       "status": "computed",
+       "value": 98767000000
+      }
+     ],
+     "debtToEquity": [
+      {
+       "status": "computed",
+       "value": 1.729370740212395
+      },
+      {
+       "status": "computed",
+       "value": 1.9529325860435744
+      },
+      {
+       "status": "computed",
+       "value": 1.53317993112992
+      },
+      {
+       "status": "computed",
+       "value": 1.5057067603160668
+      },
+      {
+       "status": "computed",
+       "value": 1.0623194499070971
+      }
+     ],
+     "rndToRevenue": [
+      {
+       "status": "computed",
+       "value": 0.059904269074427925
+      },
+      {
+       "status": "computed",
+       "value": 0.06657148363798665
+      },
+      {
+       "status": "computed",
+       "value": 0.07804897139204509
+      },
+      {
+       "status": "computed",
+       "value": 0.08022299794136074
+      },
+      {
+       "status": "computed",
+       "value": 0.08302075398703868
+      }
+     ],
+     "cashRunwayYears": [
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      }
+     ]
+    }
+   },
+   "filing": {
+    "report": {
+     "accn": "0000320193-25-000079",
+     "filed": "2025-10-31",
+     "periodEnd": "2025-09-27",
+     "document": "aapl-20250927.htm"
+    },
+    "overview": "Apple designs, manufactures and markets smartphones, personal computers, tablets, wearables and accessories, and sells a range of related services. It sells through retail and online stores, a direct sales force, and indirect channels such as carriers and resellers.",
+    "areas": [
+     {
+      "id": "a1",
+      "name": "iPhone",
+      "description": "Smartphones based on iOS, including iPhone 17 Pro, iPhone Air, iPhone 17, iPhone 16 and iPhone 16e. The filing names Android as a competing platform for smartphones.",
+      "quotes": [
+       {
+        "text": "iPhone® is the Company’s line of smartphones based on its iOS operating system.",
+        "section": "Item 1"
+       },
+       {
+        "text": "such as Android for smartphones and tablets, Windows for personal computers and tablets, and PlayStation, Nintendo and Xbox for gaming platforms",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "a2",
+      "name": "Mac",
+      "description": "Personal computers based on macOS, including MacBook Air and MacBook Pro laptops and iMac, Mac mini, Mac Studio and Mac Pro desktops. The filing names Windows as a competing platform for personal computers.",
+      "quotes": [
+       {
+        "text": "Mac® is the Company’s line of personal computers based on its macOS® operating system.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Windows for personal computers and tablets",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "a3",
+      "name": "iPad",
+      "description": "Multipurpose tablets based on iPadOS, including iPad Pro, iPad Air, iPad and iPad mini. The filing names Android and Windows as competing platforms for tablets.",
+      "quotes": [
+       {
+        "text": "iPad® is the Company’s line of multipurpose tablets based on its iPadOS® operating system.",
+        "section": "Item 1"
+       },
+       {
+        "text": "such as Android for smartphones and tablets, Windows for personal computers and tablets",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "a4",
+      "name": "Wearables, Home and Accessories",
+      "description": "Apple Watch, AirPods and Beats headphones, Apple Vision Pro, Apple TV 4K, HomePod speakers and accessories. The filing says it has a minority share of the wearables market.",
+      "quotes": [
+       {
+        "text": "Wearables includes smartwatches, wireless headphones and spatial computers.",
+        "section": "Item 1"
+       },
+       {
+        "text": "The Company has a minority market share in the global smartphone, personal computer, tablet and wearables markets",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a5",
+      "name": "Services",
+      "description": "Advertising, AppleCare, cloud services, digital content such as the App Store and Apple Music, and payment services. The filing says it earns licensing revenue from Google for search on its platforms.",
+      "quotes": [
+       {
+        "text": "The Company’s advertising services include third-party licensing arrangements and the Company’s own advertising platforms.",
+        "section": "Item 1"
+       },
+       {
+        "text": "the Company earns revenue from licensing arrangements with Google LLC (“Google”) and other companies to offer their search services on the Company’s platforms and applications",
+        "section": "Item 1A"
+       }
+      ]
+     }
+    ],
+    "risks": [
+     {
+      "id": "r1",
+      "theme": "Global competition and pricing",
+      "summary": "Markets are highly competitive, with aggressive price competition and pressure on gross margins. Competitors with large installed bases and low-cost structures may copy features or sell at little or no profit.",
+      "quotes": [
+       {
+        "text": "The markets for the Company’s products and services are highly competitive and are characterized by aggressive price competition, downward pressure on gross margins, continual improvement in product performance, and price sensitivity on the part of consumers and businesses.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Certain competitors have the resources, experience or cost structures to provide products and services at little or no profit or even at a loss.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "r2",
+      "theme": "Trade, tariffs and geopolitics",
+      "summary": "Tariffs, trade restrictions, geopolitical tension and retaliatory measures could raise costs, limit availability of products and components, and force supply chain changes, particularly given concentrated manufacturing in Asia.",
+      "quotes": [
+       {
+        "text": "Restrictive measures can increase the cost or limit the availability of the Company’s products and the components and rare earths and other raw materials that go into them.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Beginning in the second quarter of 2025, new tariffs were announced on imports to the U.S. (“U.S. Tariffs”), including additional tariffs on imports from China, India, Japan, South Korea, Taiwan, Vietnam and the European Union (“EU”), among others.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r3",
+      "theme": "Outsourced manufacturing and supply",
+      "summary": "Most hardware is assembled by outsourcing partners primarily in Asia, and many components come from single or limited sources, creating shortage, pricing and capacity risks.",
+      "quotes": [
+       {
+        "text": "The Company relies on single-source partners in the U.S., Asia and Europe to supply and manufacture many components, and on partners primarily located in Asia, for final assembly of substantially all of the Company’s hardware products.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Because the Company currently obtains certain components from single or limited sources, the Company is subject to significant supply and pricing risks.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r4",
+      "theme": "Dependence on single product category",
+      "summary": "A significant portion of net sales comes from one product category, so a drop in demand for that product could significantly affect net sales and gross margins.",
+      "quotes": [
+       {
+        "text": "Further, the Company generates a significant portion of its net sales from a single product category and a decline in demand for that product could significantly impact net sales and gross margins.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r5",
+      "theme": "Antitrust and regulation of app store and search",
+      "summary": "Antitrust suits, investigations and the EU Digital Markets Act could force changes to App Store terms and revenue. A Google search-licensing remedy could reduce the company's search-related revenue.",
+      "quotes": [
+       {
+        "text": "If such investigations or litigation are resolved against the Company, the Company can be exposed to significant fines and may be required to make further changes to its business practices, all of which could materially adversely affect the Company’s business, reputation, results of operations, financial condition and stock price.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "A reversal of the order on appeal could result in imposition of certain remedies initially proposed by the DOJ, such as those prohibiting Google from offering the Company commercial terms for search distribution.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r6",
+      "theme": "Cybersecurity and data privacy",
+      "summary": "The company is a frequent target of cyberattacks and must protect large volumes of personal and health data. Breaches or privacy-law noncompliance could bring penalties, litigation and reputational harm.",
+      "quotes": [
+       {
+        "text": "The Company experiences malicious attacks and other attempts to gain unauthorized access to its systems on a regular basis.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "the Company is at a relatively greater risk of being targeted because of its high profile and the value of the confidential information it creates, owns, manages, stores and processes.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r7",
+      "theme": "Third-party software and content",
+      "summary": "Customers' purchase decisions depend partly on third-party apps, and developers may favor competing platforms. Licensed digital content may not be renewed on acceptable terms.",
+      "quotes": [
+       {
+        "text": "The Company believes decisions by customers to purchase its hardware products depend in part on the availability of third-party software applications and services.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "The licensing or other distribution arrangements for this content can be for relatively short time periods and do not guarantee the continuation or renewal of these arrangements on commercially reasonable terms, or at all.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r8",
+      "theme": "Intellectual property and licensing",
+      "summary": "Products may be alleged to infringe third-party patents, and necessary licenses may not be available on reasonable terms. The company faces frequent patent claims, including in AI-related areas.",
+      "quotes": [
+       {
+        "text": "The Company is not always able to obtain all necessary licenses to third-party intellectual property rights on commercially reasonable terms or at all.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "The Company has faced and continues to face a significant number of patent claims relating to its standards-enabled products, and new claims may arise in the future",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r9",
+      "theme": "Product defects and quality",
+      "summary": "Complex hardware and software may contain defects, outages or safety issues. These could lead to recalls, warranty costs, liability claims and harm to reputation.",
+      "quotes": [
+       {
+        "text": "The Company offers complex hardware and software products and services that can be affected by design and manufacturing defects.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "In addition, the Company can be exposed to product liability claims, recalls, product replacements or modifications, write-offs of inventory, property, plant and equipment or intangible assets, and significant warranty and other expenses, including litigation costs and regulatory fines.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r10",
+      "theme": "Foreign exchange and tax",
+      "summary": "Most sales are made outside the U.S., so currency movements affect demand, pricing and margins. Changes in tax law or tax examinations could also increase tax costs.",
+      "quotes": [
+       {
+        "text": "The Company’s primary exposure to movements in foreign exchange rates relates to non–U.S. dollar–denominated sales, cost of sales and operating expenses worldwide.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "The Company is subject to changes in tax rates, the adoption of new U.S. or international tax legislation and exposure to additional tax liabilities.",
+        "section": "Item 1A"
+       }
+      ]
+     }
+    ],
+    "droppedQuotes": 0,
+    "fiscalYear": 2025
+   },
+   "profile": {
+    "cik": 320193,
+    "tickers": [
+     {
+      "ticker": "AAPL",
+      "exchange": "Nasdaq"
+     }
+    ],
+    "industry": "Electronic Computers",
+    "fiscalYearEndMonth": 9,
+    "incorporatedIn": "CA",
+    "headquarters": "Cupertino, CA"
+   }
+  },
+  {
+   "ticker": "MSFT",
+   "name": "Microsoft Corp",
+   "financials": {
+    "cik": 789019,
+    "name": "MICROSOFT CORPORATION",
+    "fiscalYears": [
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "periodEnds": [
+     "2022-06-30",
+     "2023-06-30",
+     "2024-06-30",
+     "2025-06-30",
+     "2026-06-30"
+    ],
+    "metrics": {
+     "revenue": [
+      {
+       "status": "reported",
+       "value": 198270000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 211915000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 245122000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 281724000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 331839000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+       ]
+      }
+     ],
+     "grossProfit": [
+      {
+       "status": "reported",
+       "value": 135620000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 146052000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 171008000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 193893000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 225465000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "GrossProfit"
+        }
+       ]
+      }
+     ],
+     "operatingIncome": [
+      {
+       "status": "reported",
+       "value": 83383000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 88523000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 109433000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 128528000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 155237000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "OperatingIncomeLoss"
+        }
+       ]
+      }
+     ],
+     "netIncome": [
+      {
+       "status": "reported",
+       "value": 72738000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 72361000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 88136000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 101832000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 133749000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "NetIncomeLoss"
+        }
+       ]
+      }
+     ],
+     "rnd": [
+      {
+       "status": "reported",
+       "value": 24512000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 27195000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 29510000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 32488000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 35562000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "ResearchAndDevelopmentExpense"
+        }
+       ]
+      }
+     ],
+     "cash": [
+      {
+       "status": "reported",
+       "value": 13931000000,
+       "sources": [
+        {
+         "accn": "0000950170-23-035122",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-07-27",
+         "periodEnd": "2022-06-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 34704000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 18315000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2024-06-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 30242000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 20935000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "CashAndCashEquivalentsAtCarryingValue"
+        }
+       ]
+      }
+     ],
+     "totalAssets": [
+      {
+       "status": "reported",
+       "value": 364840000000,
+       "sources": [
+        {
+         "accn": "0000950170-23-035122",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-07-27",
+         "periodEnd": "2022-06-30",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 411976000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 512163000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2024-06-30",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 619003000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "Assets"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 758376000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "Assets"
+        }
+       ]
+      }
+     ],
+     "totalLiabilities": [
+      {
+       "status": "reported",
+       "value": 198298000000,
+       "sources": [
+        {
+         "accn": "0000950170-23-035122",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-07-27",
+         "periodEnd": "2022-06-30",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 205753000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 243686000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2024-06-30",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 275524000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "Liabilities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 315989000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "Liabilities"
+        }
+       ]
+      }
+     ],
+     "longTermDebt": [
+      {
+       "status": "reported",
+       "value": 47032000000,
+       "sources": [
+        {
+         "accn": "0000950170-23-035122",
+         "form": "10-K",
+         "filingFy": 2023,
+         "filed": "2023-07-27",
+         "periodEnd": "2022-06-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 41990000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 42688000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2024-06-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 40152000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 31067000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "LongTermDebtNoncurrent"
+        }
+       ]
+      }
+     ],
+     "equity": [
+      {
+       "status": "reported",
+       "value": 166542000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 206223000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 268477000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 343479000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 442387000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "StockholdersEquity"
+        }
+       ]
+      }
+     ],
+     "operatingCashFlow": [
+      {
+       "status": "reported",
+       "value": 89035000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 87582000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 118548000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 136162000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 182935000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "NetCashProvidedByUsedInOperatingActivities"
+        }
+       ]
+      }
+     ],
+     "capex": [
+      {
+       "status": "reported",
+       "value": 23886000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 28107000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 44477000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 64551000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 115948000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+       ]
+      }
+     ],
+     "dividendsPaid": [
+      {
+       "status": "reported",
+       "value": 18135000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "PaymentsOfDividendsCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 19800000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "PaymentsOfDividendsCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 21771000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "PaymentsOfDividendsCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 24082000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "PaymentsOfDividendsCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 26445000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "PaymentsOfDividendsCommonStock"
+        }
+       ]
+      }
+     ],
+     "buybacks": [
+      {
+       "status": "reported",
+       "value": 32696000000,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 22245000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 17254000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 18420000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 22271000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "PaymentsForRepurchaseOfCommonStock"
+        }
+       ]
+      }
+     ],
+     "dilutedEps": [
+      {
+       "status": "reported",
+       "value": 9.65,
+       "sources": [
+        {
+         "accn": "0000950170-24-087843",
+         "form": "10-K",
+         "filingFy": 2024,
+         "filed": "2024-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 9.68,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2023-06-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 11.8,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 13.64,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 17.95,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "EarningsPerShareDiluted"
+        }
+       ]
+      }
+     ],
+     "sharesOutstanding": [
+      {
+       "status": "reported",
+       "value": 7464000000,
+       "sources": [
+        {
+         "accn": "0000950170-25-100235",
+         "form": "10-K",
+         "filingFy": 2025,
+         "filed": "2025-07-30",
+         "periodEnd": "2022-06-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 7432000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2023-06-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 7434000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2024-06-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 7434000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2025-06-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      },
+      {
+       "status": "reported",
+       "value": 7427000000,
+       "sources": [
+        {
+         "accn": "0001193125-26-323660",
+         "form": "10-K",
+         "filingFy": 2026,
+         "filed": "2026-07-29",
+         "periodEnd": "2026-06-30",
+         "tag": "CommonStockSharesOutstanding"
+        }
+       ]
+      }
+     ]
+    },
+    "derived": {
+     "grossMargin": [
+      {
+       "status": "computed",
+       "value": 0.684016744842891
+      },
+      {
+       "status": "computed",
+       "value": 0.6892008588349102
+      },
+      {
+       "status": "computed",
+       "value": 0.6976444382797138
+      },
+      {
+       "status": "computed",
+       "value": 0.6882374238616519
+      },
+      {
+       "status": "computed",
+       "value": 0.6794409337058032
+      }
+     ],
+     "operatingMargin": [
+      {
+       "status": "computed",
+       "value": 0.4205527815604983
+      },
+      {
+       "status": "computed",
+       "value": 0.417728806361041
+      },
+      {
+       "status": "computed",
+       "value": 0.44644299573273716
+      },
+      {
+       "status": "computed",
+       "value": 0.4562195624085985
+      },
+      {
+       "status": "computed",
+       "value": 0.4678081840892722
+      }
+     ],
+     "netMargin": [
+      {
+       "status": "computed",
+       "value": 0.3668633681343622
+      },
+      {
+       "status": "computed",
+       "value": 0.3414623787839464
+      },
+      {
+       "status": "computed",
+       "value": 0.35955972944084985
+      },
+      {
+       "status": "computed",
+       "value": 0.3614601524896707
+      },
+      {
+       "status": "computed",
+       "value": 0.4030538905915218
+      }
+     ],
+     "revenueGrowth": [
+      {
+       "status": "computed",
+       "value": 0.17956070629670173
+      },
+      {
+       "status": "computed",
+       "value": 0.06882029555656428
+      },
+      {
+       "status": "computed",
+       "value": 0.15669962013071279
+      },
+      {
+       "status": "computed",
+       "value": 0.1493215623240672
+      },
+      {
+       "status": "computed",
+       "value": 0.1778868679984666
+      }
+     ],
+     "freeCashFlow": [
+      {
+       "status": "computed",
+       "value": 65149000000
+      },
+      {
+       "status": "computed",
+       "value": 59475000000
+      },
+      {
+       "status": "computed",
+       "value": 74071000000
+      },
+      {
+       "status": "computed",
+       "value": 71611000000
+      },
+      {
+       "status": "computed",
+       "value": 66987000000
+      }
+     ],
+     "debtToEquity": [
+      {
+       "status": "computed",
+       "value": 0.2824032376217411
+      },
+      {
+       "status": "computed",
+       "value": 0.203614533781392
+      },
+      {
+       "status": "computed",
+       "value": 0.15900058478007428
+      },
+      {
+       "status": "computed",
+       "value": 0.11689797629549405
+      },
+      {
+       "status": "computed",
+       "value": 0.07022584298363198
+      }
+     ],
+     "rndToRevenue": [
+      {
+       "status": "computed",
+       "value": 0.12362939426035205
+      },
+      {
+       "status": "computed",
+       "value": 0.12832975485454073
+      },
+      {
+       "status": "computed",
+       "value": 0.12038903076835208
+      },
+      {
+       "status": "computed",
+       "value": 0.11531853871164686
+      },
+      {
+       "status": "computed",
+       "value": 0.10716642709265638
+      }
+     ],
+     "cashRunwayYears": [
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      },
+      {
+       "status": "not_meaningful"
+      }
+     ]
+    }
+   },
+   "filing": {
+    "report": {
+     "accn": "0001193125-26-323660",
+     "filed": "2026-07-29",
+     "periodEnd": "2026-06-30",
+     "document": "msft-20260630.htm"
+    },
+    "overview": "Microsoft develops and supports software, cloud services, devices, and advertising for individuals and businesses, with a focus on AI, cloud computing, productivity and collaboration, and personal computing. It reports results in three segments: Productivity and Business Processes, Intelligent Cloud, and More Personal Computing.",
+    "areas": [
+     {
+      "id": "a1",
+      "name": "Microsoft 365 Commercial",
+      "description": "AI-powered productivity platform for organizations, combining Office, Windows commercial, Microsoft 365 Copilot, and Enterprise Mobility + Security. Office competitors include global application vendors, web and mobile app companies, and AI-first application companies.",
+      "quotes": [
+       {
+        "text": "Microsoft 365 Commercial is an AI-powered business and productivity solutions platform that brings together Office, Windows, Microsoft 365 Copilot, and Enterprise Mobility + Security to help organizations empower their employees.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Competitors to Office include software and global application vendors, web-based and mobile application companies, AI-first application companies, as well as local application developers.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a2",
+      "name": "Microsoft 365 Consumer",
+      "description": "Personal productivity and creativity products and services for consumers, including consumer subscriptions, Office licensed on-premises, and Outlook.com and OneDrive offerings. The filing does not name specific competitors for this line.",
+      "quotes": [
+       {
+        "text": "Microsoft 365 Consumer is designed to increase personal productivity and creativity through a range of products and services.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a3",
+      "name": "LinkedIn",
+      "description": "Professional network with free services and paid Talent, Marketing, Premium, and Sales Solutions for members, recruiters, and marketers. Named competitors include online professional networks, recruiting and HR services firms, and job boards.",
+      "quotes": [
+       {
+        "text": "LinkedIn connects the world’s professionals to make them more productive and successful and transforms the way companies hire, market, sell, and learn.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a4",
+      "name": "Dynamics",
+      "description": "Cloud and on-premises business applications for financial management, ERP, CRM, and supply chain, plus low code tools such as Power Apps and Power Automate, sold to businesses of all sizes. Competitors are cloud and on-premises business solution providers.",
+      "quotes": [
+       {
+        "text": "Dynamics provides cloud-based and on-premises business solutions for financial management, enterprise resource planning (“ERP”), customer relationship management (“CRM”), and supply chain management, as well as agentic AI and other low code application development platforms, for small and medium businesses, large organizations, and divisions of global enterprises.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Dynamics competes with cloud-based and on-premises business solution providers.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a5",
+      "name": "Azure and server products",
+      "description": "Cloud services for building, deploying, and managing applications and AI workloads, plus on-premises server products such as SQL Server and Windows Server, and GitHub. Azure competes with cloud service providers and open-source offerings.",
+      "quotes": [
+       {
+        "text": "Azure is a comprehensive set of cloud services that offer developers, IT professionals, and enterprises freedom to build, deploy, and manage applications on any platform or device.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Azure faces diverse competition from cloud service providers and open-source offerings.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a6",
+      "name": "Enterprise and partner services",
+      "description": "Consulting-style support that helps customers develop, deploy, and manage Microsoft server and desktop solutions, plus training and certification for developers and IT professionals. Competitors include multinational consulting firms and small niche technology businesses.",
+      "quotes": [
+       {
+        "text": "Enterprise and partner services assist customers in developing, deploying, and managing Microsoft server solutions, Microsoft desktop solutions, and conversational AI and ambient intelligent solutions, along with providing training and certification to developers and IT professionals on various Microsoft products.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Our Enterprise and partner services business competes with a wide range of companies that provide strategy and business planning, application development, and infrastructure services, including multinational consulting firms and small niche businesses focused on specific technologies.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a7",
+      "name": "Windows and Devices",
+      "description": "Windows licensed mainly through OEMs that pre-install it on devices, plus Surface and PC accessories. Windows faces competition from other software and alternative platforms; devices compete with computer, tablet, and hardware manufacturers.",
+      "quotes": [
+       {
+        "text": "Windows OEM revenue is impacted significantly by the number of Windows operating system licenses purchased by OEMs, which they pre-install on the devices they sell.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Devices face competition from various computer, tablet, and hardware manufacturers who offer a unique combination of high-quality industrial design and innovative technologies across various price points.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a8",
+      "name": "XBOX",
+      "description": "Gaming hardware, first- and third-party games and in-game content, XBOX Game Pass subscriptions, cloud gaming, and advertising across consoles, PCs, mobile, and cloud. Competes with other online gaming ecosystems, game streaming services, and other console platforms.",
+      "quotes": [
+       {
+        "text": "XBOX enables people to connect and share online gaming experiences that are accessible on XBOX consoles, Windows-enabled devices, and other devices.",
+        "section": "Item 1"
+       },
+       {
+        "text": "XBOX and our cloud gaming services face competition from various online gaming ecosystems and game streaming services.",
+        "section": "Item 1"
+       }
+      ]
+     },
+     {
+      "id": "a9",
+      "name": "Search advertising",
+      "description": "Search, native, and display advertising delivered through Bing, Copilot, Microsoft News, Microsoft Edge, and third-party affiliates to a global audience. Competes with search engines and a wide array of websites, social platforms, and portals.",
+      "quotes": [
+       {
+        "text": "Our Search advertising business is designed to deliver relevant search, native, and display advertising to a global audience.",
+        "section": "Item 1"
+       },
+       {
+        "text": "Our Search advertising business competes with search engines, and a wide array of websites, social platforms, and portals that provide content and online offerings to end users.",
+        "section": "Item 1"
+       }
+      ]
+     }
+    ],
+    "risks": [
+     {
+      "id": "r1",
+      "theme": "Competition",
+      "summary": "Low barriers to entry, rival platform ecosystems, vertically integrated competitors, low-cost operating systems, and open-source or free AI and software offerings could reduce sales, prices, and margins.",
+      "quotes": [
+       {
+        "text": "We face intense competition across all markets for our products and services, which could adversely affect our results of operations.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Our AI offerings compete with AI products from hyperscalers, open-source offerings, and frontier model providers, some of which are also current or potential partners.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r2",
+      "theme": "AI investment and returns",
+      "summary": "Large, accelerated capital spending on AI and datacenters may not produce expected revenue, may depend on customer demand and pricing, and may lead to underused capacity or asset impairments.",
+      "quotes": [
+       {
+        "text": "These investments are being made at significant scale and on an accelerated timeline, require substantial and increasing capital expenditures and continued access to capital, and are in advance of fully developed revenue streams.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Overestimation of demand or misalignment of capacity investments may result in underutilization of infrastructure and may lead to impairment of assets on our balance sheet.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r3",
+      "theme": "Cybersecurity",
+      "summary": "Nation-state and criminal attacks have already reached Microsoft systems and data, and AI tools may increase the speed and scale of attacks. Security incidents could harm revenue, reputation, and customer trust.",
+      "quotes": [
+       {
+        "text": "This incident has and may continue to result in harm to our reputation and customer relationships.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Cyber incidents and attacks, individually or in the aggregate, could adversely affect our financial condition, results of operations, competitive position, and reputation, or expose us to legal or regulatory risk.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r4",
+      "theme": "Datacenter power and supply",
+      "summary": "Datacenter growth depends on available land, power, servers, GPUs, and other components from a limited set of suppliers, and shortages or higher energy costs could delay capacity and raise costs.",
+      "quotes": [
+       {
+        "text": "The availability, reliability, and cost of electrical power are critical to the operation and expansion of our datacenters.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "We may experience supply problems. There are limited suppliers for certain critical device and datacenter components, and those items are in short supply.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r5",
+      "theme": "AI risks and reputation",
+      "summary": "AI models may be flawed or produce harmful, inaccurate, or offensive output, which could lead to liability, regulatory action, or reputational harm. Misuse of Microsoft platforms by customers or bad actors is also a concern.",
+      "quotes": [
+       {
+        "text": "Issues in the development, deployment, and use of AI may result in reputational or competitive harm or liability.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Content generated by AI systems may be offensive, illegal, inaccurate, or otherwise harmful.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r6",
+      "theme": "Regulation and government scrutiny",
+      "summary": "Competition, AI, data privacy, cybersecurity, and ESG laws are changing and sometimes conflict across jurisdictions, which could raise costs, restrict products, or lead to fines. Government contracts add audit and funding risks.",
+      "quotes": [
+       {
+        "text": "For example, the EU’s AI Act may increase costs or impact the provision or operation of our AI models and services in the European market.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Government agencies closely scrutinize us under U.S. and foreign competition laws.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r7",
+      "theme": "Trade, export controls, and geopolitics",
+      "summary": "Tariffs, export controls on AI, sanctions, and armed conflicts create operating cost and supply uncertainty, and may limit sales in some markets.",
+      "quotes": [
+       {
+        "text": "U.S. tariffs, shifting AI export controls policies, and disagreements among governments on sanctions policies toward third countries, has and may continue to increase operational costs, create uncertainty in the continuity of our products, and accelerate sovereignty initiatives among international partners and customers.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r8",
+      "theme": "Tax audits",
+      "summary": "Microsoft is under IRS audit for prior years, and the IRS has proposed a large additional payment tied mainly to intercompany transfer pricing. Tax rules and global minimum tax changes could also raise its tax expense.",
+      "quotes": [
+       {
+        "text": "In the NOPAs, the IRS is seeking an additional tax payment of $28.9 billion plus penalties and interest.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "We may recognize additional tax expense and be subject to additional tax liabilities due to changes in tax laws, regulations, and administrative practices and principles, including changes to the global tax framework, in various jurisdictions.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r9",
+      "theme": "Intellectual property",
+      "summary": "Microsoft faces infringement claims, including those tied to AI training and outputs, and may have to pay settlements, royalties, or redesign products. Protecting its own IP and source code is also difficult.",
+      "quotes": [
+       {
+        "text": "From time to time, others claim we infringe their intellectual property rights, including current copyright infringement and other claims arising from AI training, inference, and output.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Unauthorized access to or disclosure of source code or other intellectual property may negatively impact future trade secret protection for that intellectual property.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r10",
+      "theme": "Investments and acquisitions",
+      "summary": "New products, acquisitions, joint ventures, and partnerships, including with OpenAI, may not produce expected returns, may require impairment charges, and may be hard to integrate.",
+      "quotes": [
+       {
+        "text": "We make significant investments in products and services that may not achieve expected returns.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "We have recorded, and may in the future be required to record, a significant charge in our consolidated financial statements during the period in which any impairment of our goodwill or amortizable intangible assets is determined, negatively affecting our results of operations.",
+        "section": "Item 1A"
+       }
+      ]
+     },
+     {
+      "id": "r11",
+      "theme": "Talent",
+      "summary": "Competition for skilled workers, immigration limits, and succession gaps could hinder product development. Rising unionization is a cost risk.",
+      "quotes": [
+       {
+        "text": "Our business depends on our ability to attract and retain talented employees.",
+        "section": "Item 1A"
+       },
+       {
+        "text": "Restraints on the flow of technical and professional talent, including those derived from changes to U.S. immigration policies or laws, may inhibit our ability to adequately staff our research and development efforts.",
+        "section": "Item 1A"
+       }
+      ]
+     }
+    ],
+    "droppedQuotes": 1,
+    "fiscalYear": 2026
+   },
+   "profile": {
+    "cik": 789019,
+    "tickers": [
+     {
+      "ticker": "MSFT",
+      "exchange": "Nasdaq"
+     }
+    ],
+    "industry": "Services-Prepackaged Software",
+    "fiscalYearEndMonth": 6,
+    "incorporatedIn": "WA",
+    "headquarters": "Redmond, WA"
+   }
+  }
+ ],
+ "components": [
+  {
+   "name": "trend_line",
+   "input": {
+    "title": "Capital expenditure over five years",
+    "key": "capex",
+    "caption": "Context for Microsoft's AI and datacenter investment risk."
+   }
+  },
+  {
+   "name": "trend_line",
+   "input": {
+    "title": "Long-term debt over five years",
+    "key": "longTermDebt"
+   }
+  },
+  {
+   "name": "grouped_bars",
+   "input": {
+    "title": "Gross margin and R&D share of revenue",
+    "keys": [
+     "grossMargin",
+     "rndToRevenue"
+    ],
+    "year": "latest",
+    "caption": "Margin context for the pricing-pressure and competition risks both name."
+   }
+  },
+  {
+   "name": "risk_themes",
+   "input": {
+    "title": "Risk themes: what each company names",
+    "rows": [
+     {
+      "label": "Competition and pricing",
+      "icon": "competition",
+      "refs": [
+       "AAPL-r1",
+       "MSFT-r1"
+      ]
+     },
+     {
+      "label": "Trade, tariffs and geopolitics",
+      "icon": "trade",
+      "refs": [
+       "AAPL-r2",
+       "MSFT-r7"
+      ]
+     },
+     {
+      "label": "Cybersecurity and privacy",
+      "icon": "security",
+      "refs": [
+       "AAPL-r6",
+       "MSFT-r3"
+      ]
+     },
+     {
+      "label": "Regulation and antitrust",
+      "icon": "regulation",
+      "refs": [
+       "AAPL-r5",
+       "MSFT-r6"
+      ]
+     },
+     {
+      "label": "Intellectual property claims",
+      "icon": "intellectual-property",
+      "refs": [
+       "AAPL-r8",
+       "MSFT-r9"
+      ]
+     },
+     {
+      "label": "Tax and currency",
+      "icon": "tax",
+      "refs": [
+       "AAPL-r10",
+       "MSFT-r8"
+      ]
+     },
+     {
+      "label": "Supply and component sourcing",
+      "icon": "supply-chain",
+      "refs": [
+       "AAPL-r3",
+       "MSFT-r4"
+      ]
+     },
+     {
+      "label": "AI investment and AI conduct",
+      "icon": "ai",
+      "refs": [
+       "MSFT-r2",
+       "MSFT-r5"
+      ]
+     },
+     {
+      "label": "Product concentration",
+      "icon": "devices",
+      "refs": [
+       "AAPL-r4"
+      ]
+     },
+     {
+      "label": "Product defects and quality",
+      "icon": "quality",
+      "refs": [
+       "AAPL-r9"
+      ]
+     },
+     {
+      "label": "Third-party software and content",
+      "icon": "software",
+      "refs": [
+       "AAPL-r7"
+      ]
+     },
+     {
+      "label": "Investments, acquisitions, partnerships",
+      "icon": "partnerships",
+      "refs": [
+       "MSFT-r10"
+      ]
+     },
+     {
+      "label": "Talent and labor",
+      "icon": "people",
+      "refs": [
+       "MSFT-r11"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "takeaways",
+   "input": {
+    "items": [
+     "Both companies name competition, trade and geopolitics, cybersecurity, regulation, intellectual property and tax as risks.",
+     "Apple's risks center on hardware: outsourced manufacturing mainly in Asia, single or limited-source components, dependence on one product category, and product defects.",
+     "Microsoft's risks center on AI and cloud: accelerated AI and datacenter spending, datacenter power and supply, and AI output and misuse. Capital expenditure rose from $23.9B in FY2022 to $115.9B in FY2026.",
+     "Apple alone names App Store and search-licensing regulation, third-party apps and content, and currency effects. Microsoft alone names talent, and investments and partnerships including OpenAI.",
+     "Long-term debt to equity was 1.06× for Apple in FY2025 and 0.07× for Microsoft in FY2026. Apple's long-term debt fell from $109.1B to $78.3B over five years."
+    ]
+   }
+  }
+ ],
+ "html": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>AAPL vs MSFT: stated risks</title>\n<style>\n*{box-sizing:border-box}\nbody{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.45}\nmain{max-width:1000px;margin:0 auto;padding:20px 16px 40px}\nh1,h2{font-family:var(--font-serif);font-weight:600;margin:0}\nh1{font-size:1.6rem;margin-bottom:6px}\nh2{font-size:1.2rem;margin-bottom:4px}\np{margin:0 0 8px}\n.muted{color:var(--muted);font-size:.9rem}\n.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px;margin-top:16px;min-width:0}\n.key{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 0;font-size:.9rem}\n.key span{display:inline-flex;align-items:center;gap:6px}\n.dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none}\n.a{background:var(--series-a)}.b{background:var(--series-b)}\n.btns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}\nbutton{font:inherit;font-size:.85rem;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:5px 12px;cursor:pointer}\nbutton[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}\n.scroll{overflow-x:auto;min-width:0}\ntable{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}\nth,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--rule);vertical-align:top}\nth{font-size:.78rem;color:var(--muted);font-weight:600}\ntd.c{display:table-cell}\n.cell{display:flex;gap:7px;align-items:flex-start}\n.cell .dot{margin-top:5px}\n.none{color:var(--muted)}\n.tag{font-size:.72rem;border:1px solid var(--rule);border-radius:4px;padding:1px 6px;color:var(--muted);white-space:nowrap}\ntr.row{animation:in .35s ease both}\n@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}\n.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}\n.grid>div{min-width:0}\n@media(max-width:700px){.grid{grid-template-columns:1fr}}\nsvg{display:block;width:100%;height:auto}\nsvg text{fill:var(--muted);font-family:var(--font-sans);font-size:11px}\ndetails{margin-top:10px;font-size:.88rem}\nsummary{cursor:pointer;color:var(--accent)}\nblockquote{margin:8px 0;padding-left:10px;border-left:3px solid var(--rule);color:var(--muted)}\nol{padding-left:20px;margin:8px 0}li{margin-bottom:6px}\n@media(prefers-reduced-motion:reduce){tr.row{animation:none}.ln{transition:none!important}}\n</style></head><body><main>\n<h1>Stated risks: Apple vs Microsoft</h1>\n<p>Which risk subjects each company's 10-K names, where they overlap, and where each stands alone.</p>\n<div class=\"key\"><span><i class=\"dot a\"></i>Apple (AAPL), FY2025 10-K</span><span><i class=\"dot b\"></i>Microsoft (MSFT), FY2026 10-K</span></div>\n\n<section class=\"card\">\n<h2>Risk subjects named</h2>\n<p class=\"muted\">Each row is a subject; the text is the company's own risk theme title.</p>\n<div class=\"btns\" id=\"btns\" role=\"group\" aria-label=\"Filter rows\"></div>\n<div class=\"scroll\"><table><thead><tr><th>Subject</th><th>Apple</th><th>Microsoft</th><th>Named by</th></tr></thead><tbody id=\"tb\"></tbody></table></div>\n<details><summary>How subjects were matched</summary>\n<p class=\"muted\">Themes were grouped by subject, so wording differs. Apple's \"Foreign exchange and tax\" appears under both Tax and Foreign exchange. Apple's \"Outsourced manufacturing and supply\" and Microsoft's \"Datacenter power and supply\" are matched on component supply. Tax is matched on tax-law and audit exposure, though Microsoft's theme centres on an IRS audit.</p></details>\n<details><summary>Quotes behind selected rows (10-K, Item 1A)</summary>\n<blockquote>“In the NOPAs, the IRS is seeking an additional tax payment of $28.9 billion plus penalties and interest.” (MSFT, Item 1A)</blockquote>\n<blockquote>“The Company is subject to changes in tax rates, the adoption of new U.S. or international tax legislation and exposure to additional tax liabilities.” (AAPL, Item 1A)</blockquote>\n<blockquote>“Further, the Company generates a significant portion of its net sales from a single product category and a decline in demand for that product could significantly impact net sales and gross margins.” (AAPL, Item 1A)</blockquote>\n<blockquote>“These investments are being made at significant scale and on an accelerated timeline, require substantial and increasing capital expenditures and continued access to capital, and are in advance of fully developed revenue streams.” (MSFT, Item 1A)</blockquote>\n</details>\n</section>\n\n<section class=\"card\">\n<h2>Financial context</h2>\n<p class=\"muted\">Capital spending and long-term debt over each company's five fiscal years (Apple FY2021–FY2025, Microsoft FY2022–FY2026).</p>\n<div class=\"grid\">\n<div><strong style=\"font-size:.9rem\">Capital expenditure ($B)</strong><div id=\"c1\"></div></div>\n<div><strong style=\"font-size:.9rem\">Long-term debt ($B)</strong><div id=\"c2\"></div></div>\n</div>\n<details><summary>Reading the charts</summary><p class=\"muted\">The x-axis is the position in each company's own five-year series, because fiscal years end on different dates (Apple 09-27, Microsoft 06-30). Capex relates to Microsoft's AI investment and datacenter themes. Debt is shown without latest-year labels since it is in the headline strip.</p></details>\n</section>\n\n<p class=\"muted\" style=\"margin-top:14px\">Source: each company's 10-K filings, Apple FY2021 to FY2025 and Microsoft FY2022 to FY2026. Risk themes are what each filing says, not a view of likelihood.</p>\n\n<section class=\"card\">\n<h2>Takeaways</h2>\n<ol>\n<li>Both filings name competition, trade and geopolitics, cybersecurity, intellectual property, regulation, tax and component supply, though each frames them differently.</li>\n<li>Apple alone lists single-product-category dependence, third-party software and content, product defects and foreign exchange.</li>\n<li>Microsoft alone lists AI investment returns, AI output and reputation, investments and acquisitions, and talent.</li>\n<li>Microsoft's capex rose from $23.9B in FY2022 to $115.9B in FY2026, while Apple's went from $11.1B in FY2021 to $12.7B in FY2025.</li>\n<li>Microsoft's tax theme cites a specific IRS proposal of $28.9 billion; Apple's tax language covers changes in tax law and examinations in general terms.</li>\n</ol>\n<p class=\"muted\">Not financial advice.</p>\n</section>\n</main>\n<script>\nvar R=[\n[\"Competition\",\"Global competition and pricing\",\"Competition\",\"both\"],\n[\"Trade, tariffs, geopolitics\",\"Trade, tariffs and geopolitics\",\"Trade, export controls, and geopolitics\",\"both\"],\n[\"Cybersecurity\",\"Cybersecurity and data privacy\",\"Cybersecurity\",\"both\"],\n[\"Intellectual property\",\"Intellectual property and licensing\",\"Intellectual property\",\"both\"],\n[\"Regulation and antitrust\",\"Antitrust and regulation of app store and search\",\"Regulation and government scrutiny\",\"both\"],\n[\"Tax\",\"Foreign exchange and tax\",\"Tax audits\",\"both\"],\n[\"Component and capacity supply\",\"Outsourced manufacturing and supply\",\"Datacenter power and supply\",\"both\"],\n[\"Single product category\",\"Dependence on single product category\",null,\"a\"],\n[\"Third-party software and content\",\"Third-party software and content\",null,\"a\"],\n[\"Product defects\",\"Product defects and quality\",null,\"a\"],\n[\"Foreign exchange\",\"Foreign exchange and tax\",null,\"a\"],\n[\"AI investment returns\",null,\"AI investment and returns\",\"b\"],\n[\"AI output and reputation\",null,\"AI risks and reputation\",\"b\"],\n[\"Investments and acquisitions\",null,\"Investments and acquisitions\",\"b\"],\n[\"Talent\",null,\"Talent\",\"b\"]];\nvar f=\"all\",tb=document.getElementById(\"tb\");\nvar L={all:\"All\",both:\"Both\",a:\"Apple only\",b:\"Microsoft only\"};\nfunction cell(t,c){return t?'<div class=\"cell\"><i class=\"dot '+c+'\"></i><span>'+t+'</span></div>':'<span class=\"none\">Not named</span>'}\nfunction draw(){tb.innerHTML=R.filter(function(r){return f==\"all\"||r[3]==f}).map(function(r,i){\nreturn '<tr class=\"row\" style=\"animation-delay:'+i*25+'ms\"><td><strong>'+r[0]+'</strong></td><td>'+cell(r[1],\"a\")+'</td><td>'+cell(r[2],\"b\")+'</td><td><span class=\"tag\">'+(r[3]==\"both\"?\"Both\":r[3]==\"a\"?\"Apple only\":\"Microsoft only\")+'</span></td></tr>'}).join(\"\")}\nvar bs=document.getElementById(\"btns\");\nObject.keys(L).forEach(function(k){var b=document.createElement(\"button\");b.textContent=L[k];b.setAttribute(\"aria-pressed\",k==f);b.onclick=function(){f=k;[].forEach.call(bs.children,function(x){x.setAttribute(\"aria-pressed\",x===b)});draw()};bs.appendChild(b)});\ndraw();\nvar A={capex:[11.1,10.7,11.0,9.4,12.7],debt:[109.1,99.0,95.3,85.8,78.3]},\nM={capex:[23.9,28.1,44.5,64.6,115.9],debt:[47.0,42.0,42.7,40.2,31.1]};\nfunction chart(id,a,b,max,labels){\nvar el=document.getElementById(id),w=Math.max(240,el.clientWidth),h=200,l=34,r=labels?40:10,t=14,bt=24,pw=w-l-r,ph=h-t-bt;\nfunction X(i){return l+pw*i/4}function Y(v){return t+ph*(1-v/max)}\nvar s='<svg viewBox=\"0 0 '+w+' '+h+'\" role=\"img\" aria-label=\"Line chart\">';\n[0,.5,1].forEach(function(f){var v=max*f,y=Y(v);s+='<line x1=\"'+l+'\" x2=\"'+(w-r)+'\" y1=\"'+y+'\" y2=\"'+y+'\" style=\"stroke:var(--rule)\"/><text x=\"'+(l-4)+'\" y=\"'+(y+4)+'\" text-anchor=\"end\">'+v+'</text>'});\nfor(var i=0;i<5;i++)s+='<text x=\"'+X(i)+'\" y=\"'+(h-6)+'\" text-anchor=\"middle\">Yr '+(i+1)+'</text>';\n[[a,\"--series-a\"],[b,\"--series-b\"]].forEach(function(p,k){\nvar d=p[0].map(function(v,i){return(i?\"L\":\"M\")+X(i)+\" \"+Y(v)}).join(\" \");\ns+='<path class=\"ln\" d=\"'+d+'\" fill=\"none\" style=\"stroke:var('+p[1]+');stroke-width:2.5;stroke-dasharray:1000;stroke-dashoffset:1000;animation:dr 1s ease forwards\"/>';\np[0].forEach(function(v,i){s+='<circle cx=\"'+X(i)+'\" cy=\"'+Y(v)+'\" r=\"3\" style=\"fill:var('+p[1]+')\"><title>Year '+(i+1)+': $'+v+'B</title></circle>'});\nif(labels)s+='<text x=\"'+(X(4)+6)+'\" y=\"'+(Y(p[0][4])+4)+'\">$'+p[0][4]+'B</text>'});\nel.innerHTML=s+'</svg>'}\nvar st=document.createElement(\"style\");st.textContent=\"@keyframes dr{to{stroke-dashoffset:0}}@media(prefers-reduced-motion:reduce){.ln{animation:none!important;stroke-dashoffset:0!important}}\";document.head.appendChild(st);\nfunction all(){chart(\"c1\",A.capex,M.capex,120,true);chart(\"c2\",A.debt,M.debt,120,false)}\nall();var lw=0;new ResizeObserver(function(){var w=document.getElementById(\"c1\").clientWidth;if(w!=lw){lw=w;all()}}).observe(document.getElementById(\"c1\"));\n</script></body></html>"
+}

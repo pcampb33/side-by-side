@@ -1,4 +1,5 @@
 import { CompareForm } from "./compare-form";
+import { FeaturedList } from "./featured-list";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         Pick two US-listed companies and a lens. Every number traces back to the SEC filing it came from.
       </p>
       <CompareForm />
+      <FeaturedList />
     </main>
   );
 }

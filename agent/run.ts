@@ -20,8 +20,9 @@ export interface Usage {
   outputTokens: number;
 }
 
-// Opus composes comparisons; Haiku condenses annual reports (lib/filings).
-export type ModelId = "claude-opus-5-5" | "claude-haiku-5-5";
+// Opus composes comparisons (Sonnet is scored against it by the evals);
+// Haiku condenses annual reports (lib/filings).
+export type ModelId = "claude-opus-5-5" | "claude-sonnet-5-5" | "claude-haiku-5-5";
 
 // A backend runs the model until it stops. It throws ComparisonError on a
 // refusal, the step limit or an API failure, and returns token usage.
@@ -59,6 +60,7 @@ export async function generateComparison(opts: {
   backend: Backend;
   signal: AbortSignal;
   onComponent: (c: Component) => void;
+  model?: ModelId;
 }): Promise<{ components: Component[]; usage: Usage }> {
   // The caller reads the annual reports for a text lens; without them the
   // model would have nothing to build from.
@@ -70,7 +72,7 @@ export async function generateComparison(opts: {
     components.push(c);
     opts.onComponent(c);
   });
-  const usage = await opts.backend({ model: "claude-opus-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
+  const usage = await opts.backend({ model: opts.model ?? "claude-opus-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
   if (components.length === 0) throw new ComparisonError("The model finished without building a comparison.");
   return { components, usage };
 }

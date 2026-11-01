@@ -3,7 +3,7 @@ import type { LensSlug } from "../lib/lenses.ts";
 import { FONTS, THEME } from "../lib/theme.ts";
 import { LENS_GUIDANCE } from "./lenses.ts";
 import { headlineNote, userPrompt, type CompanyInput } from "./prompt.ts";
-import { ComparisonError, type Backend, type ToolSpec, type Usage } from "./run.ts";
+import { ComparisonError, type Backend, type ModelId, type ToolSpec, type Usage } from "./run.ts";
 
 // Freeform mode: from the same data, Claude writes one self-contained HTML
 // page, which the site shows in <iframe srcdoc sandbox="allow-scripts">. The
@@ -54,7 +54,13 @@ Grounding:
 - End with 3 to 5 neutral takeaways: differences, never a winner, a recommendation or a prediction. Add the line "Not financial advice."`;
 }
 
-export async function generatePage(opts: { lens: LensSlug; companies: CompanyInput[]; backend: Backend; signal: AbortSignal }): Promise<{ html: string; usage: Usage }> {
+export async function generatePage(opts: {
+  lens: LensSlug;
+  companies: CompanyInput[];
+  backend: Backend;
+  signal: AbortSignal;
+  model?: ModelId;
+}): Promise<{ html: string; usage: Usage }> {
   if (LENS_GUIDANCE[opts.lens].needsFilings && opts.companies.some((c) => !c.filing)) {
     throw new Error(`The ${opts.lens} lens needs each company's condensed annual report.`);
   }
@@ -76,7 +82,7 @@ export async function generatePage(opts: { lens: LensSlug; companies: CompanyInp
     },
   };
   const usage = await opts.backend({
-    model: "claude-opus-5-5",
+    model: opts.model ?? "claude-opus-5-5",
     system: freeformSystemPrompt(opts.lens),
     user: userPrompt(opts.companies, { quotes: true }),
     tools: [submit],

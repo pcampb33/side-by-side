@@ -29,9 +29,30 @@ const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 1 };
 const resultKey = (tickers: readonly string[], lens: LensSlug, mode: Mode) => `result:v${RESULT_VERSION[mode]}:${tickers.join("|")}|${lens}|${mode}`;
 type Result = { components: Component[] } | { html: string };
 
-async function defaultBackend(): Promise<Backend> {
+export async function defaultBackend(): Promise<Backend> {
   if (process.env.CLAUDE_AUTH === "login") return (await import("../agent/backends/login.ts")).loginBackend;
   return (await import("../agent/backends/api.ts")).apiBackend();
+}
+
+// Also used by scripts/eval-fixtures.mts, so the evals see the same payload.
+export async function loadCompany(ticker: string): Promise<CompanyInput> {
+  const entry = await findTicker(ticker);
+  if (!entry) throw new ComparisonError(`${ticker} is not in the SEC's company list.`);
+  const financials = await getFinancials(entry.cik).catch((err) => {
+    if (err instanceof NoAnnualDataError) throw new ComparisonError(`${ticker} has no 10-K financial statements to compare.`);
+    throw err;
+  });
+  return { ticker, name: entry.name, financials };
+}
+
+// Reads the company's latest 10-K into c.filing (text lenses).
+export async function attachFiling(c: CompanyInput, backend: Backend, signal: AbortSignal): Promise<void> {
+  const cik = c.financials.cik;
+  const report = await getAnnualReport(cik);
+  if (!report) throw new ComparisonError(`${c.ticker} has no 10-K annual report to read.`);
+  const filing = await getCondensedFiling({ cik, name: c.name, report, model: backend, signal });
+  const i = c.financials.periodEnds.indexOf(report.periodEnd);
+  c.filing = { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(report.periodEnd.slice(0, 4)) };
 }
 
 export async function runComparison(opts: {
@@ -46,30 +67,15 @@ export async function runComparison(opts: {
   const { tickers, lens, mode, emit } = opts;
   try {
     emit({ type: "progress", step: "fetching" });
-    const companies = await Promise.all(
-      tickers.map(async (ticker): Promise<CompanyInput> => {
-        const entry = await findTicker(ticker);
-        if (!entry) throw new ComparisonError(`${ticker} is not in the SEC's company list.`);
-        const financials = await getFinancials(entry.cik).catch((err) => {
-          if (err instanceof NoAnnualDataError) throw new ComparisonError(`${ticker} has no 10-K financial statements to compare.`);
-          throw err;
-        });
-        return { ticker, name: entry.name, financials };
-      }),
-    );
+    const companies = await Promise.all(tickers.map(loadCompany));
     emit({ type: "data", companies: companies.map((c) => ({ ...c })) });
     const backend = opts.backend ?? (await defaultBackend());
     if (LENS_GUIDANCE[lens].needsFilings) {
       emit({ type: "progress", step: "reading" });
       await Promise.all(
         companies.map(async (c) => {
-          const cik = c.financials.cik;
-          const report = await getAnnualReport(cik);
-          if (!report) throw new ComparisonError(`${c.ticker} has no 10-K annual report to read.`);
-          const filing = await getCondensedFiling({ cik, name: c.name, report, model: backend, signal: opts.signal });
-          const i = c.financials.periodEnds.indexOf(report.periodEnd);
-          c.filing = { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(report.periodEnd.slice(0, 4)) };
-          emit({ type: "filing", ticker: c.ticker, filing: c.filing });
+          await attachFiling(c, backend, opts.signal);
+          emit({ type: "filing", ticker: c.ticker, filing: c.filing! });
         }),
       );
     }

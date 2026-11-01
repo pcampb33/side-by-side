@@ -1,0 +1,1472 @@
+{
+ "ticker": "META",
+ "name": "Meta Platforms, Inc.",
+ "financials": {
+  "cik": 1326801,
+  "name": "Meta Platforms, Inc.",
+  "fiscalYears": [
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "periodEnds": [
+   "2021-12-31",
+   "2022-12-31",
+   "2023-12-31",
+   "2024-12-31",
+   "2025-12-31"
+  ],
+  "metrics": {
+   "revenue": [
+    {
+     "status": "reported",
+     "value": 117929000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 116609000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 134902000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 164501000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 200966000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      }
+     ]
+    }
+   ],
+   "grossProfit": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "operatingIncome": [
+    {
+     "status": "reported",
+     "value": 46753000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "OperatingIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 28944000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "OperatingIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 46751000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "OperatingIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 69380000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "OperatingIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 83276000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "OperatingIncomeLoss"
+      }
+     ]
+    }
+   ],
+   "netIncome": [
+    {
+     "status": "reported",
+     "value": 39370000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 23200000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 39098000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 62360000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 60458000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    }
+   ],
+   "rnd": [
+    {
+     "status": "reported",
+     "value": 24655000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "ResearchAndDevelopmentExpense"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 35338000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "ResearchAndDevelopmentExpense"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 38483000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "ResearchAndDevelopmentExpense"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 43873000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "ResearchAndDevelopmentExpense"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 57372000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "ResearchAndDevelopmentExpense"
+      }
+     ]
+    }
+   ],
+   "cash": [
+    {
+     "status": "reported",
+     "value": 16601000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "CashAndCashEquivalentsAtCarryingValue"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 14681000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "CashAndCashEquivalentsAtCarryingValue"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 41862000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "CashAndCashEquivalentsAtCarryingValue"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 43889000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "CashAndCashEquivalentsAtCarryingValue"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 35873000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "CashAndCashEquivalentsAtCarryingValue"
+      }
+     ]
+    }
+   ],
+   "totalAssets": [
+    {
+     "status": "reported",
+     "value": 165987000000,
+     "sources": [
+      {
+       "accn": "0001326801-23-000013",
+       "form": "10-K",
+       "filingFy": 2022,
+       "filed": "2023-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 185727000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2022-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 229623000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2023-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 276054000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 366021000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "Assets"
+      }
+     ]
+    }
+   ],
+   "totalLiabilities": [
+    {
+     "status": "reported",
+     "value": 41108000000,
+     "sources": [
+      {
+       "accn": "0001326801-23-000013",
+       "form": "10-K",
+       "filingFy": 2022,
+       "filed": "2023-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 60014000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2022-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 76455000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2023-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 93417000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 148778000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    }
+   ],
+   "longTermDebt": [
+    {
+     "status": "reported",
+     "value": 0,
+     "sources": [
+      {
+       "accn": "0001326801-23-000013",
+       "form": "10-K",
+       "filingFy": 2022,
+       "filed": "2023-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "LongTermDebtNoncurrent"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 9923000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2022-12-31",
+       "tag": "LongTermDebtNoncurrent"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 18385000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2023-12-31",
+       "tag": "LongTermDebtNoncurrent"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 28826000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "LongTermDebtNoncurrent"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 58744000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "LongTermDebtNoncurrent"
+      }
+     ]
+    }
+   ],
+   "equity": [
+    {
+     "status": "reported",
+     "value": 124879000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2021-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 125713000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2022-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 153168000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 182637000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 217243000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    }
+   ],
+   "operatingCashFlow": [
+    {
+     "status": "reported",
+     "value": 57683000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 50475000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 71113000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 91328000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 115800000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    }
+   ],
+   "capex": [
+    {
+     "status": "reported",
+     "value": 18690000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 31186000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 27045000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 37256000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 69691000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      }
+     ]
+    }
+   ],
+   "dividendsPaid": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "reported",
+     "value": 0,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 0,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 5072000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 5324000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    }
+   ],
+   "buybacks": [
+    {
+     "status": "reported",
+     "value": 44537000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 27956000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 19774000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 30125000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 26248000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    }
+   ],
+   "dilutedEps": [
+    {
+     "status": "reported",
+     "value": 13.77,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 8.59,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 14.87,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 23.86,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 23.49,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    }
+   ],
+   "sharesOutstanding": [
+    {
+     "status": "reported",
+     "value": 2859000000,
+     "sources": [
+      {
+       "accn": "0001326801-24-000012",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-02",
+       "periodEnd": "2021-12-31",
+       "tag": "WeightedAverageNumberOfDilutedSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2702000000,
+     "sources": [
+      {
+       "accn": "0001326801-25-000017",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-01-30",
+       "periodEnd": "2022-12-31",
+       "tag": "WeightedAverageNumberOfDilutedSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2629000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2023-12-31",
+       "tag": "WeightedAverageNumberOfDilutedSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2614000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2024-12-31",
+       "tag": "WeightedAverageNumberOfDilutedSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2574000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-003942",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-01-29",
+       "periodEnd": "2025-12-31",
+       "tag": "WeightedAverageNumberOfDilutedSharesOutstanding"
+      }
+     ]
+    }
+   ]
+  },
+  "derived": {
+   "grossMargin": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "operatingMargin": [
+    {
+     "status": "computed",
+     "value": 0.39645040660058173
+    },
+    {
+     "status": "computed",
+     "value": 0.24821411726367604
+    },
+    {
+     "status": "computed",
+     "value": 0.3465552771641636
+    },
+    {
+     "status": "computed",
+     "value": 0.42176035404040096
+    },
+    {
+     "status": "computed",
+     "value": 0.41437855159579234
+    }
+   ],
+   "netMargin": [
+    {
+     "status": "computed",
+     "value": 0.3338449405998525
+    },
+    {
+     "status": "computed",
+     "value": 0.19895548371051977
+    },
+    {
+     "status": "computed",
+     "value": 0.28982520644616094
+    },
+    {
+     "status": "computed",
+     "value": 0.3790858414234564
+    },
+    {
+     "status": "computed",
+     "value": 0.3008369574952977
+    }
+   ],
+   "revenueGrowth": [
+    {
+     "status": "computed",
+     "value": 0.3718257430349561
+    },
+    {
+     "status": "computed",
+     "value": -0.011193175554782962
+    },
+    {
+     "status": "computed",
+     "value": 0.15687468377226457
+    },
+    {
+     "status": "computed",
+     "value": 0.21941112807816043
+    },
+    {
+     "status": "computed",
+     "value": 0.2216703849824621
+    }
+   ],
+   "freeCashFlow": [
+    {
+     "status": "computed",
+     "value": 38993000000
+    },
+    {
+     "status": "computed",
+     "value": 19289000000
+    },
+    {
+     "status": "computed",
+     "value": 44068000000
+    },
+    {
+     "status": "computed",
+     "value": 54072000000
+    },
+    {
+     "status": "computed",
+     "value": 46109000000
+    }
+   ],
+   "debtToEquity": [
+    {
+     "status": "computed",
+     "value": 0
+    },
+    {
+     "status": "computed",
+     "value": 0.07893376182256409
+    },
+    {
+     "status": "computed",
+     "value": 0.12003159928966886
+    },
+    {
+     "status": "computed",
+     "value": 0.157832202675252
+    },
+    {
+     "status": "computed",
+     "value": 0.27040687156778354
+    }
+   ],
+   "rndToRevenue": [
+    {
+     "status": "computed",
+     "value": 0.2090664721993742
+    },
+    {
+     "status": "computed",
+     "value": 0.3030469346276874
+    },
+    {
+     "status": "computed",
+     "value": 0.2852663414923426
+    },
+    {
+     "status": "computed",
+     "value": 0.2667035458751011
+    },
+    {
+     "status": "computed",
+     "value": 0.2854811261606441
+    }
+   ],
+   "cashRunwayYears": [
+    {
+     "status": "not_meaningful"
+    },
+    {
+     "status": "not_meaningful"
+    },
+    {
+     "status": "not_meaningful"
+    },
+    {
+     "status": "not_meaningful"
+    },
+    {
+     "status": "not_meaningful"
+    }
+   ]
+  }
+ },
+ "filing": {
+  "report": {
+   "accn": "0001628280-26-003942",
+   "filed": "2026-01-29",
+   "periodEnd": "2025-12-31",
+   "document": "meta-20251231.htm"
+  },
+  "overview": "Meta Platforms builds social apps (Facebook, Instagram, Messenger, Threads, WhatsApp, Meta AI) that earn substantially all revenue from advertising, and develops VR headsets and AI glasses through its Reality Labs segment.",
+  "areas": [
+   {
+    "id": "a1",
+    "name": "Family of Apps advertising",
+    "description": "Sells ad placements on Facebook, Instagram, Messenger, Threads, WhatsApp, and third-party apps to marketers via self-service tools, a sales force, agencies, and resellers. Competes with companies that sell advertising and with companies that help users share and discover content.",
+    "quotes": [
+     {
+      "text": "Currently, we generate substantially all of our revenue from selling advertising placements on our family of apps to marketers, which is reflected in FoA.",
+      "section": "Item 1"
+     },
+     {
+      "text": "We face significant competition in every aspect of our business, including, but not limited to, companies that facilitate the ability of users to create, share, communicate, and discover content and information online or enable marketers to reach their existing or prospective audiences.",
+      "section": "Item 1"
+     }
+    ]
+   },
+   {
+    "id": "a2",
+    "name": "Messaging and social apps",
+    "description": "WhatsApp, Messenger, and Threads let people communicate privately and share public updates. Revenue is mainly from ads and business messaging is described as limited; competitors are described only generally as companies offering communication and sharing products.",
+    "quotes": [
+     {
+      "text": "WhatsApp is a simple, reliable, and secure messaging application that is used by people and businesses around the world to communicate and transact in a private way.",
+      "section": "Item 1"
+     }
+    ]
+   },
+   {
+    "id": "a3",
+    "name": "Reality Labs consumer hardware and software",
+    "description": "Sells Meta Quest VR devices, Meta Horizon Store content, and Ray-Ban Meta and Oakley Meta AI glasses through retailers, resellers, distribution partners, and Meta.com. Competes in consumer hardware and AR and VR products.",
+    "quotes": [
+     {
+      "text": "RL generates revenue from sales of consumer hardware products, software, and content.",
+      "section": "Item 1"
+     },
+     {
+      "text": "We also compete with companies in the development and application of AI, particularly with respect to the development of frontier AI models, as well as the development and delivery of consumer hardware and augmented and virtual reality products and services.",
+      "section": "Item 1"
+     }
+    ]
+   },
+   {
+    "id": "a4",
+    "name": "Meta AI and AI models",
+    "description": "Meta AI assistant available across apps, as a stand-alone app, on AI glasses, and on the web, plus Llama and other models, some released as open source. Competes with companies developing frontier AI models and AI features.",
+    "quotes": [
+     {
+      "text": "We have a history of open-sourcing in AI, including releasing our Llama foundation models as well as other models and tools, and continue to believe in the power of open source innovation.",
+      "section": "Item 1"
+     },
+     {
+      "text": "Meta AI is an assistant that's available across our apps, as a stand-alone app, on our AI glasses, and on the web.",
+      "section": "Item 1"
+     }
+    ]
+   }
+  ],
+  "risks": [
+   {
+    "id": "r1",
+    "theme": "Advertising dependence and user engagement",
+    "summary": "Substantially all revenue comes from advertising, so declines in users, engagement, or marketer spending would reduce revenue. Marketers have no long-term commitments.",
+    "quotes": [
+     {
+      "text": "We generate substantially all of our revenue from advertising. The loss of marketers, or reduction in spending by marketers, could seriously harm our business.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "If we fail to retain existing users or add new users, or if our users decrease their level of engagement with our products, our revenue, financial results, and business may be significantly harmed.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "theme": "Data signals and platform changes",
+    "summary": "Changes by Apple, Google, privacy regulators, and Meta's own products limit the data used for ad targeting and measurement, which has hurt advertising revenue.",
+    "quotes": [
+     {
+      "text": "Our ad targeting and measurement tools rely on data signals from user activity on websites and services that we do not control, as well as signals generated within our products, in order to deliver relevant and effective ads to our users, and any changes in our ability to use such signals will adversely affect our business.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "In addition, mobile operating system and browser providers, such as Apple and Google, have implemented product changes and/or announced plans to limit the ability of websites and application developers to collect and use these signals to target and measure advertising.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r3",
+    "theme": "Reality Labs and AI investment returns",
+    "summary": "Heavy spending on Reality Labs, AI, and infrastructure reduces operating margin, and these investments may not pay off. Reality Labs is expected to keep operating at a loss.",
+    "quotes": [
+     {
+      "text": "For example, our investments in Reality Labs reduced our 2025 overall operating profit by approximately $19.19 billion, and we expect our 2026 Reality Labs operating losses to remain similar to 2025.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "We may not be successful in our artificial intelligence initiatives, which could adversely affect our business, reputation, or financial results.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r4",
+    "theme": "Regulation, privacy, and youth laws",
+    "summary": "Privacy, content, competition, and youth-protection laws in the US, EU, and elsewhere could force product changes, fines, or limits on advertising, including an FTC consent order and EU rules on ad models.",
+    "quotes": [
+     {
+      "text": "Our business is subject to complex and evolving U.S. and foreign laws and regulations regarding privacy, data use, data combination, data protection, content, AI, competition, youth, safety, consumer protection, advertising, e-commerce, and other matters.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r5",
+    "theme": "Litigation",
+    "summary": "Meta faces numerous class actions and government suits, including youth-related, privacy, antitrust, copyright, and securities claims, which could lead to large damages or required changes.",
+    "quotes": [
+     {
+      "text": "We are involved in numerous class action lawsuits and other litigation matters that are expensive and time consuming, and, if resolved adversely, could harm our business, financial condition, or results of operations.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "We are currently, and expect to be in the future, party to patent, trademark, and copyright lawsuits and other intellectual property rights claims that are expensive and time consuming and, if resolved adversely, could have a significant impact on our business, financial condition, or results of operations.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r6",
+    "theme": "Security and misuse",
+    "summary": "Meta is a prominent target for cyber-attacks and misuse of user data, and AI tools add new vulnerabilities.",
+    "quotes": [
+     {
+      "text": "Security breaches, improper access to or disclosure of our data or user data, other hacking and phishing attacks on our systems, or other cyber incidents could harm our reputation and adversely affect our business.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r7",
+    "theme": "Infrastructure and supply chain",
+    "summary": "Meta depends on third-party data center services and a small number of component manufacturers, often concentrated in Asia, for technical infrastructure and consumer hardware.",
+    "quotes": [
+     {
+      "text": "A substantial portion of our technical infrastructure is provided by third parties. Any disruption or failure in the services we receive from these providers could harm our ability to handle existing or increased traffic and could significantly harm our business.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "The manufacturing of our consumer hardware products depends on a small number of third parties, often with significant operations in a single region such as Asia.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r8",
+    "theme": "Competition",
+    "summary": "Meta faces competition for users, marketers, developers, and AI talent from many companies, some with greater resources, and platform owners such as Apple and Google can favor their own products.",
+    "quotes": [
+     {
+      "text": "Some of our current and potential competitors may have greater resources, experience, or stronger competitive positions in certain product segments, geographic regions, or user demographics than we do.",
+      "section": "Item 1A"
+     },
+     {
+      "text": "For example, each of Apple and Google have integrated competitive products with iOS and Android, respectively.",
+      "section": "Item 1A"
+     }
+    ]
+   },
+   {
+    "id": "r9",
+    "theme": "Controlled company and dual-class control",
+    "summary": "Mark Zuckerberg controls a majority of voting power through Class B shares, so Class A holders have limited influence over corporate matters.",
+    "quotes": [
+     {
+      "text": "This concentrated control will limit or preclude your ability to influence corporate matters for the foreseeable future.",
+      "section": "Item 1A"
+     }
+    ]
+   }
+  ],
+  "droppedQuotes": 1,
+  "fiscalYear": 2025
+ }
+}

@@ -1,0 +1,1109 @@
+{
+ "ticker": "JPM",
+ "name": "JPMorgan Chase & Co",
+ "financials": {
+  "cik": 19617,
+  "name": "JPMORGAN CHASE & CO",
+  "fiscalYears": [
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "periodEnds": [
+   "2021-12-31",
+   "2022-12-31",
+   "2023-12-31",
+   "2024-12-31",
+   "2025-12-31"
+  ],
+  "metrics": {
+   "revenue": [
+    {
+     "status": "reported",
+     "value": 121649000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "Revenues"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 128695000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "Revenues"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 158104000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "Revenues"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 177556000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "Revenues"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 182447000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "Revenues"
+      }
+     ]
+    }
+   ],
+   "grossProfit": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "operatingIncome": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "netIncome": [
+    {
+     "status": "reported",
+     "value": 48334000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 37676000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 49552000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 58471000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 57048000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "NetIncomeLoss"
+      }
+     ]
+    }
+   ],
+   "rnd": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "cash": [
+    {
+     "status": "reported",
+     "value": 740834000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2021-12-31",
+       "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 567234000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2022-12-31",
+       "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 624151000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 469317000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 343338000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      }
+     ]
+    }
+   ],
+   "totalAssets": [
+    {
+     "status": "reported",
+     "value": 3743567000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3665743000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3875393000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 4002814000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "Assets"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 4424900000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "Assets"
+      }
+     ]
+    }
+   ],
+   "totalLiabilities": [
+    {
+     "status": "reported",
+     "value": 3449440000000,
+     "sources": [
+      {
+       "accn": "0000019617-23-000231",
+       "form": "10-K",
+       "filingFy": 2022,
+       "filed": "2023-02-21",
+       "periodEnd": "2021-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3373411000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2022-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3547515000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2023-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3658056000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 4062462000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "Liabilities"
+      }
+     ]
+    }
+   ],
+   "longTermDebt": [
+    {
+     "status": "reported",
+     "value": 301005000000,
+     "sources": [
+      {
+       "accn": "0000019617-23-000231",
+       "form": "10-K",
+       "filingFy": 2022,
+       "filed": "2023-02-21",
+       "periodEnd": "2021-12-31",
+       "tag": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 295865000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2022-12-31",
+       "tag": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 391825000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2023-12-31",
+       "tag": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 401418000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 435206000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities"
+      }
+     ]
+    }
+   ],
+   "equity": [
+    {
+     "status": "reported",
+     "value": 294127000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 292332000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 327878000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 344758000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 362438000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "StockholdersEquity"
+      }
+     ]
+    }
+   ],
+   "operatingCashFlow": [
+    {
+     "status": "reported",
+     "value": 78084000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 107119000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 12974000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": -42012000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": -147782000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+     ]
+    }
+   ],
+   "capex": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "dividendsPaid": [
+    {
+     "status": "reported",
+     "value": 12858000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 13562000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 13463000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 14783000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 16625000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "PaymentsOfDividends"
+      }
+     ]
+    }
+   ],
+   "buybacks": [
+    {
+     "status": "reported",
+     "value": 18408000000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 3162000000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 9824000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 18830000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 31591000000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "PaymentsForRepurchaseOfCommonStock"
+      }
+     ]
+    }
+   ],
+   "dilutedEps": [
+    {
+     "status": "reported",
+     "value": 15.36,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 12.09,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 16.23,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 19.75,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 20.02,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "EarningsPerShareDiluted"
+      }
+     ]
+    }
+   ],
+   "sharesOutstanding": [
+    {
+     "status": "reported",
+     "value": 2944100000,
+     "sources": [
+      {
+       "accn": "0000019617-24-000225",
+       "form": "10-K",
+       "filingFy": 2023,
+       "filed": "2024-02-16",
+       "periodEnd": "2021-12-31",
+       "tag": "CommonStockSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2934200000,
+     "sources": [
+      {
+       "accn": "0000019617-25-000270",
+       "form": "10-K",
+       "filingFy": 2024,
+       "filed": "2025-02-14",
+       "periodEnd": "2022-12-31",
+       "tag": "CommonStockSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2876600000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2023-12-31",
+       "tag": "CommonStockSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2797600000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2024-12-31",
+       "tag": "CommonStockSharesOutstanding"
+      }
+     ]
+    },
+    {
+     "status": "reported",
+     "value": 2696200000,
+     "sources": [
+      {
+       "accn": "0001628280-26-008131",
+       "form": "10-K",
+       "filingFy": 2025,
+       "filed": "2026-02-13",
+       "periodEnd": "2025-12-31",
+       "tag": "CommonStockSharesOutstanding"
+      }
+     ]
+    }
+   ]
+  },
+  "derived": {
+   "grossMargin": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "operatingMargin": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "netMargin": [
+    {
+     "status": "computed",
+     "value": 0.3973234469662718
+    },
+    {
+     "status": "computed",
+     "value": 0.29275418625432226
+    },
+    {
+     "status": "computed",
+     "value": 0.3134139553711481
+    },
+    {
+     "status": "computed",
+     "value": 0.32931018946135304
+    },
+    {
+     "status": "computed",
+     "value": 0.31268258727192005
+    }
+   ],
+   "revenueGrowth": [
+    {
+     "status": "computed",
+     "value": 0.01415578027694642
+    },
+    {
+     "status": "computed",
+     "value": 0.057920739175825534
+    },
+    {
+     "status": "computed",
+     "value": 0.2285170364039007
+    },
+    {
+     "status": "computed",
+     "value": 0.12303294034306532
+    },
+    {
+     "status": "computed",
+     "value": 0.027546238933069005
+    }
+   ],
+   "freeCashFlow": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "debtToEquity": [
+    {
+     "status": "computed",
+     "value": 1.0233844563742873
+    },
+    {
+     "status": "computed",
+     "value": 1.0120855739364831
+    },
+    {
+     "status": "computed",
+     "value": 1.1950329085818505
+    },
+    {
+     "status": "computed",
+     "value": 1.1643471652579491
+    },
+    {
+     "status": "computed",
+     "value": 1.200773649562132
+    }
+   ],
+   "rndToRevenue": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ],
+   "cashRunwayYears": [
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    },
+    {
+     "status": "not_reported"
+    }
+   ]
+  }
+ }
+}

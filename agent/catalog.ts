@@ -132,6 +132,9 @@ export function checkComponent(component: Component, inputs: CompanyInput[]): st
       const refs = component.input.rows.flatMap((r) => r.refs);
       const bad = refs.filter((ref) => !findTextRef(inputs, ref)?.item.id.startsWith(prefix));
       if (bad.length) return `Unknown ${component.name === "risk_themes" ? "risk" : "business-area"} ids: ${bad.join(", ")}. Use ids listed in the data.`;
+      // A business area may serve two markets; a risk shown twice would be counted twice.
+      const twice = [...new Set(refs.filter((r, i) => refs.indexOf(r) !== i))];
+      if (component.name === "risk_themes" && twice.length) return `Each risk goes in one row only, but ${twice.join(", ")} is in more than one. Put it under its closest subject.`;
       return null;
     }
     case "takeaways":

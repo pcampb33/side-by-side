@@ -32,9 +32,10 @@ export class ComparisonError extends Error {}
 
 export const MAX_STEPS = 12;
 
-export function componentTools(companies: CompanyInput[], onComponent: (c: Component) => void): ToolSpec[] {
+export function componentTools(lens: LensSlug, companies: CompanyInput[], onComponent: (c: Component) => void): ToolSpec[] {
   const shown: Component[] = [];
-  return COMPONENT_NAMES.map((name) => ({
+  const offered = COMPONENT_NAMES.filter((name) => !LENS_GUIDANCE[lens].excluded.includes(name));
+  return offered.map((name) => ({
     name,
     description: CATALOG[name].description,
     shape: CATALOG[name].shape,
@@ -68,7 +69,7 @@ export async function generateComparison(opts: {
     throw new Error(`The ${opts.lens} lens needs each company's condensed annual report.`);
   }
   const components: Component[] = [];
-  const tools = componentTools(opts.companies, (c) => {
+  const tools = componentTools(opts.lens, opts.companies, (c) => {
     components.push(c);
     opts.onComponent(c);
   });

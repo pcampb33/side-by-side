@@ -36,7 +36,7 @@ const call = (tools: ReturnType<typeof componentTools>, name: string, input: unk
 describe("componentTools", () => {
   it("shows a valid call and returns problems to the model instead of showing them", () => {
     const shown: Component[] = [];
-    const tools = componentTools(companies, (c) => shown.push(c));
+    const tools = componentTools("growth", companies, (c) => shown.push(c));
     expect(call(tools, "trend_line", { title: "Revenue", key: "revenue" })).toEqual({ ok: true, text: "Shown." });
     expect(call(tools, "trend_line", { title: "Revenue", key: "revenu" }).ok).toBe(false);
     expect(call(tools, "grouped_bars", { title: "Mixed", keys: ["revenue", "grossMargin"], year: "latest" }).text).toMatch(/Mixed units/);
@@ -46,26 +46,42 @@ describe("componentTools", () => {
 
   it("allows one takeaways and nothing after it", () => {
     const shown: Component[] = [];
-    const tools = componentTools(companies, (c) => shown.push(c));
+    const tools = componentTools("growth", companies, (c) => shown.push(c));
     expect(call(tools, "takeaways", takeaways).ok).toBe(true);
     expect(call(tools, "takeaways", takeaways).ok).toBe(false);
     expect(call(tools, "trend_line", { title: "Revenue", key: "revenue" }).ok).toBe(false);
     expect(shown).toHaveLength(1);
   });
 
-  it("accepts text rows only with ids that exist and are of the right kind", () => {
+  const rows = (refs: string[][]) => ({ title: "Rows", rows: refs.map((r, i) => ({ label: `Row ${i}`, icon: "other", refs: r })) });
+
+  it("accepts risk rows only with risk ids that exist, each in one row", () => {
     const shown: Component[] = [];
-    const tools = componentTools(withFilings, (c) => shown.push(c));
-    const rows = (refs: string[][]) => ({ title: "Risks", rows: refs.map((r, i) => ({ label: `Row ${i}`, icon: "other", refs: r })) });
+    const tools = componentTools("risk-exposure", withFilings, (c) => shown.push(c));
     expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["MSFT-r9"]])).text).toMatch(/Unknown risk ids: MSFT-r9/);
     expect(call(tools, "risk_themes", rows([["AAPL-a1"], ["MSFT-r1"]])).text).toMatch(/Unknown risk ids: AAPL-a1/);
+    expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["AAPL-r1"]])).text).toMatch(/AAPL-r1 is in more than one/);
+    expect(call(tools, "risk_themes", rows([["AAPL-r1"], ["MSFT-r1"]])).ok).toBe(true);
+    expect(shown.map((c) => c.name)).toEqual(["risk_themes"]);
+  });
+
+  it("lets a business area serve two markets", () => {
+    const tools = componentTools("where-they-compete", withFilings, () => {});
     expect(call(tools, "business_overlap", rows([["AAPL-a1", "MSFT-a1"], ["AAPL-a1"]])).ok).toBe(true);
-    expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["AAPL-r1"]])).ok).toBe(true);
-    expect(shown.map((c) => c.name)).toEqual(["business_overlap", "risk_themes"]);
+  });
+
+  it("offers each text component only in its own lens", () => {
+    const names = (lens: Parameters<typeof componentTools>[0]) => componentTools(lens, withFilings, () => {}).map((t) => t.name);
+    expect(names("risk-exposure")).toContain("risk_themes");
+    expect(names("risk-exposure")).not.toContain("business_overlap");
+    expect(names("where-they-compete")).toContain("business_overlap");
+    expect(names("where-they-compete")).not.toContain("risk_themes");
+    expect(names("growth")).not.toContain("risk_themes");
+    expect(names("growth")).not.toContain("business_overlap");
   });
 
   it("refuses a text row whose icon is not in the fixed set", () => {
-    const tools = componentTools(withFilings, () => {});
+    const tools = componentTools("risk-exposure", withFilings, () => {});
     const input = { title: "Risks", rows: [{ label: "Supply", icon: "rocket", refs: ["AAPL-r1"] }, { label: "Rivals", icon: "competition", refs: ["MSFT-r1"] }] };
     expect(call(tools, "risk_themes", input).ok).toBe(false);
     input.rows[0].icon = "supply-chain";
@@ -73,7 +89,7 @@ describe("componentTools", () => {
   });
 
   it("caps components at the maximum but still accepts takeaways", () => {
-    const tools = componentTools(companies, () => {});
+    const tools = componentTools("growth", companies, () => {});
     for (let i = 0; i < 8; i++) expect(call(tools, "trend_line", { title: `Revenue ${i}`, key: "revenue" }).ok).toBe(true);
     expect(call(tools, "trend_line", { title: "One more", key: "revenue" }).text).toMatch(/Call takeaways now/);
     expect(call(tools, "takeaways", takeaways).ok).toBe(true);

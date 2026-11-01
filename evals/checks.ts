@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATALOG, checkComponent, type Component, type ComponentName } from "../agent/catalog.ts";
+import { LENS_GUIDANCE } from "../agent/lenses.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
 import { canonical } from "../lib/filings/text.ts";
 import type { LensSlug } from "../lib/lenses.ts";
@@ -193,13 +194,14 @@ export function checkComponents(components: Component[], companies: CompanyInput
 
 // --- 4. Plausible for the lens ------------------------------------------
 
-const TEXT: ComponentName[] = ["risk_themes", "business_overlap"];
-const LENS_RULES: Record<LensSlug, { needsAny?: (ValueKey | ComponentName)[]; needsOne?: "risk_themes" | "business_overlap"; forbid: ComponentName[] }> = {
-  profitability: { needsAny: ["grossMargin", "operatingMargin", "netMargin", "cost_breakdown"], forbid: TEXT },
-  growth: { needsAny: ["revenue", "revenueGrowth"], forbid: TEXT },
-  "balance-sheet-risk": { needsAny: ["cash", "longTermDebt", "equity", "totalLiabilities", "debtToEquity"], forbid: TEXT },
-  "risk-exposure": { needsOne: "risk_themes", forbid: ["business_overlap"] },
-  "where-they-compete": { needsOne: "business_overlap", forbid: ["risk_themes"] },
+// What each lens must show. What it must not show is LENS_GUIDANCE's
+// `excluded` (the run never offers those; this catches saved results).
+const LENS_RULES: Record<LensSlug, { needsAny?: (ValueKey | ComponentName)[]; needsOne?: "risk_themes" | "business_overlap" }> = {
+  profitability: { needsAny: ["grossMargin", "operatingMargin", "netMargin", "cost_breakdown"] },
+  growth: { needsAny: ["revenue", "revenueGrowth"] },
+  "balance-sheet-risk": { needsAny: ["cash", "longTermDebt", "equity", "totalLiabilities", "debtToEquity"] },
+  "risk-exposure": { needsOne: "risk_themes" },
+  "where-they-compete": { needsOne: "business_overlap" },
 };
 
 function keysUsed(c: Component): ValueKey[] {
@@ -222,7 +224,7 @@ export function checkLens(lens: LensSlug, components: Component[], companies: Co
   const add = (detail: string) => findings.push({ check: "lens", detail });
   const names = components.map((c) => c.name);
   if (names.filter((n) => n === "takeaways").length !== 1 || names.at(-1) !== "takeaways") add("Takeaways must appear exactly once, last.");
-  for (const n of rule.forbid) if (names.includes(n)) add(`${n} doesn't belong in the ${lens} lens.`);
+  for (const n of LENS_GUIDANCE[lens].excluded) if (names.includes(n)) add(`${n} doesn't belong in the ${lens} lens.`);
   if (rule.needsAny) {
     const used = new Set<string>([...names, ...components.flatMap(keysUsed)]);
     if (!rule.needsAny.some((k) => used.has(k))) add(`None of ${rule.needsAny.join(", ")} is shown.`);

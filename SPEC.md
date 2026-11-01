@@ -75,7 +75,7 @@ revenue, gross profit, operating income, net income, R&D, cash, total assets, to
 **Component catalog** (each a tool with a zod schema):
 company header (fixed, not generated), metric cards, trend line, grouped bars, ratio gauge, cost breakdown, risk themes, business overlap, takeaways (3-5 neutral differences). No radar chart (mixed units, misleading area).
 
-**Lens guidance** lives in `agent/`: what each lens is for and which components usually serve it. The agent chooses; the lens steers.
+**Lens guidance** lives in `agent/`: what each lens is for and which components usually serve it. The agent chooses; the lens steers. *2026-11-01:* each text component is offered only in its own lens (risk themes in Risk exposure, business overlap in Where they compete), so two lenses never show the same tiles; a risk goes in one row only.
 
 **Freeform mode:** same payload, plus the site's color/font tokens for both themes. *2026-11-01:* visual first, minimal visible text (a one-sentence intro, at most one sentence per chart, one-sentence takeaways); longer explanations are fine in a closed `<details>` the reader can open (owner's preference). Output is one self-contained HTML document rendered via `<iframe srcdoc sandbox="allow-scripts">` (no `allow-same-origin`). *2026-10-31:* no links or per-number citations inside it; the page names its sources in text and a note under it points to Components, which cites each number. Fonts fall back to system stacks (the sandbox can't load the site's fonts).
 

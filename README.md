@@ -1,4 +1,4 @@
-# company-compare
+# side-by-side
 
 Pick two US public companies and a lens; Claude builds the comparison from their SEC filings. Every number on the
 page links to the filing it came from.
@@ -83,7 +83,7 @@ comparisons per account per day, and a monthly budget tracked as actual token sp
 | Variable | Needed | Purpose |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | always | The workspace key from step 1 |
-| `SEC_USER_AGENT` | always | e.g. `company-compare jane@example.com` |
+| `SEC_USER_AGENT` | always | e.g. `side-by-side jane@example.com` |
 | `REQUIRE_SIGN_IN` | deployed | `true`: sign-in, limits, spend tracking and logs |
 | `AUTH_SECRET` | with sign-in | Random secret, e.g. `openssl rand -base64 33` |
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | with sign-in | The OAuth client from step 3 |

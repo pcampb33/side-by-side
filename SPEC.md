@@ -30,7 +30,7 @@ Decided 2026-10-29. Each decision below was made explicitly; don't reopen one wi
 | Style | ~~Clean editorial.~~ *2026-11-01, owner, from three directions* (https://claude.ai/artifact/TP6X22KAhRudGLruveQNSo): **Product app**: soft white cards on a cool grey, 16px radius, soft shadows, pill controls, one sans family (Plus Jakarta Sans), indigo and teal series, shaded areas under lines, springy entrances. Text lenses use the **Overlap** layout (https://claude.ai/artifact/BWM2eEqQEfmNa9LtXeApNi): each company's panel outlined, offset and named on its edge, shared themes where they cross, tap a name to highlight its panel; stacked and self-labelled on phones. Wording stays as it was ("Risk themes: what each company names"); no risk weighting. Light + dark following system, manual switch (built before step 8; the freeform frame follows it). Fully responsive. Company names: EDGAR's all-caps names are title-cased, with a hand-kept override map for well-known names (JPMorgan, NVIDIA, Coca-Cola…) |
 | Cache backend | Local: gitignored `.cache/` folder. Deployed: Upstash Redis (also holds limits, spend, logs) |
 | Hosting | Vercel Hobby |
-| Repo | Public, ~~`pcampb33/company-compare`~~ `pcampb33/side-by-side` (*2026-11-01, owner*; the site wordmark, `<title>`, package name and the repo link in `blocked-panel.tsx` follow it), MIT, GitHub Actions CI (lint + typecheck + tests; never calls the API) |
+| Repo | Public, ~~`pcampb33/company-compare`~~ `pcampb33/side-by-side` (*2026-11-01, owner*; the site wordmark, `<title>`, package name and the repo link in `blocked-panel.tsx` follow it; so do the README title and the `SEC_USER_AGENT` examples, *2026-11-01, owner*), MIT, GitHub Actions CI (lint + typecheck + tests; never calls the API) |
 | Agent sub-project | `agent/` module with its own README + an eval harness (`npm run eval`). Playground UI deferred. No visitor-facing agent settings |
 
 ## 2. Architecture
@@ -85,7 +85,7 @@ company header (fixed, not generated), metric cards, trend line, grouped bars, r
 
 The site is a showcase of generative UI, so each comparison shows how it was made, without getting in the way.
 
-- **Strip:** under every comparison, collapsed to one line: the same five steps on every page (SEC data, annual reports read, lens brief, Claude composes, checks), each with a one-line general explanation and this run's count (e.g. "6 components, 2 sent back and fixed"). Tapping a step expands this run's real trace for it.
+- **Strip:** under every comparison, collapsed to one line: the same five steps on every page (SEC data, annual reports read, lens brief, Claude composes, checks), each with a one-line general explanation and this run's count (e.g. "6 components, 2 sent back and fixed"). Tapping a step expands this run's real trace for it. On a request blocked by the limits, the steps it never reached say "not run" (*2026-11-01, owner*).
 - **Guidelines view for this comparison** (linked from the strip): what Claude was given and followed for this page: the lens brief, the components offered and the ones excluded, the grounding rules, the design tokens (and the kit pieces a freeform page used), and the full ordered trace: each tool call with its input, every call the checks sent back with their exact message, timings, model, tokens.
 - **Traces are recorded per run** (tool calls, check feedback, timings, tokens, code-check results), stored with the cached result and in the featured JSON. A run without a trace (older cache) shows the general explanation only.
 - **Freeform kit:** the frame provides the site's card, stat and chip styles and a chart helper that draws to scale from the data; the prompt asks Sonnet to use them; `checkPage` and the evals still apply. The trace lists which pieces a page used. *2026-11-01, built (Claude's call within this decision):* `agent/kit.ts`, added by the frame and by the evals' renderer: `kit-card`, `kit-grid` (two to a row from 896px, an odd last card takes the row), `kit-stat`, `kit-chip`, all at zero specificity so committed pages are unaffected, and `kit.chart(target, {type, key | keys, year?})`, which takes metric keys like the components and looks every value up in the data the frame adds (charts can't show invented numbers). `submit_page` sends back any written-out chart spec the data can't draw. Freeform results moved to cache v3.
@@ -112,7 +112,7 @@ The site is a showcase of generative UI, so each comparison shows how it was mad
 |---|---|---|
 | `ANTHROPIC_API_KEY` | unless `CLAUDE_AUTH=login` | Claude calls (the deployed site uses a dedicated workspace key) |
 | `CLAUDE_AUTH` | optional | `api` (default) or `login`: use the local Claude Code login instead of a key. Refused when sign-in is on |
-| `SEC_USER_AGENT` | always | e.g. `company-compare jane@example.com`; each cloner uses their own |
+| `SEC_USER_AGENT` | always | e.g. `side-by-side jane@example.com`; each cloner uses their own |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | deployed | cache, limits, spend, logs |
 | `REQUIRE_SIGN_IN` | deployed | `true` turns on Google sign-in + limits |
 | `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | when sign-in is on | Auth.js |

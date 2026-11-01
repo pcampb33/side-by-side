@@ -201,7 +201,8 @@ function chart(target,spec){
   if(hi===lo)tk.push(hi=lo+1);
   host.classList.add("kit-chart");host.textContent="";
   var legend=html("div","kit-legend",host);
-  D.companies.forEach(function(c,ci){var y=year!==undefined&&cats[0].cells[ci].fy;html("span","kit-chip "+(ci?"b":"a"),legend,c.ticker+(y&&!cats[0].cells[ci].none?" · FY"+y:""))});
+  // Colors inline: a page's own .a/.b rules would otherwise repaint the legend (kit styles have zero specificity).
+  D.companies.forEach(function(c,ci){var y=year!==undefined&&cats[0].cells[ci].fy;html("span","kit-chip "+(ci?"b":"a"),legend,c.ticker+(y&&!cats[0].cells[ci].none?" · FY"+y:"")).style.cssText="background:var(--paper);color:var(--ink)"});
   var tip=html("div","kit-tip",host),box=html("div","",host),id="kit"+(++uid),width=0,active=null,place=null,shown=false;
   function draw(){
     var W=box.clientWidth;if(!W||W===width)return;width=W;box.textContent="";

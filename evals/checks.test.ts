@@ -30,6 +30,7 @@ describe("checkNumbers", () => {
     const r = checkNumbers(["Apple's revenue was about $400B, 84.4B more than Microsoft, in FY2019."], apple);
     expect(r.findings.map((f) => f.detail.split(" ")[0])).toEqual(["$400B", "84.4B", "FY2019"]);
     expect(checkNumbers(["Capital expenditure, $B: 123.4"], apple).findings).toHaveLength(1);
+    expect(checkNumbers(["Each bar is 100% of revenue."], apple).findings).toEqual([]);
   });
 
   it("accepts numbers that appear in the condensed annual reports", () => {

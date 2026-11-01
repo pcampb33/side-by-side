@@ -20,8 +20,8 @@ export interface Usage {
   outputTokens: number;
 }
 
-// Opus composes comparisons (Sonnet is scored against it by the evals);
-// Haiku condenses annual reports (lib/filings).
+// Sonnet composes comparisons (chosen over Opus at step 8: as well grounded,
+// two to three times faster); Haiku condenses annual reports (lib/filings).
 export type ModelId = "claude-opus-5-5" | "claude-sonnet-5-5" | "claude-haiku-5-5";
 
 // A backend runs the model until it stops. It throws ComparisonError on a
@@ -72,7 +72,7 @@ export async function generateComparison(opts: {
     components.push(c);
     opts.onComponent(c);
   });
-  const usage = await opts.backend({ model: opts.model ?? "claude-opus-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
+  const usage = await opts.backend({ model: opts.model ?? "claude-sonnet-5-5", system: systemPrompt(opts.lens), user: userPrompt(opts.companies), tools, signal: opts.signal });
   if (components.length === 0) throw new ComparisonError("The model finished without building a comparison.");
   return { components, usage };
 }

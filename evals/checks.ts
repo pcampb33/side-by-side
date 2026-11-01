@@ -115,7 +115,8 @@ const snippet = (text: string, at: number, length: number) =>
 export function checkNumbers(texts: string[], companies: CompanyInput[]): { checked: number; findings: Finding[] } {
   const known = knownValues(companies);
   const years = new Set(companies.flatMap((c) => c.financials.fiscalYears));
-  const grounded = (r: Reading) => known.some((k) => k.kind === r.kind && Math.abs(Math.abs(k.value) - r.value) <= r.step / 2 + 1e-9 * Math.max(1, r.value));
+  // 100% is a reference point ("each bar is 100% of revenue"), not a value.
+  const grounded = (r: Reading) => (r.kind === "percent" && r.value === 1) || known.some((k) => k.kind === r.kind && Math.abs(Math.abs(k.value) - r.value) <= r.step / 2 + 1e-9 * Math.max(1, r.value));
   const findings: Finding[] = [];
   let checked = 0;
   for (const text of texts) {

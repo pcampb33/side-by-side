@@ -44,7 +44,8 @@ The page:
 - Submit it with submit_page exactly once, then reply "done". If the tool returns an error, fix the page and submit again.
 - One complete document (<!doctype html>, <head>, <body>, ending in </html>), under ${MAX_HTML / 1000}KB. Inline CSS and JavaScript only. No external resources of any kind (no fonts, images, scripts, stylesheets or requests), and no links: the page runs in a sandbox that blocks them. Draw charts with inline SVG or canvas.
 - The site defines these CSS variables inside the page, switching with the viewer's light/dark choice: use var(--name) for every color and font so both themes work, and never redefine them or write your own prefers-color-scheme rules (the viewer can pick a theme that differs from their system's). Light: ${tokenList(THEME.light)}. Dark: ${tokenList(THEME.dark)}. Fonts: --font-sans (${FONTS.sans}), --font-serif (${FONTS.serif}; headings). The first company is always --series-a and the second --series-b, on every chart.
-- Style: clean editorial, matching the site: background var(--paper), cards on var(--surface) with a 1px var(--rule) border, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page: wide tables scroll sideways inside their own container (overflow-x: auto), and charts redraw to their container's width.
+- Style: clean editorial, matching the site: background var(--paper), cards on var(--surface) with a 1px var(--rule) border, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page: wide tables scroll sideways inside their own container (overflow-x: auto; give every grid and flex child min-width: 0 so that container can shrink), and charts redraw to their container's width.
+- Visual first, little text: charts, tables and figures carry the comparison. Text is a one-sentence introduction, at most one short sentence per chart, and the takeaways, one sentence each. No paragraphs, and never restate in words what a chart already shows.
 - Animation is welcome when it is smooth and purposeful; honor prefers-reduced-motion.
 
 Grounding:
@@ -82,7 +83,7 @@ export async function generatePage(opts: {
     },
   };
   const usage = await opts.backend({
-    model: opts.model ?? "claude-opus-5-5",
+    model: opts.model ?? "claude-sonnet-5-5",
     system: freeformSystemPrompt(opts.lens),
     user: userPrompt(opts.companies, { quotes: true }),
     tools: [submit],

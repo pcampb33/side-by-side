@@ -1,4 +1,4 @@
-// npm run eval -- [--model opus|sonnet] [--only <text>] [--score-only]
+// npm run eval -- [--model sonnet|opus] [--only <text>] [--score-only]
 // Generates every eval case (evals/cases.ts) in both modes from the saved
 // fixtures, runs the code-only checks (evals/checks.ts) and prints a
 // scorecard. Each run is saved to evals/out/<model>/, so --score-only
@@ -22,7 +22,7 @@ const MODELS = { opus: "claude-opus-5-5", sonnet: "claude-sonnet-5-5" } as const
 const MODES = ["components", "freeform"] as const;
 type Mode = (typeof MODES)[number];
 
-const { values: args } = parseArgs({ options: { model: { type: "string", default: "opus" }, only: { type: "string" }, "score-only": { type: "boolean", default: false } } });
+const { values: args } = parseArgs({ options: { model: { type: "string", default: "sonnet" }, only: { type: "string" }, "score-only": { type: "boolean", default: false } } });
 const model = MODELS[args.model as keyof typeof MODELS];
 if (!model) throw new Error(`--model must be one of ${Object.keys(MODELS).join(", ")}`);
 const root = path.join(import.meta.dirname, "..");

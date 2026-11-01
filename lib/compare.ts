@@ -24,8 +24,8 @@ export type CompareEvent =
   | { type: "error"; message: string }
   | { type: "heartbeat" };
 
-// Components v2: text rows carry an icon.
-const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 1 };
+// Components v2: text rows carry an icon. Freeform v2: Sonnet, minimal text.
+const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 2 };
 const resultKey = (tickers: readonly string[], lens: LensSlug, mode: Mode) => `result:v${RESULT_VERSION[mode]}:${tickers.join("|")}|${lens}|${mode}`;
 type Result = { components: Component[] } | { html: string };
 

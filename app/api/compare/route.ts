@@ -3,8 +3,9 @@ import { runComparison, type CompareEvent } from "@/lib/compare";
 import { MODES, parsePair } from "@/lib/compare-url";
 import { findLens } from "@/lib/lenses";
 
-// A generation streams for 20-40 seconds (SPEC R4).
-export const maxDuration = 60;
+// A freeform page or an uncached text lens takes up to ~100 seconds; Hobby
+// with Fluid compute allows 300 (SPEC R4).
+export const maxDuration = 300;
 
 const body = z.object({ pair: z.string(), lens: z.string(), mode: z.enum(MODES).default("components"), regenerate: z.boolean().default(false) });
 
@@ -25,7 +26,11 @@ export async function POST(request: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       const emit = (event: CompareEvent) => !abort.signal.aborted && controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
+      // Clients and proxies may close a connection that stays idle while the
+      // model works.
+      const heartbeat = setInterval(() => emit({ type: "heartbeat" }), 15_000);
       await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit });
+      clearInterval(heartbeat);
       if (!abort.signal.aborted) controller.close();
     },
     cancel: () => abort.abort(),

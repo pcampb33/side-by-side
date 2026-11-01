@@ -37,6 +37,8 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
   switch (event.type) {
     case "restart":
       return initial;
+    case "heartbeat":
+      return state;
     case "progress":
       return { ...state, step: event.step };
     case "data":

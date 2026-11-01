@@ -2,6 +2,7 @@ import type { Component } from "../agent/catalog.ts";
 import { generatePage } from "../agent/freeform.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
 import { ComparisonError, generateComparison, type Backend } from "../agent/run.ts";
+import { Blocked, type BlockReason } from "./access.ts";
 import { getCache } from "./cache/cache.ts";
 import type { Mode } from "./compare-url.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
@@ -13,8 +14,9 @@ import { NoAnnualDataError } from "./normalize/normalize.ts";
 // both companies' financials (the page looks every value up in them), each
 // condensed annual report as soon as it is read (text lenses), components as
 // the model shows them (or, in freeform mode, the one page it writes), then
-// done or error. The route adds a heartbeat every 15s, and serves a featured
-// comparison (lib/featured.ts) itself.
+// done or error, or blocked (sign-in or a limit, lib/access.ts) when it would
+// have to run Claude and may not. The route adds a heartbeat every 15s, and
+// serves a featured comparison (lib/featured.ts) itself.
 export type CompareEvent =
   | { type: "progress"; step: "fetching" | "reading" | "building" }
   | { type: "data"; companies: CompanyInput[] }
@@ -23,6 +25,7 @@ export type CompareEvent =
   | { type: "page"; html: string }
   | { type: "done"; cached: boolean; featured?: string } // featured: its generation date, YYYY-MM-DD
   | { type: "error"; message: string }
+  | { type: "blocked"; reason: BlockReason }
   | { type: "heartbeat" };
 
 // Components v2: text rows carry an icon. Freeform v2: Sonnet, minimal text.
@@ -115,6 +118,7 @@ export async function runComparison(opts: {
     await cache.set(key, result).catch((err) => console.error(`[compare] cache write failed for ${key}:`, err));
     emit({ type: "done", cached: false });
   } catch (err) {
+    if (err instanceof Blocked) return emit({ type: "blocked", reason: err.reason });
     if (err instanceof ComparisonError) return emit({ type: "error", message: err.message });
     console.error("[compare] failed:", err);
     emit({ type: "error", message: "The comparison failed unexpectedly. Try again in a minute." });

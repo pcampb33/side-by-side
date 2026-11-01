@@ -4,10 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { Component } from "@/agent/catalog";
 import { LENS_GUIDANCE } from "@/agent/lenses";
+import type { BlockReason } from "@/lib/access";
 import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { CompareEvent } from "@/lib/compare";
 import { parseMode, type Mode } from "@/lib/compare-url";
+import { BlockedPanel } from "./blocked-panel";
 import { FreeformFrame } from "./freeform-frame";
 import { HeadlineStrip } from "./headline-strip";
 import { snapshotPills, type PillSnapshot } from "./morph";
@@ -23,7 +25,7 @@ const TEXT_KIND: Partial<Record<LensSlug, TextKind>> = { "risk-exposure": "risks
 const isText = (c: Component) => c.name === "risk_themes" || c.name === "business_overlap";
 
 type State = {
-  status: "loading" | "error" | "done";
+  status: "loading" | "error" | "done" | "blocked";
   step: "fetching" | "reading" | "building";
   companies: CompanyInput[] | null;
   components: Component[];
@@ -31,6 +33,7 @@ type State = {
   cached: boolean;
   featured: string | null; // generation date
   error?: string;
+  blocked?: BlockReason;
 };
 
 const initial: State = { status: "loading", step: "fetching", companies: null, components: [], html: null, cached: false, featured: null };
@@ -55,6 +58,8 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
       return { ...state, status: "done", cached: event.cached, featured: event.featured ?? null };
     case "error":
       return { ...state, status: "error", error: event.message };
+    case "blocked":
+      return { ...state, status: "blocked", blocked: event.reason };
     case "closed":
       // A stream that ends without done or error was cut off.
       return state.status === "loading" ? { ...state, status: "error", error: "The connection closed before the comparison finished." } : state;
@@ -208,6 +213,8 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
           </button>
         </div>
       )}
+
+      {state.status === "blocked" && <BlockedPanel reason={state.blocked!} />}
 
       {state.status === "done" && (
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted">

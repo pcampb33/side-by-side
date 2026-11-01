@@ -1,6 +1,10 @@
+import { Redis } from "@upstash/redis";
 import { z } from "zod";
-import { runComparison, type CompareEvent } from "@/lib/compare";
+import { auth } from "@/auth";
+import { accessGate } from "@/lib/access";
+import { defaultBackend, runComparison, type CompareEvent } from "@/lib/compare";
 import { MODES, parsePair } from "@/lib/compare-url";
+import { parseEnv } from "@/lib/env";
 import { featuredEvents, findFeatured } from "@/lib/featured";
 import { findLens } from "@/lib/lenses";
 
@@ -24,6 +28,20 @@ export async function POST(request: Request) {
   const featured = findFeatured(tickers, lens.slug);
   if (featured) return new Response(featuredEvents(featured, parsed.data.mode).map((e) => JSON.stringify(e) + "\n").join(""), { headers });
 
+  // With sign-in on, generating needs an account and stays within the limits
+  // (lib/access.ts); viewing a saved comparison needs neither.
+  const env = parseEnv(process.env);
+  const gate = env.REQUIRE_SIGN_IN
+    ? accessGate({
+        store: Redis.fromEnv(),
+        email: (await auth())?.user?.email ?? null,
+        ownerEmail: env.OWNER_EMAIL,
+        budgetUsd: env.MONTHLY_BUDGET_USD,
+        request: { pair: parsed.data.pair, lens: lens.slug, mode: parsed.data.mode, ip: request.headers.get("x-forwarded-for")?.split(",")[0].trim() || null },
+      })
+    : undefined;
+  const backend = gate?.wrap(await defaultBackend());
+
   // The client going away (including React strict mode's double mount in
   // development) aborts the model run.
   const abort = new AbortController();
@@ -35,8 +53,9 @@ export async function POST(request: Request) {
       // Clients and proxies may close a connection that stays idle while the
       // model works.
       const heartbeat = setInterval(() => emit({ type: "heartbeat" }), 15_000);
-      await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit });
+      await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit, backend });
       clearInterval(heartbeat);
+      await gate?.log().catch((err) => console.error("[compare] log write failed:", err));
       if (!abort.signal.aborted) controller.close();
     },
     cancel: () => abort.abort(),

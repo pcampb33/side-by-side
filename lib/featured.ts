@@ -34,5 +34,5 @@ export function featuredEvents(f: Featured, mode: Mode): CompareEvent[] {
   const companies: CompanyInput[] = f.companies.map(({ ticker, name, financials }) => ({ ticker, name, financials }));
   const filings = f.companies.flatMap((c): CompareEvent[] => (c.filing ? [{ type: "filing", ticker: c.ticker, filing: c.filing }] : []));
   const result: CompareEvent[] = mode === "freeform" ? [{ type: "page", html: f.html }] : f.components.map((component) => ({ type: "component", component }));
-  return [{ type: "data", companies }, ...filings, ...result, { type: "done", cached: true, featured: true }];
+  return [{ type: "data", companies }, ...filings, ...result, { type: "done", cached: true, featured: f.generatedAt }];
 }

@@ -21,7 +21,7 @@ export type CompareEvent =
   | { type: "filing"; ticker: string; filing: NonNullable<CompanyInput["filing"]> }
   | { type: "component"; component: Component }
   | { type: "page"; html: string }
-  | { type: "done"; cached: boolean; featured?: boolean }
+  | { type: "done"; cached: boolean; featured?: string } // featured: its generation date, YYYY-MM-DD
   | { type: "error"; message: string }
   | { type: "heartbeat" };
 

@@ -227,7 +227,7 @@ function Sheet({ content, onClosed }: { content: SheetContent; onClosed: () => v
       onClick={(e) => e.target === ref.current && close()}
     >
       <div className="px-5 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] sm:px-6">
-        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-rule" />
+        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-rule sm:invisible" />
         <div className="flex items-center justify-between gap-3">
           <h3 id="sheet-title" className="flex items-center gap-2.5 font-display text-xl font-semibold tracking-tight">
             {Icon && <Icon aria-hidden size={22} strokeWidth={1.75} className="shrink-0 text-muted" />}
@@ -252,6 +252,7 @@ function Sheet({ content, onClosed }: { content: SheetContent; onClosed: () => v
           </section>
         ))}
       </div>
+      <div aria-hidden className="sheet-fade" />
     </dialog>
   );
 }

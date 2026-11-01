@@ -172,6 +172,16 @@ body {
 .sheet[data-closing]::backdrop { animation: fade-in 0.22s ease-in reverse forwards; }
 @keyframes sheet-up { from { transform: translateY(100%); } }
 @keyframes sheet-down { to { transform: translateY(100%); } }
+/* Wider than a phone: a dialog centered in the window, easing in and out. */
+@media (min-width: 640px) {
+  .sheet { inset: 0; margin: auto; max-height: min(80dvh, 760px); border-radius: 20px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.22); }
+  .sheet[open] { animation: dialog-in 0.32s var(--ease-out); }
+  .sheet[data-closing] { animation: dialog-out 0.18s ease-in forwards; }
+}
+@keyframes dialog-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } }
+@keyframes dialog-out { to { opacity: 0; transform: translateY(6px) scale(0.98); } }
+/* Fades the text out at the scroll edge; sits over the bottom padding once scrolled to the end. */
+.sheet-fade { position: sticky; bottom: 0; height: 28px; margin-top: -28px; pointer-events: none; background: linear-gradient(transparent, var(--surface)); }
 @keyframes fade-in { from { opacity: 0; } }
 .popover-in { animation: fade-in 0.15s var(--ease-out); }
 

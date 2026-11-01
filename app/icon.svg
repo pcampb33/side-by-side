@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .a { stroke: #5b5bd6 } .b { stroke: #0e9585 }
+    @media (prefers-color-scheme: dark) { .a { stroke: #8d8ef7 } .b { stroke: #2fd1bb } }
+  </style>
+  <circle class="a" cx="11.5" cy="16" r="9" fill="none" stroke-width="3.5"/>
+  <circle class="b" cx="20.5" cy="16" r="9" fill="none" stroke-width="3.5"/>
+</svg>

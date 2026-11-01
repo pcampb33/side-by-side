@@ -195,6 +195,9 @@ body {
 .sheet-fade { position: sticky; bottom: 0; height: 28px; margin-top: -28px; pointer-events: none; background: linear-gradient(transparent, var(--surface)); }
 @keyframes fade-in { from { opacity: 0; } }
 .popover-in { animation: fade-in var(--dur-fast) var(--ease-out); }
+/* Share's "Link copied" (share-button.tsx) rises from below the viewport and drops back. */
+.toast { transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out); }
+.toast:not([data-on]) { transform: translateY(calc(100% + 2rem)); opacity: 0; pointer-events: none; transition-duration: var(--dur-fast); transition-timing-function: ease-in; }
 
 /* Components / Freeform switch: the thumb slides under the chosen mode. */
 .mode-thumb { width: calc(50% - 0.25rem); transition: transform var(--dur-base) var(--ease-out); }
@@ -299,7 +302,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mode-thumb, .theme-thumb, .freeform { transition: none; }
+  .mode-thumb, .theme-thumb, .freeform, .toast { transition: none; }
   .venn-panel, .venn-chip, .venn-tab, .pop-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .venn-chip:hover, .venn-tab:hover { transform: none; }
   .featured-in { animation: none; }

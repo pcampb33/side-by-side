@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, ViewTransition } from "react";
+import { LENS_GUIDANCE } from "@/agent/lenses";
 import { parsePair, titleTransitionName } from "@/lib/compare-url";
 import { findTicker, getFinancials, getProfile } from "@/lib/data";
 import { findFeatured } from "@/lib/featured";
@@ -9,6 +11,18 @@ import { NoAnnualDataError } from "@/lib/normalize/normalize";
 import { CompanyHeader } from "./company-header";
 import { ComparisonStream } from "./comparison-stream";
 import { ProcessAside, ProcessStrip } from "./process-views";
+import { ShareButton } from "./share-button";
+
+// The tab title and the text a shared link unfolds with (its image: opengraph-image.tsx).
+export async function generateMetadata({ params }: PageProps<"/compare/[pair]/[lens]">): Promise<Metadata> {
+  const { pair, lens: slug } = await params;
+  const tickers = parsePair(pair);
+  const lens = findLens(slug);
+  if (!tickers || !lens) return {};
+  const title = `${tickers[0]} vs ${tickers[1]}: ${lens.label} · side-by-side`;
+  const description = `${LENS_GUIDANCE[lens.slug].question} Built from their SEC filings.`;
+  return { title, description, openGraph: { title, description } };
+}
 
 export default function ComparePage({ params }: PageProps<"/compare/[pair]/[lens]">) {
   return (
@@ -55,9 +69,12 @@ async function Comparison({ params }: Pick<PageProps<"/compare/[pair]/[lens]">, 
             <span className="text-muted">: {lens.label}</span>
           </h1>
         </ViewTransition>
-        <Link href="/" className="text-sm text-accent hover:underline">
-          New comparison
-        </Link>
+        <div className="flex items-center gap-4">
+          <ShareButton />
+          <Link href="/" className="text-sm text-accent hover:underline">
+            New comparison
+          </Link>
+        </div>
       </div>
       <div className="mt-8 grid gap-4 @2xl:grid-cols-2">
         {companies.map((c) => (

@@ -9,9 +9,12 @@ import { ThemeSwitch } from "./theme-switch";
 
 const sans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
+const description = "Compare two US public companies, grounded in their SEC filings.";
 export const metadata: Metadata = {
   title: "side-by-side",
-  description: "Compare two US public companies, grounded in their SEC filings.",
+  description,
+  openGraph: { title: "side-by-side", description },
+  twitter: { card: "summary_large_image" },
 };
 
 // Sign-in, limits and logging exist only on the deployed site (SPEC §5).

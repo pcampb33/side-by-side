@@ -82,6 +82,9 @@ export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: 
     .filter((j) => j !== null)
     .sort((a, b) => a.to.y - b.to.y || a.to.x - b.to.x);
 
+  // Labels rise once every pill has landed, so the cascade is capped at 300ms:
+  // with many pills, the first tiles would otherwise sit empty while the rest fly.
+  const stagger = Math.min(30, 300 / jobs.length);
   const moves = jobs.map(({ p, to }, n) => {
     const g = document.createElement("div");
     g.className = "morph-ghost";
@@ -90,7 +93,7 @@ export function playMorph(opts: { stage: HTMLElement; root: HTMLElement; pills: 
     g.style.cssText = `left:${p.x}px;top:${p.y}px;width:${p.w}px;height:${p.h}px`;
     stage.appendChild(g);
     ghosts.push(g);
-    const delay = n * 30;
+    const delay = n * stagger;
     anims.push(label.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, delay, fill: "forwards" }));
     const move = g.animate(
       [

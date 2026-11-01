@@ -43,14 +43,18 @@ export interface Morph {
 
 // ---- While Claude groups: each 10-K's own list ----
 
-export function FilingPills({ companies, kind }: { companies: CompanyInput[]; kind: TextKind }) {
+export function FilingPills({ companies, kind, freeform }: { companies: CompanyInput[]; kind: TextKind; freeform?: boolean }) {
   const [sheet, setSheet] = useState<SheetContent | null>(null);
   const what = kind === "risks" ? "risk themes" : "business areas";
   return (
     <article className="rounded-lg border border-rule bg-surface p-5 sm:p-6">
       <h3 className="font-serif text-xl font-semibold tracking-tight">{kind === "risks" ? "Risk themes" : "Business areas"} in each 10-K</h3>
       <p className="mt-1 text-sm text-muted">
-        {companies.every((c) => c.filing) ? "Claude is lining these up into shared and one-company subjects." : "Each list appears as its annual report is read."}
+        {!companies.every((c) => c.filing)
+          ? "Each list appears as its annual report is read."
+          : freeform
+            ? "Claude is writing a page from these."
+            : "Claude is lining these up into shared and one-company subjects."}
       </p>
       <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:gap-x-12">
         {companies.map((c, si) => (

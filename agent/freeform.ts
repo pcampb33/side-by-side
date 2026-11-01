@@ -1,0 +1,87 @@
+import { z } from "zod";
+import type { LensSlug } from "../lib/lenses.ts";
+import { FONTS, THEME } from "../lib/theme.ts";
+import { LENS_GUIDANCE } from "./lenses.ts";
+import { userPrompt, type CompanyInput } from "./prompt.ts";
+import { ComparisonError, type Backend, type ToolSpec, type Usage } from "./run.ts";
+
+// Freeform mode: from the same data, Claude writes one self-contained HTML
+// page, which the site shows in <iframe srcdoc sandbox="allow-scripts">. The
+// page can't reach anything outside itself: checkPage refuses external loads
+// and links so the model can fix them, and the frame adds a CSP that blocks
+// whatever the check misses (app/compare/[pair]/[lens]/freeform-frame.tsx).
+
+const MAX_HTML = 120_000;
+
+// Why the page can't be shown, or null when it can.
+export function checkPage(html: string): string | null {
+  if (!/<head[\s>]/i.test(html) || !/<\/html>\s*$/i.test(html)) return "Submit one complete HTML document, with a <head>, ending in </html>.";
+  const external: [RegExp, string][] = [
+    [/<(?:link|base|iframe|object|embed|frame)\b/i, "<link>, <base>, <iframe>, <object> or <embed>"],
+    [/\b(?:src|srcset|action|poster|data|xlink:href)\s*=\s*["']?\s*(?:https?:)?\/\//i, "an external src"],
+    [/\bhref\s*=\s*["']?\s*(?!["']?#)/i, "an href other than a #fragment (links can't open from the page)"],
+    [/url\(\s*["']?\s*(?:https?:)?\/\//i, "an external url()"],
+    [/@import\b/i, "@import"],
+    [/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|importScripts)\s*\(|\bnew\s+(?:XMLHttpRequest|WebSocket|EventSource)\b|\bimport\s*\(/, "a network request"],
+  ];
+  const found = external.filter(([re]) => re.test(html)).map(([, what]) => what);
+  return found.length ? `The page must be self-contained, but it has ${found.join(", ")}. Inline everything and submit again.` : null;
+}
+
+const tokenList = (t: Record<string, string>) =>
+  Object.entries(t)
+    .map(([k, v]) => `--${k} ${v}`)
+    .join(", ");
+
+export function freeformSystemPrompt(lens: LensSlug): string {
+  const { question, guidance } = LENS_GUIDANCE[lens];
+  return `You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters (don't repeat those).
+
+Lens: ${question}
+Guidance written for the site's component mode, which names its own components; treat it as what to show, in whatever form serves the reader: ${guidance}
+
+The page:
+- Submit it with submit_page exactly once, then reply "done". If the tool returns an error, fix the page and submit again.
+- One complete document (<!doctype html>, <head>, <body>, ending in </html>), under ${MAX_HTML / 1000}KB. Inline CSS and JavaScript only. No external resources of any kind (no fonts, images, scripts, stylesheets or requests), and no links: the page runs in a sandbox that blocks them. Draw charts with inline SVG or canvas.
+- The site defines these CSS variables inside the page, switching with the viewer's light/dark setting: use var(--name) for every color and font so both themes work. Light: ${tokenList(THEME.light)}. Dark: ${tokenList(THEME.dark)}. Fonts: --font-sans (${FONTS.sans}), --font-serif (${FONTS.serif}; headings). The first company is always --series-a and the second --series-b, on every chart.
+- Style: clean editorial, matching the site: background var(--paper), cards on var(--surface) with a 1px var(--rule) border, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page: wide tables scroll sideways inside their own container (overflow-x: auto), and charts redraw to their container's width.
+- Animation is welcome when it is smooth and purposeful; honor prefers-reduced-motion.
+
+Grounding:
+- Every number you write must appear in the data tables exactly as shown there, with its company and fiscal year. Never compute, round or estimate a new number.
+- "n/r" means the filing does not report it and "n/m" means the ratio is not meaningful; say so rather than working around it.
+- Say where numbers come from in plain text (e.g. "From each company's 10-K filings, FY2021 to FY2025"). Quotes from the annual reports, if you use them, are copied exactly as given, with their section (10-K, Item 1A).
+- End with 3 to 5 neutral takeaways: differences, never a winner, a recommendation or a prediction. Add the line "Not financial advice."`;
+}
+
+export async function generatePage(opts: { lens: LensSlug; companies: CompanyInput[]; backend: Backend; signal: AbortSignal }): Promise<{ html: string; usage: Usage }> {
+  if (LENS_GUIDANCE[opts.lens].needsFilings && opts.companies.some((c) => !c.filing)) {
+    throw new Error(`The ${opts.lens} lens needs each company's condensed annual report.`);
+  }
+  let html: string | undefined;
+  const shape = { html: z.string().min(200).max(MAX_HTML).describe("The complete HTML document") };
+  const submit: ToolSpec = {
+    name: "submit_page",
+    description: "Submit the finished HTML page.",
+    shape,
+    handle(input) {
+      if (html) return { ok: false, text: "Already submitted. Reply done." };
+      const parsed = z.object(shape).safeParse(input);
+      if (!parsed.success) return { ok: false, text: `Invalid input:\n${z.prettifyError(parsed.error)}` };
+      const page = parsed.data.html.trim();
+      const problem = checkPage(page);
+      if (problem) return { ok: false, text: problem };
+      html = page;
+      return { ok: true, text: "Shown." };
+    },
+  };
+  const usage = await opts.backend({
+    model: "claude-opus-5-5",
+    system: freeformSystemPrompt(opts.lens),
+    user: userPrompt(opts.companies, { quotes: true }),
+    tools: [submit],
+    signal: opts.signal,
+  });
+  if (!html) throw new ComparisonError("The model finished without writing a page.");
+  return { html, usage };
+}

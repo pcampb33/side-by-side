@@ -1,4 +1,4 @@
-import type { CondensedFiling } from "../lib/filings/condense.ts";
+import type { CondensedFiling, Quote } from "../lib/filings/condense.ts";
 import { formatValue } from "../lib/format.ts";
 import type { LensSlug } from "../lib/lenses.ts";
 import type { NormalizedFinancials } from "../lib/normalize/normalize.ts";
@@ -45,18 +45,22 @@ function table(c: CompanyInput): string {
 }
 
 // The condensed annual report: the ids the text components take, with the
-// summaries Haiku wrote. The verified quotes stay with the page.
-function filing(c: CompanyInput): string {
+// summaries Haiku wrote. In component mode the verified quotes stay with the
+// page; a freeform page writes its own, so it gets them (`quotes`).
+function filing(c: CompanyInput, quotes: boolean): string {
   const f = c.filing!;
-  const list = (items: { id: string; name: string; text: string }[]) => items.map((i) => `${c.ticker}-${i.id} | ${i.name} | ${i.text}`).join("\n");
+  const list = (items: { id: string; name: string; text: string; quotes: Quote[] }[]) =>
+    items
+      .map((i) => `${c.ticker}-${i.id} | ${i.name} | ${i.text}${quotes ? i.quotes.map((q) => `\n  "${q.text}" (${q.section})`).join("") : ""}`)
+      .join("\n");
   return `${c.ticker} annual report (10-K for FY${f.fiscalYear}): ${f.overview}
 Business areas:
-${list(f.areas.map((a) => ({ id: a.id, name: a.name, text: a.description })))}
+${list(f.areas.map((a) => ({ id: a.id, name: a.name, text: a.description, quotes: a.quotes })))}
 Risk themes:
-${list(f.risks.map((r) => ({ id: r.id, name: r.theme, text: r.summary })))}`;
+${list(f.risks.map((r) => ({ id: r.id, name: r.theme, text: r.summary, quotes: r.quotes })))}`;
 }
 
-export function userPrompt(companies: CompanyInput[]): string {
-  const filings = companies.every((c) => c.filing) ? `\n\n${companies.map(filing).join("\n\n")}` : "";
+export function userPrompt(companies: CompanyInput[], opts: { quotes?: boolean } = {}): string {
+  const filings = companies.every((c) => c.filing) ? `\n\n${companies.map((c) => filing(c, opts.quotes ?? false)).join("\n\n")}` : "";
   return `Compare ${companies.map((c) => c.ticker).join(" and ")}.\n\n${companies.map(table).join("\n\n")}${filings}`;
 }

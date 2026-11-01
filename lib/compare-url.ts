@@ -24,3 +24,8 @@ export function canonicalComparePath(pathname: string): string | null {
   const pair = parsePair(match[1]);
   return pair ? comparePath(pair[0], pair[1], match[2].toLowerCase()) : null;
 }
+
+// ?mode=freeform; components is the default and has no parameter.
+export const MODES = ["components", "freeform"] as const;
+export type Mode = (typeof MODES)[number];
+export const parseMode = (value: string | null | undefined): Mode => (value === "freeform" ? "freeform" : "components");

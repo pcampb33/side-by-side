@@ -114,7 +114,16 @@ body {
 @keyframes sheet-down { to { transform: translateY(100%); } }
 @keyframes fade-in { from { opacity: 0; } }
 
+/* Components / Freeform switch: the thumb slides under the chosen mode. */
+.mode-thumb { width: calc(50% - 0.25rem); transition: transform 0.45s var(--ease-out); }
+.mode-thumb[data-second] { transform: translateX(100%); }
+
+/* A freeform page fades in once it has reported its height, then follows it. */
+.freeform { opacity: 0; transform: translateY(8px); transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), height 0.4s var(--ease-out); }
+.freeform[data-ready] { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
+  .mode-thumb, .freeform { transition: none; }
   .tile, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .tile:hover { transform: none; }
 }

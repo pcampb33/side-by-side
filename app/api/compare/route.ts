@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { runComparison, type CompareEvent } from "@/lib/compare";
-import { parsePair } from "@/lib/compare-url";
+import { MODES, parsePair } from "@/lib/compare-url";
 import { findLens } from "@/lib/lenses";
 
 // A generation streams for 20-40 seconds (SPEC R4).
 export const maxDuration = 60;
 
-const body = z.object({ pair: z.string(), lens: z.string(), regenerate: z.boolean().default(false) });
+const body = z.object({ pair: z.string(), lens: z.string(), mode: z.enum(MODES).default("components"), regenerate: z.boolean().default(false) });
 
 // Streams newline-delimited JSON CompareEvents.
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const tickers = parsed.success ? parsePair(parsed.data.pair) : null;
   const lens = parsed.success ? findLens(parsed.data.lens) : undefined;
   if (!parsed.success || !tickers || !lens || tickers.join() !== [...tickers].sort().join()) {
-    return Response.json({ error: "Expected { pair: 'AAPL-vs-MSFT', lens, regenerate? } with the pair in alphabetical order." }, { status: 400 });
+    return Response.json({ error: "Expected { pair: 'AAPL-vs-MSFT', lens, mode?, regenerate? } with the pair in alphabetical order." }, { status: 400 });
   }
 
   // The client going away (including React strict mode's double mount in
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       const emit = (event: CompareEvent) => !abort.signal.aborted && controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
-      await runComparison({ tickers, lens: lens.slug, regenerate: parsed.data.regenerate, signal: abort.signal, emit });
+      await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit });
       if (!abort.signal.aborted) controller.close();
     },
     cancel: () => abort.abort(),

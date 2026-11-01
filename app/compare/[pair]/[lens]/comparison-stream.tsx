@@ -1,18 +1,22 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { Component } from "@/agent/catalog";
 import { LENS_GUIDANCE } from "@/agent/lenses";
 import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { CompareEvent } from "@/lib/compare";
+import { parseMode, type Mode } from "@/lib/compare-url";
+import { FreeformFrame } from "./freeform-frame";
 import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
 import { FilingPills, type TextKind } from "./text-tiles";
 
 // Reads POST /api/compare's event stream: progress steps first, then each
 // component as the model shows it. On a text lens, each 10-K's own list shows
-// as soon as it is read, then morphs into the grouped tiles.
+// as soon as it is read, then morphs into the grouped tiles. In freeform mode
+// (?mode=freeform) the model's one page replaces the components.
 
 const TEXT_KIND: Partial<Record<LensSlug, TextKind>> = { "risk-exposure": "risks", "where-they-compete": "areas" };
 const isText = (c: Component) => c.name === "risk_themes" || c.name === "business_overlap";
@@ -22,11 +26,12 @@ type State = {
   step: "fetching" | "reading" | "building";
   companies: CompanyInput[] | null;
   components: Component[];
+  html: string | null;
   cached: boolean;
   error?: string;
 };
 
-const initial: State = { status: "loading", step: "fetching", companies: null, components: [], cached: false };
+const initial: State = { status: "loading", step: "fetching", companies: null, components: [], html: null, cached: false };
 
 function reduce(state: State, event: CompareEvent | { type: "closed" } | { type: "restart" }): State {
   switch (event.type) {
@@ -40,6 +45,8 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
       return { ...state, companies: state.companies?.map((c) => (c.ticker === event.ticker ? { ...c, filing: event.filing } : c)) ?? null };
     case "component":
       return { ...state, components: [...state.components, event.component] };
+    case "page":
+      return { ...state, html: event.html };
     case "done":
       return { ...state, status: "done", cached: event.cached };
     case "error":
@@ -57,6 +64,49 @@ const STEPS = [
 ] as const;
 
 export function ComparisonStream({ pair, lens }: { pair: string; lens: string }) {
+  const mode = parseMode(useSearchParams().get("mode"));
+  // The URL is the toggle's state, so Back switches modes too.
+  const choose = (next: Mode) => {
+    const url = new URL(window.location.href);
+    if (next === "freeform") url.searchParams.set("mode", "freeform");
+    else url.searchParams.delete("mode");
+    window.history.pushState(null, "", url);
+  };
+  return (
+    <>
+      <div className="mt-8 flex justify-end">
+        <ModeSwitch mode={mode} onChange={choose} />
+      </div>
+      <Stream key={mode} pair={pair} lens={lens} mode={mode} />
+    </>
+  );
+}
+
+function ModeSwitch({ mode, onChange }: { mode: Mode; onChange: (mode: Mode) => void }) {
+  const modes = [
+    { mode: "components", label: "Components" },
+    { mode: "freeform", label: "Freeform" },
+  ] as const;
+  return (
+    <div role="radiogroup" aria-label="How Claude builds the comparison" className="mode-switch relative grid grid-cols-2 rounded-full border border-rule bg-surface p-1 text-sm">
+      <span aria-hidden className="mode-thumb absolute inset-y-1 left-1 rounded-full bg-ink" data-second={mode === "freeform" || undefined} />
+      {modes.map((m) => (
+        <button
+          key={m.mode}
+          type="button"
+          role="radio"
+          aria-checked={mode === m.mode}
+          onClick={() => mode !== m.mode && onChange(m.mode)}
+          className={`relative z-10 rounded-full px-4 py-1.5 transition-colors duration-300 ${mode === m.mode ? "text-paper" : "text-muted hover:text-ink"}`}
+        >
+          {m.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }) {
   const [state, dispatch] = useReducer(reduce, initial);
   const [run, setRun] = useState({ n: 0, regenerate: false });
   const stage = useRef<HTMLElement>(null);
@@ -69,7 +119,7 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
         const res = await fetch("/api/compare", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pair, lens, regenerate: run.regenerate }),
+          body: JSON.stringify({ pair, lens, mode, regenerate: run.regenerate }),
           signal: abort.signal,
         });
         if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
@@ -94,7 +144,7 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
       }
     })();
     return () => abort.abort();
-  }, [pair, lens, run]);
+  }, [pair, lens, mode, run]);
 
   const restart = (regenerate: boolean) => {
     dispatch({ type: "restart" });
@@ -104,10 +154,10 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
   const currentStep = steps.findIndex((s) => s.step === state.step);
   const textKind = TEXT_KIND[lens as LensSlug];
   const firstText = state.components.findIndex(isText);
-  const showPills = textKind && state.companies && state.status === "loading" && firstText < 0;
+  const showPills = textKind && state.companies && state.status === "loading" && firstText < 0 && !state.html;
 
   return (
-    <section ref={stage} className="relative mt-8 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
+    <section ref={stage} className="relative mt-4 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
       {state.status === "loading" && (
         <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {steps.map((s, i) => (
@@ -129,9 +179,18 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
       {state.companies &&
         state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />)}
 
-      {showPills && <FilingPills companies={state.companies!} kind={textKind} />}
+      {state.html && (
+        <>
+          <FreeformFrame html={state.html} />
+          <p className="text-sm text-muted">
+            Claude wrote this page itself from the same filing data. Its numbers aren&apos;t linked to their filings; Components cites each one.
+          </p>
+        </>
+      )}
 
-      {state.status === "loading" && state.step === "building" && !showPills && (
+      {showPills && <FilingPills companies={state.companies!} kind={textKind} freeform={mode === "freeform"} />}
+
+      {state.status === "loading" && state.step === "building" && !showPills && !state.html && (
         <div className="h-32 animate-pulse rounded-lg border border-rule bg-surface" aria-hidden />
       )}
 

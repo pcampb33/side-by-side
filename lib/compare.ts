@@ -1,7 +1,9 @@
 import type { Component } from "../agent/catalog.ts";
+import { generatePage } from "../agent/freeform.ts";
 import type { CompanyInput } from "../agent/prompt.ts";
 import { ComparisonError, generateComparison, type Backend } from "../agent/run.ts";
 import { getCache } from "./cache/cache.ts";
+import type { Mode } from "./compare-url.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
 import { findTicker, getAnnualReport, getCondensedFiling, getFinancials } from "./data.ts";
 import type { LensSlug } from "./lenses.ts";
@@ -10,17 +12,21 @@ import { NoAnnualDataError } from "./normalize/normalize.ts";
 // One comparison request, as the events POST /api/compare streams: progress,
 // both companies' financials (the page looks every value up in them), each
 // condensed annual report as soon as it is read (text lenses), components as
-// the model shows them, then done or error.
+// the model shows them (or, in freeform mode, the one page it writes), then
+// done or error.
 export type CompareEvent =
   | { type: "progress"; step: "fetching" | "reading" | "building" }
   | { type: "data"; companies: CompanyInput[] }
   | { type: "filing"; ticker: string; filing: NonNullable<CompanyInput["filing"]> }
   | { type: "component"; component: Component }
+  | { type: "page"; html: string }
   | { type: "done"; cached: boolean }
   | { type: "error"; message: string };
 
-// v2: text rows carry an icon.
-const resultKey = (tickers: readonly string[], lens: LensSlug) => `result:v2:${tickers.join("|")}|${lens}|components`;
+// Components v2: text rows carry an icon.
+const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 1 };
+const resultKey = (tickers: readonly string[], lens: LensSlug, mode: Mode) => `result:v${RESULT_VERSION[mode]}:${tickers.join("|")}|${lens}|${mode}`;
+type Result = { components: Component[] } | { html: string };
 
 async function defaultBackend(): Promise<Backend> {
   if (process.env.CLAUDE_AUTH === "login") return (await import("../agent/backends/login.ts")).loginBackend;
@@ -30,12 +36,13 @@ async function defaultBackend(): Promise<Backend> {
 export async function runComparison(opts: {
   tickers: readonly [string, string]; // canonical (alphabetical) order
   lens: LensSlug;
+  mode: Mode;
   regenerate: boolean;
   signal: AbortSignal;
   emit: (event: CompareEvent) => void;
   backend?: Backend;
 }): Promise<void> {
-  const { tickers, lens, emit } = opts;
+  const { tickers, lens, mode, emit } = opts;
   try {
     emit({ type: "progress", step: "fetching" });
     const companies = await Promise.all(
@@ -67,28 +74,37 @@ export async function runComparison(opts: {
     }
 
     const cache = getCache();
-    const key = resultKey(tickers, lens);
+    const key = resultKey(tickers, lens, mode);
+    const show = (result: Result) => {
+      if ("html" in result) emit({ type: "page", html: result.html });
+      else for (const component of result.components) emit({ type: "component", component });
+    };
     if (!opts.regenerate) {
-      const hit = (await cache.get(key).catch((err) => console.error(`[compare] cache read failed for ${key}:`, err))) as
-        | { components: Component[] }
-        | undefined;
+      const hit = (await cache.get(key).catch((err) => console.error(`[compare] cache read failed for ${key}:`, err))) as Result | undefined;
       if (hit) {
-        for (const component of hit.components) emit({ type: "component", component });
+        show(hit);
         emit({ type: "done", cached: true });
         return;
       }
     }
 
     emit({ type: "progress", step: "building" });
-    const { components } = await generateComparison({
-      lens,
-      companies,
-      backend,
-      signal: opts.signal,
-      onComponent: (component) => emit({ type: "component", component }),
-    });
+    let result: Result;
+    if (mode === "freeform") {
+      result = { html: (await generatePage({ lens, companies, backend, signal: opts.signal })).html };
+      show(result);
+    } else {
+      const generated = await generateComparison({
+        lens,
+        companies,
+        backend,
+        signal: opts.signal,
+        onComponent: (component) => emit({ type: "component", component }),
+      });
+      result = { components: generated.components };
+    }
     // No TTL: a result is replaced only by Regenerate.
-    await cache.set(key, { components }).catch((err) => console.error(`[compare] cache write failed for ${key}:`, err));
+    await cache.set(key, result).catch((err) => console.error(`[compare] cache write failed for ${key}:`, err));
     emit({ type: "done", cached: false });
   } catch (err) {
     if (err instanceof ComparisonError) return emit({ type: "error", message: err.message });

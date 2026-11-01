@@ -10,6 +10,7 @@ import type { Trace, TraceCall } from "@/agent/trace";
 import type { CompareEvent } from "@/lib/compare";
 import { parseMode, type Mode } from "@/lib/compare-url";
 import { BlockedPanel } from "./blocked-panel";
+import { fullWidth, loadingCardFull } from "./chart-pairs";
 import { FreeformFrame } from "./freeform-frame";
 import { useProcess } from "./process-context";
 import { HeadlineStrip } from "./headline-strip";
@@ -178,14 +179,26 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
   const textKind = TEXT_KIND[lens as LensSlug];
   const firstText = state.components.findIndex(isText);
   const showPills = textKind && state.companies && state.status === "loading" && firstText < 0 && !state.html;
+  const building = state.status === "loading" && state.step === "building" && !showPills && !state.html;
+  const names = state.components.map((c) => c.name);
+  const full = fullWidth(names, state.status === "loading");
 
   return (
     <section ref={stage} className="relative mt-4 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
       {state.companies && <HeadlineStrip lens={lens as LensSlug} companies={state.companies} />}
 
 
-      {state.companies &&
-        state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />)}
+      {/* Two charts side by side once the comparison is wide enough (chart-pairs.ts). */}
+      {state.companies && (state.components.length > 0 || building) && (
+        <div className="grid gap-4 @4xl:grid-cols-2">
+          {state.components.map((c, i) => (
+            <div key={i} className={`min-w-0 ${full[i] ? "@4xl:col-span-2" : ""}`}>
+              <ComponentView component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />
+            </div>
+          ))}
+          {building && <div className={`card min-h-32 animate-pulse ${loadingCardFull(names, true) ? "@4xl:col-span-2" : ""}`} aria-hidden />}
+        </div>
+      )}
 
       {state.html && (
         <>
@@ -198,9 +211,6 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
 
       {showPills && <FilingPills companies={state.companies!} kind={textKind} freeform={mode === "freeform"} />}
 
-      {state.status === "loading" && state.step === "building" && !showPills && !state.html && (
-        <div className="h-32 animate-pulse card" aria-hidden />
-      )}
 
       {state.status === "error" && (
         <div className="rounded-2xl border border-danger/40 bg-danger/5 px-5 py-4">

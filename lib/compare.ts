@@ -8,16 +8,19 @@ import type { LensSlug } from "./lenses.ts";
 import { NoAnnualDataError } from "./normalize/normalize.ts";
 
 // One comparison request, as the events POST /api/compare streams: progress,
-// both companies' data (the page looks every value up in it), components as
+// both companies' financials (the page looks every value up in them), each
+// condensed annual report as soon as it is read (text lenses), components as
 // the model shows them, then done or error.
 export type CompareEvent =
   | { type: "progress"; step: "fetching" | "reading" | "building" }
   | { type: "data"; companies: CompanyInput[] }
+  | { type: "filing"; ticker: string; filing: NonNullable<CompanyInput["filing"]> }
   | { type: "component"; component: Component }
   | { type: "done"; cached: boolean }
   | { type: "error"; message: string };
 
-const resultKey = (tickers: readonly string[], lens: LensSlug) => `result:v1:${tickers.join("|")}|${lens}|components`;
+// v2: text rows carry an icon.
+const resultKey = (tickers: readonly string[], lens: LensSlug) => `result:v2:${tickers.join("|")}|${lens}|components`;
 
 async function defaultBackend(): Promise<Backend> {
   if (process.env.CLAUDE_AUTH === "login") return (await import("../agent/backends/login.ts")).loginBackend;
@@ -46,6 +49,7 @@ export async function runComparison(opts: {
         return { ticker, name: entry.name, financials };
       }),
     );
+    emit({ type: "data", companies: companies.map((c) => ({ ...c })) });
     const backend = opts.backend ?? (await defaultBackend());
     if (LENS_GUIDANCE[lens].needsFilings) {
       emit({ type: "progress", step: "reading" });
@@ -57,10 +61,10 @@ export async function runComparison(opts: {
           const filing = await getCondensedFiling({ cik, name: c.name, report, model: backend, signal: opts.signal });
           const i = c.financials.periodEnds.indexOf(report.periodEnd);
           c.filing = { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(report.periodEnd.slice(0, 4)) };
+          emit({ type: "filing", ticker: c.ticker, filing: c.filing });
         }),
       );
     }
-    emit({ type: "data", companies });
 
     const cache = getCache();
     const key = resultKey(tickers, lens);

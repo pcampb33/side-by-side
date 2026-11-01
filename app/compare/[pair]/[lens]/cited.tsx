@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CompanyInput } from "@/agent/prompt";
 import { formatValue } from "@/lib/format";
 import type { Source } from "@/lib/normalize/normalize";
-import { filingUrl } from "@/lib/sec/client";
+import { filingDocumentUrl, filingUrl } from "@/lib/sec/client";
 import { fiscalYearOf, valueAt, valueDef, type ValueKey } from "@/lib/values";
 
 // Every number on the page is a Cited: hover, focus or tap shows the filing
@@ -33,6 +33,13 @@ export function lookup(c: CompanyInput, key: ValueKey, fy: number | "latest"): L
   if (v.status === "not_meaningful") return { kind: "missing", text: "Not meaningful" };
   if (v.status === "no_such_year") return { kind: "missing", text: `No FY${fiscalYearOf(c.financials, fy)} data` };
   return { kind: "missing", text: "Not reported" };
+}
+
+// A quote's citation: the 10-K it came from and its place in it.
+export function quoteCitation(c: CompanyInput, section: string): Citation {
+  const { report, fiscalYear } = c.filing!;
+  const source = { accn: report.accn, form: "10-K", filingFy: fiscalYear, filed: report.filed, periodEnd: report.periodEnd, tag: "" };
+  return { cik: c.financials.cik, sources: [source], section, url: filingDocumentUrl(c.financials.cik, report.accn, report.document) };
 }
 
 export function Value({ looked, className = "" }: { looked: Looked; className?: string }) {

@@ -60,3 +60,61 @@ body {
   background: var(--paper);
   color: var(--ink);
 }
+
+/* Text lenses: tiles tinted by who names the subject (text-tiles.tsx). */
+:root {
+  --tint-a: color-mix(in srgb, var(--series-a) 15%, var(--surface));
+  --tint-b: color-mix(in srgb, var(--series-b) 15%, var(--surface));
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 1024px) {
+  .tiles { grid-template-columns: var(--cols); }
+}
+.tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1024px) {
+  .tile-grid { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); }
+}
+.tile {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 0.875rem;
+  min-height: 6.5rem; padding: 0.875rem; border-radius: 14px; text-align: left;
+  font-size: 0.875rem; font-weight: 600; line-height: 1.25; cursor: pointer;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+.tile:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgb(0 0 0 / 0.12); }
+.tile:active { transform: scale(0.97); transition-duration: 0.1s; }
+.tile-first { background: var(--tint-a); } .tile-first svg { color: var(--series-a); }
+.tile-second { background: var(--tint-b); } .tile-second svg { color: var(--series-b); }
+.tile-both { background: linear-gradient(to bottom right, var(--tint-a) 50%, var(--tint-b) 50%); }
+.tile[data-pre] { background: transparent; box-shadow: none; }
+.tile[data-pre] > * { opacity: 0; }
+.morph-ghost {
+  position: absolute; z-index: 5; pointer-events: none; overflow: hidden; display: flex; align-items: center;
+  padding: 0 0.75rem; border: 1px solid var(--rule); background: var(--surface); white-space: nowrap;
+  font-size: 13px; line-height: 1.25;
+}
+@keyframes pill-in { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
+.pill-in { animation: pill-in 0.52s var(--ease-out) backwards; }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.shimmer {
+  background: linear-gradient(90deg, var(--rule) 30%, color-mix(in srgb, var(--rule) 40%, var(--surface)) 50%, var(--rule) 70%);
+  background-size: 300% 100%; animation: shimmer 1.4s linear infinite; opacity: 0.7;
+}
+
+/* Bottom sheet: a modal <dialog> that slides up and back down. */
+.sheet {
+  inset: auto 0 0 0; margin: 0 auto; width: min(560px, 100%); max-width: 100%; max-height: 82dvh;
+  border: 0; padding: 0; border-radius: 20px 20px 0 0; background: var(--surface); color: var(--ink);
+  box-shadow: 0 -8px 30px rgb(0 0 0 / 0.18); overscroll-behavior: contain;
+}
+.sheet[open] { animation: sheet-up 0.45s var(--ease-out); }
+.sheet[data-closing] { animation: sheet-down 0.22s ease-in forwards; }
+.sheet::backdrop { background: rgb(0 0 0 / 0.38); animation: fade-in 0.3s var(--ease-out); }
+.sheet[data-closing]::backdrop { animation: fade-in 0.22s ease-in reverse forwards; }
+@keyframes sheet-up { from { transform: translateY(100%); } }
+@keyframes sheet-down { to { transform: translateY(100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
+  .tile:hover { transform: none; }
+}

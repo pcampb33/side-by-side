@@ -16,16 +16,25 @@ const year = z
   .describe('"latest" (each company\'s own latest fiscal year) or a fiscal-year label such as 2024');
 const title = z.string().min(3).max(80).describe("A short, neutral heading");
 const caption = z.string().max(240).optional().describe("Optional one-sentence note. No verdicts");
+// Subjects a text row can be drawn with. The page maps each to an icon;
+// "other" is for a subject none of these fit.
+export const ROW_ICONS = [
+  "competition", "trade", "supply-chain", "security", "regulation", "intellectual-property", "tax", "ai", "devices",
+  "software", "quality", "people", "cloud", "advertising", "retail", "finance", "manufacturing", "energy", "automotive",
+  "health", "climate", "economy", "currency", "chips", "infrastructure", "media", "gaming", "partnerships", "reputation", "other",
+] as const;
+export type RowIcon = (typeof ROW_ICONS)[number];
 const rows = (ids: string) =>
   z
     .array(
       z.object({
         label: z.string().min(3).max(60).describe("A neutral name for the subject this row lines up"),
+        icon: z.enum(ROW_ICONS).describe('The closest subject for the row\'s icon; "other" when none fits'),
         refs: z.array(z.string()).min(1).max(6).describe(`${ids} ids from the data, e.g. AAPL-r2, from either or both companies`),
       }),
     )
     .min(2)
-    .max(8);
+    .max(16);
 
 export const CATALOG = {
   metric_cards: {
@@ -54,12 +63,12 @@ export const CATALOG = {
   },
   risk_themes: {
     description:
-      "Rows lining up the two companies' risk themes from their 10-K risk factors. Each row names one subject and lists the risk ids that fall under it, from either or both companies. The page shows each risk's summary with quotes from the filing.",
+      "Rows lining up the two companies' risk themes from their 10-K risk factors. Each row names one subject and lists the risk ids that fall under it, from either or both companies. Use one risk_themes with a row for every subject: the page groups the rows into those both companies name and those only one names, and shows each risk's summary with quotes from the filing.",
     shape: { title, rows: rows("Risk"), caption },
   },
   business_overlap: {
     description:
-      "Rows lining up where the two businesses meet and where they don't. Each row names a market or product category and lists the business-area ids under it; a row with only one company's ids shows ground the other doesn't cover. The page shows each area's description with quotes from the filing.",
+      "Rows lining up where the two businesses meet and where they don't. Each row names a market or product category and lists the business-area ids under it; a row with only one company's ids shows ground the other doesn't cover. Use one business_overlap with a row for every market: the page groups the rows into shared and one-company ground, and shows each area's description with quotes from the filing.",
     shape: { title, rows: rows("Business-area"), caption },
   },
   takeaways: {

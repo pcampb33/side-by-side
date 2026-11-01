@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import type { Component } from "@/agent/catalog";
 import { LENS_GUIDANCE } from "@/agent/lenses";
 import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { CompareEvent } from "@/lib/compare";
+import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
+import { FilingPills, type TextKind } from "./text-tiles";
 
 // Reads POST /api/compare's event stream: progress steps first, then each
-// component as the model shows it.
+// component as the model shows it. On a text lens, each 10-K's own list shows
+// as soon as it is read, then morphs into the grouped tiles.
+
+const TEXT_KIND: Partial<Record<LensSlug, TextKind>> = { "risk-exposure": "risks", "where-they-compete": "areas" };
+const isText = (c: Component) => c.name === "risk_themes" || c.name === "business_overlap";
 
 type State = {
   status: "loading" | "error" | "done";
@@ -30,6 +36,8 @@ function reduce(state: State, event: CompareEvent | { type: "closed" } | { type:
       return { ...state, step: event.step };
     case "data":
       return { ...state, companies: event.companies };
+    case "filing":
+      return { ...state, companies: state.companies?.map((c) => (c.ticker === event.ticker ? { ...c, filing: event.filing } : c)) ?? null };
     case "component":
       return { ...state, components: [...state.components, event.component] };
     case "done":
@@ -51,6 +59,8 @@ const STEPS = [
 export function ComparisonStream({ pair, lens }: { pair: string; lens: string }) {
   const [state, dispatch] = useReducer(reduce, initial);
   const [run, setRun] = useState({ n: 0, regenerate: false });
+  const stage = useRef<HTMLElement>(null);
+  const pills = useRef<PillSnapshot[] | null>(null);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -70,7 +80,13 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
           if (done) break;
           const lines = (buffer + value).split("\n");
           buffer = lines.pop()!;
-          for (const line of lines) if (line) dispatch(JSON.parse(line) as CompareEvent);
+          for (const line of lines) {
+            if (!line) continue;
+            const event = JSON.parse(line) as CompareEvent;
+            // The pills are about to unmount: remember where each one was.
+            if (event.type === "component" && isText(event.component) && stage.current) pills.current = snapshotPills(stage.current);
+            dispatch(event);
+          }
         }
         dispatch({ type: "closed" });
       } catch {
@@ -86,9 +102,12 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
   };
   const steps = STEPS.filter((s) => s.step !== "reading" || LENS_GUIDANCE[lens as LensSlug]?.needsFilings);
   const currentStep = steps.findIndex((s) => s.step === state.step);
+  const textKind = TEXT_KIND[lens as LensSlug];
+  const firstText = state.components.findIndex(isText);
+  const showPills = textKind && state.companies && state.status === "loading" && firstText < 0;
 
   return (
-    <section className="mt-8 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
+    <section ref={stage} className="relative mt-8 space-y-4" aria-live="polite" aria-busy={state.status === "loading"}>
       {state.status === "loading" && (
         <ol className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {steps.map((s, i) => (
@@ -107,9 +126,12 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
         </ol>
       )}
 
-      {state.companies && state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} />)}
+      {state.companies &&
+        state.components.map((c, i) => <ComponentView key={i} component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />)}
 
-      {state.status === "loading" && state.step === "building" && (
+      {showPills && <FilingPills companies={state.companies!} kind={textKind} />}
+
+      {state.status === "loading" && state.step === "building" && !showPills && (
         <div className="h-32 animate-pulse rounded-lg border border-rule bg-surface" aria-hidden />
       )}
 

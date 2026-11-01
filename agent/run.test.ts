@@ -56,12 +56,20 @@ describe("componentTools", () => {
   it("accepts text rows only with ids that exist and are of the right kind", () => {
     const shown: Component[] = [];
     const tools = componentTools(withFilings, (c) => shown.push(c));
-    const rows = (refs: string[][]) => ({ title: "Risks", rows: refs.map((r, i) => ({ label: `Row ${i}`, refs: r })) });
+    const rows = (refs: string[][]) => ({ title: "Risks", rows: refs.map((r, i) => ({ label: `Row ${i}`, icon: "other", refs: r })) });
     expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["MSFT-r9"]])).text).toMatch(/Unknown risk ids: MSFT-r9/);
     expect(call(tools, "risk_themes", rows([["AAPL-a1"], ["MSFT-r1"]])).text).toMatch(/Unknown risk ids: AAPL-a1/);
     expect(call(tools, "business_overlap", rows([["AAPL-a1", "MSFT-a1"], ["AAPL-a1"]])).ok).toBe(true);
     expect(call(tools, "risk_themes", rows([["AAPL-r1", "MSFT-r1"], ["AAPL-r1"]])).ok).toBe(true);
     expect(shown.map((c) => c.name)).toEqual(["business_overlap", "risk_themes"]);
+  });
+
+  it("refuses a text row whose icon is not in the fixed set", () => {
+    const tools = componentTools(withFilings, () => {});
+    const input = { title: "Risks", rows: [{ label: "Supply", icon: "rocket", refs: ["AAPL-r1"] }, { label: "Rivals", icon: "competition", refs: ["MSFT-r1"] }] };
+    expect(call(tools, "risk_themes", input).ok).toBe(false);
+    input.rows[0].icon = "supply-chain";
+    expect(call(tools, "risk_themes", input).ok).toBe(true);
   });
 
   it("caps components at the maximum but still accepts takeaways", () => {

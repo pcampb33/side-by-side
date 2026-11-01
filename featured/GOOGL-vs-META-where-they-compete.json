@@ -2973,7 +2973,7 @@
   {
    "name": "business_overlap",
    "input": {
-    "title": "Where Alphabet and Meta overlap",
+    "title": "Where the two businesses overlap",
     "rows": [
      {
       "label": "Online advertising",
@@ -2987,8 +2987,15 @@
       "label": "AI assistants and models",
       "icon": "ai",
       "refs": [
-       "GOOGL-a2",
+       "GOOGL-a3",
        "META-a4"
+      ]
+     },
+     {
+      "label": "Consumer hardware and devices",
+      "icon": "devices",
+      "refs": [
+       "META-a3"
       ]
      },
      {
@@ -2999,28 +3006,27 @@
       ]
      },
      {
-      "label": "Consumer hardware (VR/AR, AI glasses)",
-      "icon": "devices",
+      "label": "Consumer subscriptions",
+      "icon": "media",
       "refs": [
-       "META-a3"
+       "GOOGL-a2"
       ]
      },
      {
-      "label": "Cloud infrastructure and enterprise",
+      "label": "Cloud services for enterprises",
       "icon": "cloud",
       "refs": [
        "GOOGL-a3"
       ]
      },
      {
-      "label": "Autonomous driving and moonshots",
+      "label": "Autonomous transportation",
       "icon": "automotive",
       "refs": [
        "GOOGL-a4"
       ]
      }
-    ],
-    "caption": "Rows follow the business areas as each 10-K describes them."
+    ]
    }
   },
   {
@@ -3038,14 +3044,9 @@
    }
   },
   {
-   "name": "grouped_bars",
+   "name": "cost_breakdown",
    "input": {
-    "title": "Capital expenditure and operating cash flow",
-    "keys": [
-     "operatingCashFlow",
-     "capex",
-     "freeCashFlow"
-    ],
+    "title": "Where revenue goes, latest year",
     "year": "latest"
    }
   },
@@ -3053,14 +3054,237 @@
    "name": "takeaways",
    "input": {
     "items": [
-     "Both companies sell advertising: Alphabet through Google Services (Search, YouTube, Google Network) and Meta through Family of Apps (Facebook, Instagram, Messenger, Threads, WhatsApp). Both filings also describe AI assistants and models.",
-     "Alphabet has ground Meta's filing does not describe: Google Cloud, consumer subscriptions such as YouTube TV and Google One, and Other Bets such as Waymo.",
-     "Meta has ground Alphabet's filing does not describe: Reality Labs hardware (Quest VR, Ray-Ban Meta and Oakley Meta AI glasses) and messaging and social apps as a distinct area.",
-     "Alphabet's FY2025 revenue was $402.8B against Meta's $201.0B. R&D was $61.1B for Alphabet and $57.4B for Meta, so R&D is a much larger share of revenue at Meta: 28.5% versus 15.2%.",
-     "Both increased capital spending in FY2025: Alphabet's capex was $91.4B and Meta's was $69.7B. Long-term debt to equity was 0.11× at Alphabet and 0.27× at Meta."
+     "Both companies sell advertising and both build AI products, which is where the filings overlap most directly.",
+     "Alphabet also reports Google Cloud, consumer subscriptions and Other Bets such as Waymo. Meta's filing describes none of these.",
+     "Meta describes substantially all of its revenue as coming from advertising. It also reports Reality Labs hardware, including VR headsets and AI glasses, which Alphabet's business description does not list.",
+     "FY2025 revenue was $402.8B for Alphabet and $201.0B for Meta. Their R&D was $61.1B and $57.4B.",
+     "Long-term debt rose at both companies in FY2025, to $46.5B at Alphabet and $58.7B at Meta."
     ]
    }
   }
  ],
- "html": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>GOOGL vs META: where the businesses overlap</title>\n<style>\n*{box-sizing:border-box}\nbody{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.45}\nmain{max-width:1000px;margin:0 auto;padding:20px 16px 40px}\nh1,h2{font-family:var(--font-serif);font-weight:600;margin:0}\nh1{font-size:1.7rem}h2{font-size:1.2rem;margin-bottom:8px}\np{margin:0}.muted{color:var(--muted)}\nsection{margin-top:28px}\n.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}\n.grid>*{min-width:0}\n.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px;min-width:0}\n.co h2{display:flex;align-items:center;gap:8px;margin:0}\n.dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}\n.a{background:var(--series-a)}.b{background:var(--series-b)}\n.meta{font-size:.85rem;color:var(--muted);margin:2px 0 10px}\n.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.stat{border-top:1px solid var(--rule);padding-top:6px}\n.stat small{display:block;color:var(--muted);font-size:.75rem}\n.stat b{font-size:1.25rem;font-family:var(--font-serif)}\n.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface)}\ntable{border-collapse:collapse;width:100%;min-width:620px;font-size:.85rem}\nth,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}\nth{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:var(--paper)}\ntr:last-child td{border-bottom:0}\n.tag{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-weight:600}\n.pair{display:inline-flex}.pair .dot+.dot{margin-left:-4px;border:2px solid var(--surface);width:16px;height:16px;margin-top:-2px}\n.pair .dot:first-child{width:16px;height:16px;border:2px solid var(--surface);margin-top:-2px}\n.none{color:var(--muted)}\n.legend{display:flex;gap:14px;font-size:.8rem;color:var(--muted);margin:6px 0 10px;flex-wrap:wrap}\n.legend span{display:inline-flex;align-items:center;gap:5px}\n.chart{width:100%}\nsvg{display:block;max-width:100%}\nsvg text{fill:var(--muted);font-family:var(--font-sans);font-size:11px}\n.bar{transform-box:fill-box;transform-origin:bottom;animation:grow .7s ease-out both}\n.ln{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s ease-out forwards}\n@keyframes grow{from{transform:scaleY(0)}}\n@keyframes draw{to{stroke-dashoffset:0}}\n@media (prefers-reduced-motion:reduce){.bar,.ln{animation:none}.ln{stroke-dashoffset:0}}\ndetails{margin-top:10px;font-size:.85rem}summary{cursor:pointer;color:var(--ink)}\ndetails p{margin-top:6px;color:var(--muted)}\nol{padding-left:20px;margin:0}li{margin-bottom:6px}\n</style></head><body><main>\n<h1>Alphabet and Meta: shared ground and separate ground</h1>\n<p class=\"muted\" style=\"margin-top:6px\">Both sell advertising at scale and build AI, but only one sells cloud services and only one sells consumer headsets and glasses.</p>\n\n<section class=\"grid\" style=\"margin-top:18px\">\n<div class=\"card co\"><h2><span class=\"dot a\"></span>Alphabet Inc. (GOOGL)</h2>\n<div class=\"meta\">Internet services, advertising and cloud · Mountain View, California · latest FY2025</div>\n<div class=\"stats\"><div class=\"stat\"><small>Revenue</small><b>$402.8B</b></div><div class=\"stat\"><small>R&amp;D</small><b>$61.1B</b></div><div class=\"stat\"><small>R&amp;D % of revenue</small><b>15.2%</b></div><div class=\"stat\"><small>Operating margin</small><b>32.0%</b></div></div></div>\n<div class=\"card co\"><h2><span class=\"dot b\"></span>Meta Platforms, Inc. (META)</h2>\n<div class=\"meta\">Social media, advertising and AI · Menlo Park, California · latest FY2025</div>\n<div class=\"stats\"><div class=\"stat\"><small>Revenue</small><b>$201.0B</b></div><div class=\"stat\"><small>R&amp;D</small><b>$57.4B</b></div><div class=\"stat\"><small>R&amp;D % of revenue</small><b>28.5%</b></div><div class=\"stat\"><small>Operating margin</small><b>41.4%</b></div></div></div>\n</section>\n\n<section>\n<h2>Business overlap</h2>\n<p class=\"muted\" style=\"margin-bottom:10px\">One row per market, as described in each company's FY2025 10-K business section.</p>\n<div class=\"tw\"><table>\n<thead><tr><th>Market</th><th>Overlap</th><th>Alphabet</th><th>Meta</th></tr></thead>\n<tbody>\n<tr><td><b>Online advertising</b></td><td><span class=\"tag\"><span class=\"pair\"><span class=\"dot a\"></span><span class=\"dot b\"></span></span>Both</span></td><td>Google Services: performance and brand ads on Search, YouTube and Google Network partner sites.</td><td>Family of Apps: ad placements on Facebook, Instagram, Messenger, Threads, WhatsApp and third-party apps.</td></tr>\n<tr><td><b>AI assistants and models</b></td><td><span class=\"tag\"><span class=\"pair\"><span class=\"dot a\"></span><span class=\"dot b\"></span></span>Both</span></td><td>Gemini models, offered via Google One subscriptions and Gemini Enterprise agent offerings.</td><td>Meta AI assistant across apps, web and glasses; Llama and other models, some open source.</td></tr>\n<tr><td><b>Messaging and social apps</b></td><td><span class=\"tag\"><span class=\"dot b\"></span>Meta only</span></td><td class=\"none\">Not listed as a business area.</td><td>WhatsApp, Messenger and Threads for private messaging and public updates.</td></tr>\n<tr><td><b>Consumer hardware, VR and AR</b></td><td><span class=\"tag\"><span class=\"dot b\"></span>Meta only</span></td><td class=\"none\">Not listed as a business area. Devices appear only in its risk factors.</td><td>Reality Labs: Meta Quest headsets, Horizon Store content, Ray-Ban Meta and Oakley Meta AI glasses.</td></tr>\n<tr><td><b>Cloud computing and enterprise software</b></td><td><span class=\"tag\"><span class=\"dot a\"></span>Alphabet only</span></td><td>Google Cloud: infrastructure, AI platform, cybersecurity, data analytics, Workspace.</td><td class=\"none\">Not listed as a business area.</td></tr>\n<tr><td><b>Consumer subscriptions</b></td><td><span class=\"tag\"><span class=\"dot a\"></span>Alphabet only</span></td><td>YouTube TV, YouTube Music and Premium, NFL Sunday Ticket, Google One.</td><td class=\"none\">Not listed as a business area.</td></tr>\n<tr><td><b>Autonomous transportation</b></td><td><span class=\"tag\"><span class=\"dot a\"></span>Alphabet only</span></td><td>Other Bets: Waymo ride-hailing and the X moonshot unit.</td><td class=\"none\">Not listed as a business area.</td></tr>\n</tbody></table></div>\n<details><summary>How overlap is judged, and what the filings say about each other</summary>\n<p>A row is marked \"Both\" only where each company's business section lists that market. No market share is stated or implied. Meta's 10-K (Item 1A) says: \"For example, each of Apple and Google have integrated competitive products with iOS and Android, respectively.\" Alphabet's 10-K names no specific competitors for its advertising line.</p></details>\n</section>\n\n<section>\n<h2>Scale and investment, FY2021 to FY2025</h2>\n<div class=\"legend\"><span><i class=\"dot a\"></i>Alphabet</span><span><i class=\"dot b\"></i>Meta</span></div>\n<div class=\"grid\">\n<div class=\"card\"><b>Revenue</b><p class=\"muted\">Billions of US dollars.</p><div class=\"chart\" id=\"c1\"></div></div>\n<div class=\"card\"><b>R&amp;D spending</b><p class=\"muted\">Billions of US dollars.</p><div class=\"chart\" id=\"c2\"></div></div>\n<div class=\"card\"><b>R&amp;D % of revenue</b><p class=\"muted\">Share of each year's revenue.</p><div class=\"chart\" id=\"c3\"></div></div>\n<div class=\"card\"><b>Operating margin</b><p class=\"muted\">Operating income as a share of revenue.</p><div class=\"chart\" id=\"c4\"></div></div>\n</div>\n<details><summary>Data behind the charts</summary>\n<div class=\"tw\" style=\"margin-top:8px\"><table style=\"min-width:520px\"><thead><tr><th>Metric</th><th>Company</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead><tbody>\n<tr><td rowspan=\"2\">Revenue</td><td>GOOGL</td><td>$257.6B</td><td>$282.8B</td><td>$307.4B</td><td>$350.0B</td><td>$402.8B</td></tr>\n<tr><td>META</td><td>$117.9B</td><td>$116.6B</td><td>$134.9B</td><td>$164.5B</td><td>$201.0B</td></tr>\n<tr><td rowspan=\"2\">R&amp;D</td><td>GOOGL</td><td>$31.6B</td><td>$39.5B</td><td>$45.4B</td><td>$49.3B</td><td>$61.1B</td></tr>\n<tr><td>META</td><td>$24.7B</td><td>$35.3B</td><td>$38.5B</td><td>$43.9B</td><td>$57.4B</td></tr>\n<tr><td rowspan=\"2\">R&amp;D % of revenue</td><td>GOOGL</td><td>12.3%</td><td>14.0%</td><td>14.8%</td><td>14.1%</td><td>15.2%</td></tr>\n<tr><td>META</td><td>20.9%</td><td>30.3%</td><td>28.5%</td><td>26.7%</td><td>28.5%</td></tr>\n<tr><td rowspan=\"2\">Operating margin</td><td>GOOGL</td><td>30.6%</td><td>26.5%</td><td>27.4%</td><td>32.1%</td><td>32.0%</td></tr>\n<tr><td>META</td><td>39.6%</td><td>24.8%</td><td>34.7%</td><td>42.2%</td><td>41.4%</td></tr>\n</tbody></table></div>\n<p>Gross profit and gross margin are n/r (not reported) for both companies. Fiscal years end 12-31 for both, so years line up directly.</p></details>\n</section>\n\n<section>\n<h2>Takeaways</h2>\n<ol>\n<li>Both companies earn from selling advertising and both build AI models, which is the main overlap in their filings.</li>\n<li>Alphabet's filing also lists cloud services, consumer subscriptions and Other Bets such as Waymo, none of which appear in Meta's business areas.</li>\n<li>Meta's filing describes substantially all revenue as advertising, with Reality Labs hardware and messaging apps as its separate ground.</li>\n<li>Meta's R&amp;D takes a larger share of revenue than Alphabet's in every year shown, while Alphabet's revenue is the larger in every year.</li>\n</ol>\n<p class=\"muted\" style=\"margin-top:10px\">Not financial advice.</p>\n<p class=\"muted\" style=\"margin-top:6px;font-size:.8rem\">Source: each company's 10-K filings, FY2021 to FY2025. n/r = not reported; n/m = not meaningful.</p>\n</section>\n</main>\n<script>\nconst Y=['FY2021','FY2022','FY2023','FY2024','FY2025'];\nconst D={\nc1:{a:[257.6,282.8,307.4,350.0,402.8],b:[117.9,116.6,134.9,164.5,201.0],max:450,step:150,f:v=>'$'+v+'B',type:'bar'},\nc2:{a:[31.6,39.5,45.4,49.3,61.1],b:[24.7,35.3,38.5,43.9,57.4],max:80,step:20,f:v=>'$'+v+'B',type:'bar'},\nc3:{a:[12.3,14.0,14.8,14.1,15.2],b:[20.9,30.3,28.5,26.7,28.5],max:40,step:10,f:v=>v+'%',type:'line'},\nc4:{a:[30.6,26.5,27.4,32.1,32.0],b:[39.6,24.8,34.7,42.2,41.4],max:50,step:10,f:v=>v+'%',type:'line'}};\nconst NS='http://www.w3.org/2000/svg';\nfunction el(p,n,at){const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);p.appendChild(e);return e}\nfunction draw(id){\nconst c=document.getElementById(id),d=D[id];c.innerHTML='';\nconst W=Math.max(240,c.clientWidth),H=210,L=46,R=8,T=10,B=24,pw=W-L-R,ph=H-T-B;\nconst s=el(c,'svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':id});\nconst y=v=>T+ph-v/d.max*ph;\nfor(let v=0;v<=d.max;v+=d.step){el(s,'line',{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:'var(--rule)'});\nconst t=el(s,'text',{x:L-6,y:y(v)+4,'text-anchor':'end'});t.textContent=d.f(v)}\nconst g=pw/5;\nY.forEach((yr,i)=>{const t=el(s,'text',{x:L+g*i+g/2,y:H-6,'text-anchor':'middle'});t.textContent=W<380?yr.slice(2):yr});\nif(d.type=='bar'){const bw=Math.min(26,g*.36);\n['a','b'].forEach((k,j)=>d[k].forEach((v,i)=>{const x=L+g*i+g/2+(j?0:-bw);\nconst r=el(s,'rect',{x,y:y(v),width:bw-1,height:T+ph-y(v),'class':'bar',style:`fill:var(--series-${k});animation-delay:${i*60}ms`});\nel(r,'title',{}).textContent=(k=='a'?'GOOGL ':'META ')+Y[i]+': '+d.f(v)}))}\nelse['a','b'].forEach(k=>{const pts=d[k].map((v,i)=>[L+g*i+g/2,y(v)]);\nel(s,'polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',style:`stroke:var(--series-${k})`,'stroke-width':2.5,'stroke-linejoin':'round',pathLength:1,'class':'ln'});\npts.forEach((p,i)=>{const o=el(s,'circle',{cx:p[0],cy:p[1],r:3.5,style:`fill:var(--series-${k})`});el(o,'title',{}).textContent=(k=='a'?'GOOGL ':'META ')+Y[i]+': '+d.f(d[k][i])})});\n}\nfunction all(){Object.keys(D).forEach(draw)}\nall();\nif(window.ResizeObserver){let w=0;new ResizeObserver(()=>{const n=document.getElementById('c1').clientWidth;if(n!==w){w=n;all()}}).observe(document.getElementById('c1'))}\nelse addEventListener('resize',all);\n</script></body></html>"
+ "html": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Alphabet vs Meta</title>\n<style>\nbody{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);padding:16px}\n.w{max-width:1000px;margin:0 auto}\nh1,h2,h3{font-family:var(--font-serif)}\nh1{font-size:1.5rem;margin:.2em 0}\n.hd{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}\n.hd>div{min-width:0}\n.co{background:var(--surface);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);padding:14px}\n.co h2{margin:0 0 4px;font-size:1.1rem}\n.co p{margin:0 0 8px;color:var(--muted);font-size:.85rem}\n.m{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.8rem;color:var(--muted)}\n.m b{display:block;color:var(--ink);font-size:1.05rem}\n.co.a{border-top:4px solid var(--series-a)}.co.b{border-top:4px solid var(--series-b)}\n.sc{overflow-x:auto}\ntable{border-collapse:collapse;width:100%;min-width:560px;font-size:.85rem}\nth,td{padding:8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}\n.kit-card,.kit-grid>*{min-width:0}\n.kit-grid{margin:12px 0}\n.t{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.75rem;background:var(--seg-3)}\n.t.both{background:var(--accent);color:var(--accent-ink)}\n.t.a{border:2px solid var(--series-a)}.t.b{border:2px solid var(--series-b)}\n.kit-card{margin:12px 0}\n@media(max-width:560px){.hd{grid-template-columns:1fr}}\n</style></head><body><div class=\"w\">\n<h1>Alphabet vs Meta: where the businesses overlap</h1>\n<p style=\"color:var(--muted)\">Both sell digital advertising and build AI, but only Alphabet runs cloud and autonomous driving, and only Meta sells headsets and glasses.</p>\n<div class=\"hd\">\n<div class=\"co a\"><h2>Alphabet Inc. (GOOGL)</h2><p>Internet, ads, cloud · HQ not given in data</p><div class=\"m\"><span>Revenue FY2025<b>$402.8B</b></span><span>R&amp;D<b>$61.1B</b></span><span>R&amp;D % revenue<b>15.2%</b></span><span>Operating margin<b>32.0%</b></span></div></div>\n<div class=\"co b\"><h2>Meta Platforms, Inc. (META)</h2><p>Social apps, ads, hardware · HQ not given in data</p><div class=\"m\"><span>Revenue FY2025<b>$201.0B</b></span><span>R&amp;D<b>$57.4B</b></span><span>R&amp;D % revenue<b>28.5%</b></span><span>Operating margin<b>41.4%</b></span></div></div>\n</div>\n<div class=\"kit-card\"><h2>Business overlap</h2><p>One row per market, as described in each 10-K (Item 1).</p>\n<div class=\"sc\"><table><thead><tr><th>Market</th><th>Status</th><th>Alphabet</th><th>Meta</th></tr></thead><tbody>\n<tr><td>Digital advertising</td><td><span class=\"t both\">Both</span></td><td>Google Services: ads on Search, YouTube, Network partners</td><td>Family of Apps: ads on Facebook, Instagram, Messenger, Threads, WhatsApp</td></tr>\n<tr><td>AI assistants and models</td><td><span class=\"t both\">Both</span></td><td>Gemini models, offered via Google One and Gemini Enterprise</td><td>Meta AI assistant, Llama models, some open source</td></tr>\n<tr><td>Consumer apps and content</td><td><span class=\"t both\">Both</span></td><td>YouTube, with paid subscriptions (YouTube TV, Music, Premium, NFL Sunday Ticket)</td><td>Messaging and social apps; revenue mainly from ads</td></tr>\n<tr><td>Consumer subscriptions</td><td><span class=\"t a\">Alphabet only</span></td><td>Consumer subscriptions, including Google One</td><td>Not described as a business area</td></tr>\n<tr><td>Cloud and enterprise</td><td><span class=\"t a\">Alphabet only</span></td><td>Google Cloud: infrastructure, AI platform, security, analytics, Workspace</td><td>Not described as a business area</td></tr>\n<tr><td>Autonomous driving / Other Bets</td><td><span class=\"t a\">Alphabet only</span></td><td>Waymo, X</td><td>Not described as a business area</td></tr>\n<tr><td>Consumer hardware, VR and AI glasses</td><td><span class=\"t b\">Meta only</span></td><td>Devices are mentioned only as a risk theme, not as a listed business area</td><td>Reality Labs: Quest, Ray-Ban Meta, Oakley Meta</td></tr>\n</tbody></table></div></div>\n<div class=\"kit-grid\">\n<div class=\"kit-card\"><h3>Revenue</h3><p>Both companies, FY2021 to FY2025.</p><div id=\"c1\"></div></div>\n<div class=\"kit-card\"><h3>R&amp;D % of revenue</h3><p>Meta spends a larger share on R&amp;D.</p><div id=\"c2\"></div></div>\n<div class=\"kit-card\"><h3>R&amp;D spend</h3><p>Absolute R&amp;D by year.</p><div id=\"c3\"></div></div>\n<div class=\"kit-card\"><h3>Operating margin</h3><p>By year.</p><div id=\"c4\"></div></div>\n</div>\n<div class=\"kit-card\"><h2>Takeaways</h2><ul>\n<li>Advertising is the shared core: Alphabet states more than 70% of 2025 revenue came from online ads, and Meta says substantially all of its revenue does.</li>\n<li>Alphabet's listed areas extend to cloud, subscriptions and Other Bets, which Meta's do not.</li>\n<li>Meta's unique ground is Reality Labs consumer hardware.</li>\n<li>Both develop AI, with Alphabet's R&amp;D at $61.1B and Meta's at $57.4B in FY2025.</li>\n</ul><p style=\"color:var(--muted)\">Not financial advice.</p>\n<details><summary>Sources and caveats</summary><p>From each company's 10-K filings, FY2021 to FY2025. Overlap is described only as the filings state it; no market share is implied. Headquarters are not in the supplied data.</p></details></div>\n</div>\n<script>\nkit.chart(\"#c1\",{type:\"line\",key:\"revenue\"});\nkit.chart(\"#c2\",{type:\"line\",key:\"rndToRevenue\"});\nkit.chart(\"#c3\",{type:\"bars\",key:\"rnd\"});\nkit.chart(\"#c4\",{type:\"bars\",key:\"operatingMargin\"});\n</script></body></html>",
+ "traces": {
+  "components": {
+   "v": 1,
+   "mode": "components",
+   "lens": "where-they-compete",
+   "model": "claude-sonnet-5-5",
+   "backend": "api",
+   "at": "2026-11-01T20:19:33.167Z",
+   "ms": {
+    "fetching": 8,
+    "reading": 1,
+    "composing": 7197,
+    "checks": 3
+   },
+   "usage": {
+    "inputTokens": 26703,
+    "outputTokens": 863
+   },
+   "offered": [
+    "metric_cards",
+    "trend_line",
+    "grouped_bars",
+    "ratio_gauge",
+    "cost_breakdown",
+    "business_overlap",
+    "takeaways"
+   ],
+   "prompt": {
+    "system": "You build a comparison of two public companies by calling UI component tools. The page already shows each company's name, industry and headquarters and, above your components, a headline strip of each company's latest-year Revenue, R&D, R&D % of revenue, Operating margin: don't repeat those latest-year values as metric cards (trends and other years are fine).\n\nLens: Where do the two businesses overlap, and where do they not?\nBuilt from each company's 10-K business description (the business areas listed for each company). business_overlap is the core: one component with a row for every market, those both serve and each company's ground the other doesn't cover. Revenue and R&D can add scale. Describe overlap only as the filings state it; never infer market share.\n\nRules:\n- Respond only through tool calls, in the order the reader should see them: usually 3 to 6 components, at most 8, then takeaways last. When takeaways succeeds, reply \"done\".\n- Components take metric keys and fiscal years, never numbers, and annual-report ids (AAPL-r2), never quotes. The page looks every value and quote up and cites its filing.\n- Takeaways are neutral differences, never a winner, a recommendation or a prediction. Any number you write must appear in the data tables exactly as shown.\n- \"n/r\" means the filing does not report it and \"n/m\" means the ratio is not meaningful (e.g. negative equity). Never estimate around them; say they are not reported when it matters.\n- The two companies may have different fiscal year ends; \"latest\" picks each company's own latest year.\n- If a tool returns an error, fix the call and try again.",
+    "user": "Compare GOOGL and META.\n\nGOOGL: Alphabet Inc. (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $257.6B | $282.8B | $307.4B | $350.0B | $402.8B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $78.7B | $74.8B | $84.3B | $112.4B | $129.0B\nnetIncome | Net income | $76.0B | $60.0B | $73.8B | $100.1B | $132.2B\nrnd | R&D | $31.6B | $39.5B | $45.4B | $49.3B | $61.1B\ncash | Cash | $20.9B | $21.9B | $24.0B | $23.5B | $30.7B\ntotalAssets | Total assets | $359.3B | $365.3B | $402.4B | $450.3B | $595.3B\ntotalLiabilities | Total liabilities | $107.6B | $109.1B | $119.0B | $125.2B | $180.0B\nlongTermDebt | Long-term debt | $14.8B | $14.7B | $11.9B | $10.9B | $46.5B\nequity | Shareholders' equity | $251.6B | $256.1B | $283.4B | $325.1B | $415.3B\noperatingCashFlow | Operating cash flow | $91.7B | $91.5B | $101.7B | $125.3B | $164.7B\ncapex | Capital expenditure | $24.6B | $31.5B | $32.3B | $52.5B | $91.4B\ndividendsPaid | Dividends paid | n/r | $0 | $0 | $7.4B | $10.0B\nbuybacks | Share buybacks | $50.3B | $59.3B | $61.5B | $62.2B | $45.7B\ndilutedEps | Diluted EPS | $5.61 | $4.56 | $5.80 | $8.04 | $10.81\nsharesOutstanding | Shares outstanding | 13.2B | 12.8B | 12.5B | 12.2B | 12.1B\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 30.6% | 26.5% | 27.4% | 32.1% | 32.0%\nnetMargin | Net margin | 29.5% | 21.2% | 24.0% | 28.6% | 32.8%\nrevenueGrowth | Revenue growth (YoY) | 41.2% | 9.8% | 8.7% | 13.9% | 15.1%\nfreeCashFlow | Free cash flow | $67.0B | $60.0B | $69.5B | $72.8B | $73.3B\ndebtToEquity | Long-term debt to equity | 0.06× | 0.06× | 0.04× | 0.03× | 0.11×\nrndToRevenue | R&D % of revenue | 12.3% | 14.0% | 14.8% | 14.1% | 15.2%\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m\n\nMETA: Meta Platforms, Inc. (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $117.9B | $116.6B | $134.9B | $164.5B | $201.0B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $46.8B | $28.9B | $46.8B | $69.4B | $83.3B\nnetIncome | Net income | $39.4B | $23.2B | $39.1B | $62.4B | $60.5B\nrnd | R&D | $24.7B | $35.3B | $38.5B | $43.9B | $57.4B\ncash | Cash | $16.6B | $14.7B | $41.9B | $43.9B | $35.9B\ntotalAssets | Total assets | $166.0B | $185.7B | $229.6B | $276.1B | $366.0B\ntotalLiabilities | Total liabilities | $41.1B | $60.0B | $76.5B | $93.4B | $148.8B\nlongTermDebt | Long-term debt | $0 | $9.9B | $18.4B | $28.8B | $58.7B\nequity | Shareholders' equity | $124.9B | $125.7B | $153.2B | $182.6B | $217.2B\noperatingCashFlow | Operating cash flow | $57.7B | $50.5B | $71.1B | $91.3B | $115.8B\ncapex | Capital expenditure | $18.7B | $31.2B | $27.0B | $37.3B | $69.7B\ndividendsPaid | Dividends paid | n/r | $0 | $0 | $5.1B | $5.3B\nbuybacks | Share buybacks | $44.5B | $28.0B | $19.8B | $30.1B | $26.2B\ndilutedEps | Diluted EPS | $13.77 | $8.59 | $14.87 | $23.86 | $23.49\nsharesOutstanding | Shares outstanding | 2.9B | 2.7B | 2.6B | 2.6B | 2.6B\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 39.6% | 24.8% | 34.7% | 42.2% | 41.4%\nnetMargin | Net margin | 33.4% | 19.9% | 29.0% | 37.9% | 30.1%\nrevenueGrowth | Revenue growth (YoY) | 37.2% | −1.1% | 15.7% | 21.9% | 22.2%\nfreeCashFlow | Free cash flow | $39.0B | $19.3B | $44.1B | $54.1B | $46.1B\ndebtToEquity | Long-term debt to equity | 0.00× | 0.08× | 0.12× | 0.16× | 0.27×\nrndToRevenue | R&D % of revenue | 20.9% | 30.3% | 28.5% | 26.7% | 28.5%\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m\n\nGOOGL annual report (10-K for FY2025): Alphabet is a collection of businesses, the largest of which is Google. Google reports two segments, Google Services and Google Cloud, and non-Google businesses are grouped as Other Bets.\nBusiness areas:\nGOOGL-a1 | Google Services advertising | Performance and brand advertising on Google Search and other properties, YouTube, and Google Network partner sites, sold to advertisers, agencies, and publishers. The text names no specific competitors for this line.\nGOOGL-a2 | Consumer subscriptions | Paid subscriptions, mainly YouTube services such as YouTube TV, YouTube Music and Premium, and NFL Sunday Ticket, plus Google One, which offers access to the most capable Gemini models.\nGOOGL-a3 | Google Cloud | Cloud infrastructure, AI development platform, cybersecurity, data analytics, and agent offerings such as Gemini Enterprise, sold through fees and subscriptions. Competitors are named only generally, as enterprise cloud providers.\nGOOGL-a4 | Other Bets | Non-Google businesses at various stages, such as Waymo for autonomous ride-hailing and the X moonshot unit. Revenue comes mainly from autonomous transportation and internet services.\nRisk themes:\nGOOGL-r1 | Advertising dependence | Most revenue comes from online advertising, and advertisers and partners can end contracts at any time. Shifts in ad formats, ad blocking, and privacy changes could reduce revenue.\nGOOGL-r2 | Competition | The company faces many competitors, from large incumbents to start-ups, including AI developers. It must keep innovating or risk losing users, advertisers, and customers.\nGOOGL-r3 | Infrastructure costs and AI capacity | Large spending on AI infrastructure, leases, and long-term commitments raises costs and liabilities. Dependence on third-party equipment and capacity adds further exposure.\nGOOGL-r4 | Antitrust and regulation | The company faces multiple US antitrust lawsuits covering advertising technology, Search, and Android and Play Store. Remedies could restrict distribution and business practices, and new laws worldwide add compliance costs.\nGOOGL-r5 | Privacy and data protection | Privacy and data laws are complex and changing, and AI training on user data draws scrutiny. Failure to comply could bring fines, orders to change practices, and reputational harm.\nGOOGL-r6 | Cybersecurity | The company faces cyber attacks on a regular basis, including nation-state threats, and AI may increase these risks. A breach could cause legal exposure and loss of user trust.\nGOOGL-r7 | Power, supply chain, and hardware | Growth is limited by power, water, and land, and specialized AI chips come from a small number of suppliers. Devices depend on contract manufacturers and some single-source components.\nGOOGL-r8 | AI product risks | AI products may produce harmful content, inaccuracies, or infringe rights, and the company may not catch all issues. This could bring regulatory action, liability, and reputational harm.\nGOOGL-r9 | International operations | A large share of revenue comes from outside the US, exposing the company to sanctions, tariffs, geopolitical conflict, foreign exchange swings, and varied local laws.\nGOOGL-r10 | Founder control | Larry Page and Sergey Brin hold a majority of the voting power through Class B stock, which limits other stockholders' influence over corporate matters, including a sale of the company.\n\nMETA annual report (10-K for FY2025): Meta Platforms builds social apps (Facebook, Instagram, Messenger, Threads, WhatsApp, Meta AI) that earn substantially all revenue from advertising, and develops VR headsets and AI glasses through its Reality Labs segment.\nBusiness areas:\nMETA-a1 | Family of Apps advertising | Sells ad placements on Facebook, Instagram, Messenger, Threads, WhatsApp, and third-party apps to marketers via self-service tools, a sales force, agencies, and resellers. Competes with companies that sell advertising and with companies that help users share and discover content.\nMETA-a2 | Messaging and social apps | WhatsApp, Messenger, and Threads let people communicate privately and share public updates. Revenue is mainly from ads and business messaging is described as limited; competitors are described only generally as companies offering communication and sharing products.\nMETA-a3 | Reality Labs consumer hardware and software | Sells Meta Quest VR devices, Meta Horizon Store content, and Ray-Ban Meta and Oakley Meta AI glasses through retailers, resellers, distribution partners, and Meta.com. Competes in consumer hardware and AR and VR products.\nMETA-a4 | Meta AI and AI models | Meta AI assistant available across apps, as a stand-alone app, on AI glasses, and on the web, plus Llama and other models, some released as open source. Competes with companies developing frontier AI models and AI features.\nRisk themes:\nMETA-r1 | Advertising dependence and user engagement | Substantially all revenue comes from advertising, so declines in users, engagement, or marketer spending would reduce revenue. Marketers have no long-term commitments.\nMETA-r2 | Data signals and platform changes | Changes by Apple, Google, privacy regulators, and Meta's own products limit the data used for ad targeting and measurement, which has hurt advertising revenue.\nMETA-r3 | Reality Labs and AI investment returns | Heavy spending on Reality Labs, AI, and infrastructure reduces operating margin, and these investments may not pay off. Reality Labs is expected to keep operating at a loss.\nMETA-r4 | Regulation, privacy, and youth laws | Privacy, content, competition, and youth-protection laws in the US, EU, and elsewhere could force product changes, fines, or limits on advertising, including an FTC consent order and EU rules on ad models.\nMETA-r5 | Litigation | Meta faces numerous class actions and government suits, including youth-related, privacy, antitrust, copyright, and securities claims, which could lead to large damages or required changes.\nMETA-r6 | Security and misuse | Meta is a prominent target for cyber-attacks and misuse of user data, and AI tools add new vulnerabilities.\nMETA-r7 | Infrastructure and supply chain | Meta depends on third-party data center services and a small number of component manufacturers, often concentrated in Asia, for technical infrastructure and consumer hardware.\nMETA-r8 | Competition | Meta faces competition for users, marketers, developers, and AI talent from many companies, some with greater resources, and platform owners such as Apple and Google can favor their own products.\nMETA-r9 | Controlled company and dual-class control | Mark Zuckerberg controls a majority of voting power through Class B shares, so Class A holders have limited influence over corporate matters."
+   },
+   "calls": [
+    {
+     "tool": "business_overlap",
+     "input": {
+      "title": "Where the two businesses overlap",
+      "rows": [
+       {
+        "label": "Online advertising",
+        "icon": "advertising",
+        "refs": [
+         "GOOGL-a1",
+         "META-a1"
+        ]
+       },
+       {
+        "label": "AI assistants and models",
+        "icon": "ai",
+        "refs": [
+         "GOOGL-a3",
+         "META-a4"
+        ]
+       },
+       {
+        "label": "Consumer hardware and devices",
+        "icon": "devices",
+        "refs": [
+         "META-a3"
+        ]
+       },
+       {
+        "label": "Messaging and social apps",
+        "icon": "media",
+        "refs": [
+         "META-a2"
+        ]
+       },
+       {
+        "label": "Consumer subscriptions",
+        "icon": "media",
+        "refs": [
+         "GOOGL-a2"
+        ]
+       },
+       {
+        "label": "Cloud services for enterprises",
+        "icon": "cloud",
+        "refs": [
+         "GOOGL-a3"
+        ]
+       },
+       {
+        "label": "Autonomous transportation",
+        "icon": "automotive",
+        "refs": [
+         "GOOGL-a4"
+        ]
+       }
+      ]
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3769
+    },
+    {
+     "tool": "trend_line",
+     "input": {
+      "title": "Revenue over five fiscal years",
+      "key": "revenue"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3770
+    },
+    {
+     "tool": "trend_line",
+     "input": {
+      "title": "R&D spending over five fiscal years",
+      "key": "rnd"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3770
+    },
+    {
+     "tool": "cost_breakdown",
+     "input": {
+      "title": "Where revenue goes, latest year",
+      "year": "latest"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3770
+    },
+    {
+     "tool": "takeaways",
+     "input": {
+      "items": [
+       "Both companies sell advertising and both build AI products, which is where the filings overlap most directly.",
+       "Alphabet also reports Google Cloud, consumer subscriptions and Other Bets such as Waymo. Meta's filing describes none of these.",
+       "Meta describes substantially all of its revenue as coming from advertising. It also reports Reality Labs hardware, including VR headsets and AI glasses, which Alphabet's business description does not list.",
+       "FY2025 revenue was $402.8B for Alphabet and $201.0B for Meta. Their R&D was $61.1B and $57.4B.",
+       "Long-term debt rose at both companies in FY2025, to $46.5B at Alphabet and $58.7B at Meta."
+      ]
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 6360
+    }
+   ],
+   "checks": [
+    {
+     "check": "numbers",
+     "checked": 8,
+     "findings": []
+    },
+    {
+     "check": "notReported",
+     "findings": []
+    },
+    {
+     "check": "quotes",
+     "checked": 0,
+     "findings": []
+    },
+    {
+     "check": "components",
+     "findings": []
+    }
+   ]
+  },
+  "freeform": {
+   "v": 1,
+   "mode": "freeform",
+   "lens": "where-they-compete",
+   "model": "claude-sonnet-5-5",
+   "backend": "api",
+   "at": "2026-11-01T20:19:33.167Z",
+   "ms": {
+    "fetching": 8,
+    "reading": 1,
+    "composing": 15518,
+    "checks": 3309
+   },
+   "usage": {
+    "inputTokens": 22171,
+    "outputTokens": 2621
+   },
+   "offered": [
+    "submit_page"
+   ],
+   "kit": [
+    "card",
+    "grid",
+    "chart"
+   ],
+   "prompt": {
+    "system": "You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters and a headline strip of each company's latest-year Revenue, R&D, R&D % of revenue, Operating margin (don't feature those again as standalone figures; charts and tables still include every year).\n\nLens: Where do the two businesses overlap, and where do they not?\nGuidance written for the site's component mode, which names its own components; treat it as what to show, in whatever form serves the reader: Built from each company's 10-K business description (the business areas listed for each company). business_overlap is the core: one component with a row for every market, those both serve and each company's ground the other doesn't cover. Revenue and R&D can add scale. Describe overlap only as the filings state it; never infer market share.\n\nThe page:\n- Submit it with submit_page exactly once, then reply \"done\". If the tool returns an error, fix the page and submit again.\n- One complete document (<!doctype html>, <head>, <body>, ending in </html>), under 120KB. Inline CSS and JavaScript only. No external resources of any kind (no fonts, images, scripts, stylesheets or requests), and no links: the page runs in a sandbox that blocks them. Draw any chart the kit can't with inline SVG or canvas.\n- The site defines these CSS variables inside the page, switching with the viewer's light/dark choice: use var(--name) for every color and font so both themes work, and never redefine them or write your own prefers-color-scheme rules (the viewer can pick a theme that differs from their system's). Light: --paper #f2f3f8, --surface #ffffff, --ink #191c28, --muted #646a80, --rule #e3e6ee, --accent #2b5fd9, --accent-ink #ffffff, --danger #c0362c, --series-a #5b5bd6, --series-b #0e9585, --seg-1 #868ba3, --seg-2 #c0c4d2, --seg-3 #e0e2ea. Dark: --paper #0e1016, --surface #181b24, --ink #eceef6, --muted #969cb2, --rule #272b37, --accent #86a8ff, --accent-ink #0e1016, --danger #f08a7e, --series-a #8d8ef7, --series-b #2fd1bb, --seg-1 #7b8099, --seg-2 #4a4f62, --seg-3 #2e3240. Fonts: --font-sans (\"Plus Jakarta Sans\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif), --font-serif (\"Plus Jakarta Sans\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; headings). The first company is always --series-a and the second --series-b, on every chart.\n- Style: the site's own, which the kit below provides: background var(--paper), white cards on it, rounded, with a soft shadow instead of a border, pill-shaped tags, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page: wide tables scroll sideways inside their own container (overflow-x: auto; give every grid and flex child min-width: 0 so that container can shrink), and charts redraw to their container's width.\n- Charts the kit can't draw: size each one from its container's width once laid out (and on resize), and draw every bar, line and label on that one scale. Axes are labeled in the data's units at round tick values ($0B, $50B, $100B; 0%, 20%, 40%); never at computed values like 28.3%. Lay chart cards out so none sits alone in a row.\n- Animation is welcome when it is smooth and purposeful; honor prefers-reduced-motion.\n- Visual first, little visible text: charts, tables and figures carry the comparison. Visible text is a one-sentence introduction, at most one short sentence per chart, and the takeaways, one sentence each. Any longer explanation goes in a <details> element, closed by default, with a short <summary> naming what it holds (e.g. \"How the fiscal years line up\"). Never restate in words what a chart already shows.\n\nThe kit: the page also gets the site's own pieces. Use them for every card, layout, figure and chart they cover, and draw your own only for what they can't show. The kit animates them in; don't add entry animations to them.\n- class=\"kit-card\": a card (surface color, rounded, soft shadow, padding). Its first h2 or h3 is the card's title and a p right after it its note.\n- class=\"kit-grid\": puts the cards inside it two to a row when the page is wide enough and one to a row on phones; an odd last card takes the full row, so none sits alone.\n- class=\"kit-stat a\" (or b, for the second company): one figure with its label: <div class=\"kit-stat a\"><small>Net margin, FY2025</small><strong>24.3%</strong></div>. Never use it for the headline strip's values.\n- class=\"kit-chip a\" (or b, or neither): a small pill with the company's color dot, for a legend entry or a tag.\n- kit.chart(target, spec) draws a chart into target (an element or a CSS selector, e.g. an empty <div> inside a kit-card), from the data tables: you never pass numbers, it looks each value up. It sizes itself to its container, redraws on resize, puts the axis on round ticks in the data's units, adds a legend and a hover readout, marks n/r and n/m, and draws in when scrolled into view. Call it from a <script> at the end of <body>. Specs:\n  {type: \"line\", key: \"revenue\"}: both companies across every fiscal year.\n  {type: \"bars\", key: \"freeCashFlow\"}: the same, as bars grouped by year.\n  {type: \"bars\", keys: [\"grossMargin\", \"operatingMargin\", \"netMargin\"], year: \"latest\"}: up to four metrics of one unit in one fiscal year (\"latest\" is each company's own latest; or a year like 2024).\n  Write each spec out in the call, so the page can be checked before it is shown.\n\nGrounding:\n- Every number you write must appear in the data tables exactly as shown there, with its company and fiscal year. Never compute, round or estimate a new number.\n- \"n/r\" means the filing does not report it and \"n/m\" means the ratio is not meaningful; say so rather than working around it.\n- Say where numbers come from in plain text (e.g. \"From each company's 10-K filings, FY2021 to FY2025\"). Quotes from the annual reports, if you use them, are copied exactly as given, with their section (10-K, Item 1A).\n- End with 3 to 5 neutral takeaways: differences, never a winner, a recommendation or a prediction. Add the line \"Not financial advice.\"",
+    "user": "Compare GOOGL and META.\n\nGOOGL: Alphabet Inc. (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $257.6B | $282.8B | $307.4B | $350.0B | $402.8B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $78.7B | $74.8B | $84.3B | $112.4B | $129.0B\nnetIncome | Net income | $76.0B | $60.0B | $73.8B | $100.1B | $132.2B\nrnd | R&D | $31.6B | $39.5B | $45.4B | $49.3B | $61.1B\ncash | Cash | $20.9B | $21.9B | $24.0B | $23.5B | $30.7B\ntotalAssets | Total assets | $359.3B | $365.3B | $402.4B | $450.3B | $595.3B\ntotalLiabilities | Total liabilities | $107.6B | $109.1B | $119.0B | $125.2B | $180.0B\nlongTermDebt | Long-term debt | $14.8B | $14.7B | $11.9B | $10.9B | $46.5B\nequity | Shareholders' equity | $251.6B | $256.1B | $283.4B | $325.1B | $415.3B\noperatingCashFlow | Operating cash flow | $91.7B | $91.5B | $101.7B | $125.3B | $164.7B\ncapex | Capital expenditure | $24.6B | $31.5B | $32.3B | $52.5B | $91.4B\ndividendsPaid | Dividends paid | n/r | $0 | $0 | $7.4B | $10.0B\nbuybacks | Share buybacks | $50.3B | $59.3B | $61.5B | $62.2B | $45.7B\ndilutedEps | Diluted EPS | $5.61 | $4.56 | $5.80 | $8.04 | $10.81\nsharesOutstanding | Shares outstanding | 13.2B | 12.8B | 12.5B | 12.2B | 12.1B\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 30.6% | 26.5% | 27.4% | 32.1% | 32.0%\nnetMargin | Net margin | 29.5% | 21.2% | 24.0% | 28.6% | 32.8%\nrevenueGrowth | Revenue growth (YoY) | 41.2% | 9.8% | 8.7% | 13.9% | 15.1%\nfreeCashFlow | Free cash flow | $67.0B | $60.0B | $69.5B | $72.8B | $73.3B\ndebtToEquity | Long-term debt to equity | 0.06× | 0.06× | 0.04× | 0.03× | 0.11×\nrndToRevenue | R&D % of revenue | 12.3% | 14.0% | 14.8% | 14.1% | 15.2%\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m\n\nMETA: Meta Platforms, Inc. (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $117.9B | $116.6B | $134.9B | $164.5B | $201.0B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $46.8B | $28.9B | $46.8B | $69.4B | $83.3B\nnetIncome | Net income | $39.4B | $23.2B | $39.1B | $62.4B | $60.5B\nrnd | R&D | $24.7B | $35.3B | $38.5B | $43.9B | $57.4B\ncash | Cash | $16.6B | $14.7B | $41.9B | $43.9B | $35.9B\ntotalAssets | Total assets | $166.0B | $185.7B | $229.6B | $276.1B | $366.0B\ntotalLiabilities | Total liabilities | $41.1B | $60.0B | $76.5B | $93.4B | $148.8B\nlongTermDebt | Long-term debt | $0 | $9.9B | $18.4B | $28.8B | $58.7B\nequity | Shareholders' equity | $124.9B | $125.7B | $153.2B | $182.6B | $217.2B\noperatingCashFlow | Operating cash flow | $57.7B | $50.5B | $71.1B | $91.3B | $115.8B\ncapex | Capital expenditure | $18.7B | $31.2B | $27.0B | $37.3B | $69.7B\ndividendsPaid | Dividends paid | n/r | $0 | $0 | $5.1B | $5.3B\nbuybacks | Share buybacks | $44.5B | $28.0B | $19.8B | $30.1B | $26.2B\ndilutedEps | Diluted EPS | $13.77 | $8.59 | $14.87 | $23.86 | $23.49\nsharesOutstanding | Shares outstanding | 2.9B | 2.7B | 2.6B | 2.6B | 2.6B\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 39.6% | 24.8% | 34.7% | 42.2% | 41.4%\nnetMargin | Net margin | 33.4% | 19.9% | 29.0% | 37.9% | 30.1%\nrevenueGrowth | Revenue growth (YoY) | 37.2% | −1.1% | 15.7% | 21.9% | 22.2%\nfreeCashFlow | Free cash flow | $39.0B | $19.3B | $44.1B | $54.1B | $46.1B\ndebtToEquity | Long-term debt to equity | 0.00× | 0.08× | 0.12× | 0.16× | 0.27×\nrndToRevenue | R&D % of revenue | 20.9% | 30.3% | 28.5% | 26.7% | 28.5%\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m\n\nGOOGL annual report (10-K for FY2025): Alphabet is a collection of businesses, the largest of which is Google. Google reports two segments, Google Services and Google Cloud, and non-Google businesses are grouped as Other Bets.\nBusiness areas:\nGOOGL-a1 | Google Services advertising | Performance and brand advertising on Google Search and other properties, YouTube, and Google Network partner sites, sold to advertisers, agencies, and publishers. The text names no specific competitors for this line.\n  \"Google Services generates revenues primarily by delivering both performance and brand advertising that appears on Google Search & other properties, YouTube, and Google Network partners' properties\" (Item 1)\nGOOGL-a2 | Consumer subscriptions | Paid subscriptions, mainly YouTube services such as YouTube TV, YouTube Music and Premium, and NFL Sunday Ticket, plus Google One, which offers access to the most capable Gemini models.\n  \"consumer subscriptions, which primarily include revenues from YouTube services, such as YouTube TV, YouTube Music and Premium, and NFL Sunday Ticket, as well as Google One, which offers access to our most capable Gemini models;\" (Item 1)\nGOOGL-a3 | Google Cloud | Cloud infrastructure, AI development platform, cybersecurity, data analytics, and agent offerings such as Gemini Enterprise, sold through fees and subscriptions. Competitors are named only generally, as enterprise cloud providers.\n  \"Through our Google Cloud Platform and Google Workspace offerings, Google Cloud generates revenues primarily from consumption-based fees and subscriptions for infrastructure, platform, applications, and other cloud services.\" (Item 1)\nGOOGL-a4 | Other Bets | Non-Google businesses at various stages, such as Waymo for autonomous ride-hailing and the X moonshot unit. Revenue comes mainly from autonomous transportation and internet services.\n  \"Revenues from Other Bets are generated primarily from the sale of autonomous transportation and internet services.\" (Item 1)\n  \"our fully autonomous driving technology company, Waymo, is now providing fully autonomous, paid ride-hailing services to customers in multiple cities\" (Item 1)\nRisk themes:\nGOOGL-r1 | Advertising dependence | Most revenue comes from online advertising, and advertisers and partners can end contracts at any time. Shifts in ad formats, ad blocking, and privacy changes could reduce revenue.\n  \"We generated more than 70% of total revenues from online advertising in 2025. Many of our advertisers, companies that distribute our products and services, digital publishers, and content providers can terminate their contracts with us at any time.\" (Item 1A)\nGOOGL-r2 | Competition | The company faces many competitors, from large incumbents to start-ups, including AI developers. It must keep innovating or risk losing users, advertisers, and customers.\n  \"Our business environment is rapidly evolving and intensely competitive. Our businesses face changing technologies, shifting user needs, and frequent introductions of rival products and services.\" (Item 1A)\nGOOGL-r3 | Infrastructure costs and AI capacity | Large spending on AI infrastructure, leases, and long-term commitments raises costs and liabilities. Dependence on third-party equipment and capacity adds further exposure.\n  \"To meet the compute capacity demands of AI training and inference, as well as traditional cloud computing services, we are entering into significant leasing arrangements with third party operators, which may increase costs and operational complexity.\" (Item 1A)\nGOOGL-r4 | Antitrust and regulation | The company faces multiple US antitrust lawsuits covering advertising technology, Search, and Android and Play Store. Remedies could restrict distribution and business practices, and new laws worldwide add compliance costs.\n  \"The US Department of Justice (DOJ), various states, and other plaintiffs have filed, and may continue to file in the future, several antitrust lawsuits about aspects of our business, including our advertising technologies and practices, the operation and distribution of Google Search, and the operation and distribution of Android operating system and Play Store.\" (Item 1A)\nGOOGL-r5 | Privacy and data protection | Privacy and data laws are complex and changing, and AI training on user data draws scrutiny. Failure to comply could bring fines, orders to change practices, and reputational harm.\n  \"Privacy, data protection, data usage, and portability regulations are complex and rapidly evolving areas. Any failure or alleged failure to comply with these laws could harm our business, reputation, financial condition, and operating results.\" (Item 1A)\nGOOGL-r6 | Cybersecurity | The company faces cyber attacks on a regular basis, including nation-state threats, and AI may increase these risks. A breach could cause legal exposure and loss of user trust.\n  \"We experience cyber attacks and other attempts to gain unauthorized access to our systems on a regular basis. Cyber attacks continue to evolve in sophistication and volume, and inherently may be difficult to detect for long periods of time.\" (Item 1A)\nGOOGL-r7 | Power, supply chain, and hardware | Growth is limited by power, water, and land, and specialized AI chips come from a small number of suppliers. Devices depend on contract manufacturers and some single-source components.\n  \"Our ability to scale our technical infrastructure is increasingly constrained by the availability of power, water, and land. For example, energy supply is constrained globally due to the significant increase in demand for and limited availability of energy to power AI compute.\" (Item 1A)\nGOOGL-r8 | AI product risks | AI products may produce harmful content, inaccuracies, or infringe rights, and the company may not catch all issues. This could bring regulatory action, liability, and reputational harm.\n  \"Our evolving AI-enabled products and services may give rise to risks related to harmful content, inaccuracies, discrimination, intellectual property infringement or misappropriation, violation of rights of publicity, defamation, data privacy, cybersecurity, minor protection, and other issues.\" (Item 1A)\nGOOGL-r9 | International operations | A large share of revenue comes from outside the US, exposing the company to sanctions, tariffs, geopolitical conflict, foreign exchange swings, and varied local laws.\n  \"Our international operations are significant to our revenues and net income, and we plan to continue growing internationally. International revenues accounted for approximately 52% of consolidated revenues in 2025.\" (Item 1A)\nGOOGL-r10 | Founder control | Larry Page and Sergey Brin hold a majority of the voting power through Class B stock, which limits other stockholders' influence over corporate matters, including a sale of the company.\n  \"Through their stock ownership, Larry and Sergey have significant influence over all matters requiring stockholder approval, including the election of directors and significant corporate transactions, such as a merger or other sale of our company or our assets, for the foreseeable future.\" (Item 1A)\n\nMETA annual report (10-K for FY2025): Meta Platforms builds social apps (Facebook, Instagram, Messenger, Threads, WhatsApp, Meta AI) that earn substantially all revenue from advertising, and develops VR headsets and AI glasses through its Reality Labs segment.\nBusiness areas:\nMETA-a1 | Family of Apps advertising | Sells ad placements on Facebook, Instagram, Messenger, Threads, WhatsApp, and third-party apps to marketers via self-service tools, a sales force, agencies, and resellers. Competes with companies that sell advertising and with companies that help users share and discover content.\n  \"Currently, we generate substantially all of our revenue from selling advertising placements on our family of apps to marketers, which is reflected in FoA.\" (Item 1)\n  \"We face significant competition in every aspect of our business, including, but not limited to, companies that facilitate the ability of users to create, share, communicate, and discover content and information online or enable marketers to reach their existing or prospective audiences.\" (Item 1)\nMETA-a2 | Messaging and social apps | WhatsApp, Messenger, and Threads let people communicate privately and share public updates. Revenue is mainly from ads and business messaging is described as limited; competitors are described only generally as companies offering communication and sharing products.\n  \"WhatsApp is a simple, reliable, and secure messaging application that is used by people and businesses around the world to communicate and transact in a private way.\" (Item 1)\nMETA-a3 | Reality Labs consumer hardware and software | Sells Meta Quest VR devices, Meta Horizon Store content, and Ray-Ban Meta and Oakley Meta AI glasses through retailers, resellers, distribution partners, and Meta.com. Competes in consumer hardware and AR and VR products.\n  \"RL generates revenue from sales of consumer hardware products, software, and content.\" (Item 1)\n  \"We also compete with companies in the development and application of AI, particularly with respect to the development of frontier AI models, as well as the development and delivery of consumer hardware and augmented and virtual reality products and services.\" (Item 1)\nMETA-a4 | Meta AI and AI models | Meta AI assistant available across apps, as a stand-alone app, on AI glasses, and on the web, plus Llama and other models, some released as open source. Competes with companies developing frontier AI models and AI features.\n  \"We have a history of open-sourcing in AI, including releasing our Llama foundation models as well as other models and tools, and continue to believe in the power of open source innovation.\" (Item 1)\n  \"Meta AI is an assistant that's available across our apps, as a stand-alone app, on our AI glasses, and on the web.\" (Item 1)\nRisk themes:\nMETA-r1 | Advertising dependence and user engagement | Substantially all revenue comes from advertising, so declines in users, engagement, or marketer spending would reduce revenue. Marketers have no long-term commitments.\n  \"We generate substantially all of our revenue from advertising. The loss of marketers, or reduction in spending by marketers, could seriously harm our business.\" (Item 1A)\n  \"If we fail to retain existing users or add new users, or if our users decrease their level of engagement with our products, our revenue, financial results, and business may be significantly harmed.\" (Item 1A)\nMETA-r2 | Data signals and platform changes | Changes by Apple, Google, privacy regulators, and Meta's own products limit the data used for ad targeting and measurement, which has hurt advertising revenue.\n  \"Our ad targeting and measurement tools rely on data signals from user activity on websites and services that we do not control, as well as signals generated within our products, in order to deliver relevant and effective ads to our users, and any changes in our ability to use such signals will adversely affect our business.\" (Item 1A)\n  \"In addition, mobile operating system and browser providers, such as Apple and Google, have implemented product changes and/or announced plans to limit the ability of websites and application developers to collect and use these signals to target and measure advertising.\" (Item 1A)\nMETA-r3 | Reality Labs and AI investment returns | Heavy spending on Reality Labs, AI, and infrastructure reduces operating margin, and these investments may not pay off. Reality Labs is expected to keep operating at a loss.\n  \"For example, our investments in Reality Labs reduced our 2025 overall operating profit by approximately $19.19 billion, and we expect our 2026 Reality Labs operating losses to remain similar to 2025.\" (Item 1A)\n  \"We may not be successful in our artificial intelligence initiatives, which could adversely affect our business, reputation, or financial results.\" (Item 1A)\nMETA-r4 | Regulation, privacy, and youth laws | Privacy, content, competition, and youth-protection laws in the US, EU, and elsewhere could force product changes, fines, or limits on advertising, including an FTC consent order and EU rules on ad models.\n  \"Our business is subject to complex and evolving U.S. and foreign laws and regulations regarding privacy, data use, data combination, data protection, content, AI, competition, youth, safety, consumer protection, advertising, e-commerce, and other matters.\" (Item 1A)\nMETA-r5 | Litigation | Meta faces numerous class actions and government suits, including youth-related, privacy, antitrust, copyright, and securities claims, which could lead to large damages or required changes.\n  \"We are involved in numerous class action lawsuits and other litigation matters that are expensive and time consuming, and, if resolved adversely, could harm our business, financial condition, or results of operations.\" (Item 1A)\n  \"We are currently, and expect to be in the future, party to patent, trademark, and copyright lawsuits and other intellectual property rights claims that are expensive and time consuming and, if resolved adversely, could have a significant impact on our business, financial condition, or results of operations.\" (Item 1A)\nMETA-r6 | Security and misuse | Meta is a prominent target for cyber-attacks and misuse of user data, and AI tools add new vulnerabilities.\n  \"Security breaches, improper access to or disclosure of our data or user data, other hacking and phishing attacks on our systems, or other cyber incidents could harm our reputation and adversely affect our business.\" (Item 1A)\nMETA-r7 | Infrastructure and supply chain | Meta depends on third-party data center services and a small number of component manufacturers, often concentrated in Asia, for technical infrastructure and consumer hardware.\n  \"A substantial portion of our technical infrastructure is provided by third parties. Any disruption or failure in the services we receive from these providers could harm our ability to handle existing or increased traffic and could significantly harm our business.\" (Item 1A)\n  \"The manufacturing of our consumer hardware products depends on a small number of third parties, often with significant operations in a single region such as Asia.\" (Item 1A)\nMETA-r8 | Competition | Meta faces competition for users, marketers, developers, and AI talent from many companies, some with greater resources, and platform owners such as Apple and Google can favor their own products.\n  \"Some of our current and potential competitors may have greater resources, experience, or stronger competitive positions in certain product segments, geographic regions, or user demographics than we do.\" (Item 1A)\n  \"For example, each of Apple and Google have integrated competitive products with iOS and Android, respectively.\" (Item 1A)\nMETA-r9 | Controlled company and dual-class control | Mark Zuckerberg controls a majority of voting power through Class B shares, so Class A holders have limited influence over corporate matters.\n  \"This concentrated control will limit or preclude your ability to influence corporate matters for the foreseeable future.\" (Item 1A)"
+   },
+   "calls": [
+    {
+     "tool": "submit_page",
+     "input": {
+      "html": "5472 characters"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 14666
+    }
+   ],
+   "checks": [
+    {
+     "check": "numbers",
+     "checked": 38,
+     "findings": []
+    },
+    {
+     "check": "notReported",
+     "findings": []
+    },
+    {
+     "check": "quotes",
+     "checked": 0,
+     "findings": []
+    },
+    {
+     "check": "page",
+     "findings": []
+    }
+   ]
+  }
+ }
 }

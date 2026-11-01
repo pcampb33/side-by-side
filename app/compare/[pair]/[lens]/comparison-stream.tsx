@@ -136,7 +136,7 @@ function ModeSwitch({ mode, onChange }: { mode: Mode; onChange: (mode: Mode) => 
           role="radio"
           aria-checked={mode === m.mode}
           onClick={() => mode !== m.mode && onChange(m.mode)}
-          className={`relative z-10 rounded-full px-4 py-1.5 transition-colors duration-300 ${mode === m.mode ? "text-paper" : "text-muted hover:text-ink"}`}
+          className={`relative z-10 rounded-full px-4 py-1.5 transition-colors duration-(--dur-base) ${mode === m.mode ? "text-paper" : "text-muted hover:text-ink"}`}
         >
           {m.label}
         </button>

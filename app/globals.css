@@ -75,6 +75,8 @@
   --color-back: var(--back);
   --font-sans: var(--font-jakarta);
   --font-display: var(--font-jakarta);
+  --default-transition-duration: var(--dur-fast);
+  --default-transition-timing-function: var(--ease-out);
 }
 
 body {
@@ -91,6 +93,11 @@ body {
   --edge-b: color-mix(in srgb, var(--series-b) 70%, transparent);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Motion: three durations for everything that isn't a loop. Ease-out enters, ease-in exits,
+     the spring only for small pops (pills, chips, dots, icons). */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
   /* Process panel (app only, not in THEME): a check passed, a call sent back. */
   --ok: #1f7a4d;
   --back: #b45309;
@@ -101,20 +108,20 @@ body {
 :root[data-theme="dark"] { --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25); --ok: #6fd39d; --back: #f0b45a; }
 .card { background: var(--surface); border-radius: 1rem; box-shadow: var(--shadow); }
 @keyframes pop-in { from { opacity: 0; transform: scale(0.96) translateY(8px); } }
-.pop-in { animation: pop-in 0.56s var(--ease-spring) backwards; }
+.pop-in { animation: pop-in var(--dur-slow) var(--ease-out) backwards; }
 
 /* Text lenses (text-tiles.tsx): each company's 10-K is an outlined panel, the
    two offset so they visibly cross; subjects both name sit where they cross. */
 .venn-wrap { container-type: inline-size; }
 .venn { position: relative; display: grid; grid-template-columns: 26% 48% 26%; padding: 34px 0 26px; isolation: isolate; }
-.venn-panel { position: absolute; width: 74%; border: 2px solid; border-radius: 22px; z-index: -1; transition: opacity 0.35s, border-width 0.2s; animation: venn-draw 0.7s var(--ease-out) backwards; }
+.venn-panel { position: absolute; width: 74%; border: 2px solid; border-radius: 22px; z-index: -1; transition: opacity var(--dur-base) var(--ease-out), border-width var(--dur-fast) var(--ease-out); animation: venn-draw var(--dur-slow) var(--ease-out) backwards; }
 .venn-a { left: 0; top: 0; bottom: 12px; border-color: var(--edge-a); background: var(--tint-a); }
 .venn-b { right: 0; top: 12px; bottom: 0; border-color: var(--edge-b); background: var(--tint-b); animation-delay: 0.16s; }
 @keyframes venn-draw { from { clip-path: inset(0 100% 0 0 round 22px); } to { clip-path: inset(0 0 0 0 round 22px); } }
 .venn-tab {
   position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 99px;
   background: var(--surface); border: 1.5px solid; font-size: 0.75rem; font-weight: 600; line-height: 1; cursor: pointer;
-  transition: transform 0.2s var(--ease-spring);
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
 .venn-tab:hover { transform: translateY(-1px); }
 .venn-tab small { font-weight: 500; color: var(--muted); font-size: 0.72rem; }
@@ -129,11 +136,11 @@ body {
 .venn-chip {
   display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow);
   font-size: 0.8125rem; font-weight: 500; line-height: 1.25; text-align: left; min-width: 0; cursor: pointer;
-  transition: opacity 0.3s, transform 0.25s var(--ease-spring), box-shadow 0.25s;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
 }
 .venn-chip svg { flex: none; color: var(--muted); }
 .venn-chip:hover { transform: translateY(-2px); }
-.venn-chip:active { transform: scale(0.97); transition-duration: 0.1s; }
+.venn-chip:active { transform: scale(0.97); transition-duration: var(--dur-fast); }
 /* The subject shown in the panel beside the comparison. */
 .venn-chip[data-selected] { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
 .venn-chip[data-selected] svg { color: var(--accent); }
@@ -157,7 +164,7 @@ body {
   font-size: 13px; line-height: 1.25;
 }
 @keyframes pill-in { from { opacity: 0; transform: translateY(10px) scale(0.94); } }
-.pill-in { animation: pill-in 0.56s var(--ease-spring) backwards; }
+.pill-in { animation: pill-in var(--dur-slow) var(--ease-spring) backwards; }
 @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 .shimmer {
   background: linear-gradient(90deg, var(--rule) 30%, color-mix(in srgb, var(--rule) 40%, var(--surface)) 50%, var(--rule) 70%);
@@ -170,91 +177,91 @@ body {
   border: 0; padding: 0; border-radius: 20px 20px 0 0; background: var(--surface); color: var(--ink);
   box-shadow: 0 -8px 30px rgb(0 0 0 / 0.18); overscroll-behavior: contain;
 }
-.sheet[open] { animation: sheet-up 0.45s var(--ease-out); }
-.sheet[data-closing] { animation: sheet-down 0.22s ease-in forwards; }
-.sheet::backdrop { background: rgb(0 0 0 / 0.38); animation: fade-in 0.3s var(--ease-out); }
-.sheet[data-closing]::backdrop { animation: fade-in 0.22s ease-in reverse forwards; }
+.sheet[open] { animation: sheet-up var(--dur-base) var(--ease-out); }
+.sheet[data-closing] { animation: sheet-down var(--dur-fast) ease-in forwards; }
+.sheet::backdrop { background: rgb(0 0 0 / 0.38); animation: fade-in var(--dur-base) var(--ease-out); }
+.sheet[data-closing]::backdrop { animation: fade-in var(--dur-fast) ease-in reverse forwards; }
 @keyframes sheet-up { from { transform: translateY(100%); } }
 @keyframes sheet-down { to { transform: translateY(100%); } }
 /* Wider than a phone: a dialog centered in the window, easing in and out. */
 @media (min-width: 640px) {
   .sheet { inset: 0; margin: auto; max-height: min(80dvh, 760px); border-radius: 20px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.22); }
-  .sheet[open] { animation: dialog-in 0.32s var(--ease-out); }
-  .sheet[data-closing] { animation: dialog-out 0.18s ease-in forwards; }
+  .sheet[open] { animation: dialog-in var(--dur-base) var(--ease-out); }
+  .sheet[data-closing] { animation: dialog-out var(--dur-fast) ease-in forwards; }
 }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } }
 @keyframes dialog-out { to { opacity: 0; transform: translateY(6px) scale(0.98); } }
 /* Fades the text out at the scroll edge; sits over the bottom padding once scrolled to the end. */
 .sheet-fade { position: sticky; bottom: 0; height: 28px; margin-top: -28px; pointer-events: none; background: linear-gradient(transparent, var(--surface)); }
 @keyframes fade-in { from { opacity: 0; } }
-.popover-in { animation: fade-in 0.15s var(--ease-out); }
+.popover-in { animation: fade-in var(--dur-fast) var(--ease-out); }
 
 /* Components / Freeform switch: the thumb slides under the chosen mode. */
-.mode-thumb { width: calc(50% - 0.25rem); transition: transform 0.45s var(--ease-out); }
+.mode-thumb { width: calc(50% - 0.25rem); transition: transform var(--dur-base) var(--ease-out); }
 .mode-thumb[data-second] { transform: translateX(100%); }
 
 /* Theme switch: the thumb and the lit icon follow <html data-theme>. */
-.theme-thumb { width: calc((100% - 0.25rem) / 3); transition: transform 0.45s var(--ease-out); }
+.theme-thumb { width: calc((100% - 0.25rem) / 3); transition: transform var(--dur-base) var(--ease-out); }
 :root[data-theme="light"] .theme-thumb { transform: translateX(100%); }
 :root[data-theme="dark"] .theme-thumb { transform: translateX(200%); }
-.theme-option { color: var(--muted); transition: color 0.3s; }
+.theme-option { color: var(--muted); transition: color var(--dur-base) var(--ease-out); }
 .theme-option:hover { color: var(--ink); }
 :root:not([data-theme]) .theme-option[data-choice="system"],
 :root[data-theme="light"] .theme-option[data-choice="light"],
 :root[data-theme="dark"] .theme-option[data-choice="dark"] { color: var(--paper); }
 
 /* A freeform page fades in once it has reported its height, then follows it. */
-.freeform { opacity: 0; transform: translateY(8px); transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), height 0.4s var(--ease-out); }
+.freeform { opacity: 0; transform: translateY(8px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), height var(--dur-base) var(--ease-out); }
 .freeform[data-ready] { opacity: 1; transform: none; }
 
 /* Homepage: featured cards rise in turn; the arrow nudges on hover. */
 @keyframes featured-in { from { opacity: 0; transform: translateY(12px); } }
-.featured-in { animation: featured-in 0.6s var(--ease-out) backwards; }
-.featured-card { transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-out); }
+.featured-in { animation: featured-in var(--dur-slow) var(--ease-out) backwards; }
+.featured-card { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
 .featured-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgb(25 28 40 / 0.06), 0 14px 34px rgb(25 28 40 / 0.12); }
-.featured-arrow { transition: transform 0.35s var(--ease-out); }
+.featured-arrow { transition: transform var(--dur-base) var(--ease-out); }
 .featured-card:hover .featured-arrow { transform: translateX(4px); }
 
 /* How Claude built this (SPEC 4a): steps, live states, accordion, rail, overlay. */
-.step-dot { position: relative; z-index: 1; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--surface); color: var(--muted); font-family: var(--font-mono, ui-monospace, monospace); font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--rule); transition: box-shadow 0.3s, background 0.3s, color 0.3s; }
+.step-dot { position: relative; z-index: 1; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--surface); color: var(--muted); font-family: var(--font-mono, ui-monospace, monospace); font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--rule); transition: box-shadow var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
 .step-dot[data-state="wait"] { opacity: 0.5; }
 .step-dot[data-state="skip"] { opacity: 0.45; box-shadow: inset 0 0 0 1.5px var(--rule); }
 .step-dot[data-state="run"] { color: var(--accent); }
 .step-dot[data-state="run"]::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent); animation: spin 0.8s linear infinite; }
-.step-dot[data-state="done"] { background: color-mix(in srgb, var(--ok) 16%, var(--surface)); color: var(--ok); box-shadow: none; animation: dot-pop 0.45s var(--ease-spring); }
-.step-dot[data-backs][data-state="run"] { animation: back-flash 0.9s var(--ease-out); }
+.step-dot[data-state="done"] { background: color-mix(in srgb, var(--ok) 16%, var(--surface)); color: var(--ok); box-shadow: none; animation: dot-pop var(--dur-base) var(--ease-spring); }
+.step-dot[data-backs][data-state="run"] { animation: back-flash var(--dur-slow) var(--ease-out); }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes dot-pop { from { transform: scale(0.6); } }
 @keyframes back-flash { 0%, 60% { box-shadow: 0 0 0 3px var(--back); } }
 .process-step[data-state="wait"] > button, .process-step[data-state="skip"] > button { opacity: 0.6; }
-.process-step:not(:last-child)::before { content: ""; position: absolute; left: 15px; top: 2.6rem; bottom: -4px; width: 2px; border-radius: 2px; background: var(--rule); transition: background 0.4s; }
+.process-step:not(:last-child)::before { content: ""; position: absolute; left: 15px; top: 2.6rem; bottom: -4px; width: 2px; border-radius: 2px; background: var(--rule); transition: background var(--dur-base) var(--ease-out); }
 .process-step[data-state="done"]:not(:last-child)::before { background: color-mix(in srgb, var(--ok) 45%, var(--rule)); }
-.step-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s var(--ease-out); }
+.step-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-base) var(--ease-out); }
 .process-step[data-open] .step-body { grid-template-rows: 1fr; }
-.step-body > div > div { opacity: 0; transition: opacity 0.3s; }
+.step-body > div > div { opacity: 0; transition: opacity var(--dur-base) var(--ease-out); }
 .process-step[data-open] .step-body > div > div { opacity: 1; transition-delay: 0.1s; }
-.step-chevron { display: inline-block; transition: transform 0.35s var(--ease-spring); }
+.step-chevron { display: inline-block; transition: transform var(--dur-base) var(--ease-spring); }
 .process-step[data-open] > button .step-chevron, .guideline[open] .step-chevron { transform: rotate(90deg); }
 .guideline summary::-webkit-details-marker { display: none; }
 @keyframes tick-in { from { transform: translateY(5px); opacity: 0; } }
-.mode-note { animation: tick-in 0.4s var(--ease-out); }
+.mode-note { animation: tick-in var(--dur-base) var(--ease-out); }
 /* The desktop panel swapping between the steps and a subject; restarts each time either is shown. */
-.theme-in { animation: tick-in 0.3s var(--ease-out); }
-.tick-in { animation: tick-in 0.35s var(--ease-spring); }
+.theme-in { animation: tick-in var(--dur-base) var(--ease-out); }
+.tick-in { animation: tick-in var(--dur-base) var(--ease-spring); }
 @keyframes dot-in { from { transform: scale(0); } }
-.dot-in { animation: dot-in 0.4s var(--ease-spring) backwards; }
-.follow-chip { flex: none; white-space: nowrap; display: flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 11px; font-size: 12px; font-weight: 600; background: var(--ink); color: var(--paper); animation: dot-pop 0.35s var(--ease-spring); }
+.dot-in { animation: dot-in var(--dur-base) var(--ease-spring) backwards; }
+.follow-chip { flex: none; white-space: nowrap; display: flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 11px; font-size: 12px; font-weight: 600; background: var(--ink); color: var(--paper); animation: dot-pop var(--dur-base) var(--ease-spring); }
 .follow-chip[data-on] { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); cursor: default; }
 .follow-chip[data-on]::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.4s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.3; transform: scale(0.7); } }
-.icon-button { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--paper); color: var(--muted); transition: color 0.2s, transform 0.3s var(--ease-spring); }
+.icon-button { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--paper); color: var(--muted); transition: color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-spring); }
 .icon-button:hover { color: var(--ink); transform: scale(1.06); }
 .rail-dots::before { content: ""; position: absolute; left: 50%; top: 12px; bottom: 12px; width: 2px; margin-left: -1px; background: var(--rule); }
 /* Desktop side panel: fluid width, or a slim rail; the comparison takes the rest. */
-.process-aside { width: clamp(300px, calc(29.4vw - 23px), 420px); transition: width 0.5s var(--ease-out); }
+.process-aside { width: clamp(300px, calc(29.4vw - 23px), 420px); transition: width var(--dur-slow) var(--ease-out); }
 .process-aside[data-rail] { width: 56px; }
-.process-full, .process-rail { transition: opacity 0.3s 0.15s, visibility 0s; }
-.process-aside[data-rail] .process-full, .process-aside:not([data-rail]) .process-rail { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.2s, visibility 0s 0.2s; }
+.process-full, .process-rail { transition: opacity var(--dur-base) var(--ease-out) var(--dur-fast), visibility 0s; }
+.process-aside[data-rail] .process-full, .process-aside:not([data-rail]) .process-rail { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity var(--dur-fast) var(--ease-out), visibility 0s var(--dur-fast); }
 .process-full { width: clamp(300px, calc(29.4vw - 23px), 420px); }
 /* Comparison pages widen (with the header and footer) to fit the panel. */
 @media (min-width: 1100px) {
@@ -262,8 +269,8 @@ body {
 }
 /* Overlay below ~1100px: a side panel over the page; full screen on phones. */
 @keyframes slide-in { from { transform: translateX(100%); } }
-.process-overlay { animation: slide-in 0.5s var(--ease-out); }
-.process-scrim { animation: fade-in 0.4s var(--ease-out); }
+.process-overlay { animation: slide-in var(--dur-slow) var(--ease-out); }
+.process-scrim { animation: fade-in var(--dur-base) var(--ease-out); }
 .process-strip { scrollbar-width: none; }
 
 @media (prefers-reduced-motion: reduce) {

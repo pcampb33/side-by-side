@@ -131,7 +131,7 @@ export function ProcessStrip() {
           href={href}
           scroll={false}
           onClick={() => openAt(step.id)}
-          className="flex flex-none items-center gap-2 rounded-2xl bg-paper py-1.5 pr-3.5 pl-1.5 text-[13px] leading-tight transition-transform duration-300 hover:-translate-y-px"
+          className="flex flex-none items-center gap-2 rounded-2xl bg-paper py-1.5 pr-3.5 pl-1.5 text-[13px] leading-tight transition-transform duration-(--dur-base) hover:-translate-y-px"
         >
           <StepDot step={step} n={i + 1} size="sm" />
           <span>

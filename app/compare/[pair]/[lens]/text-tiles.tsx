@@ -9,13 +9,15 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefO
 import { findTextRef, type RowIcon } from "@/agent/catalog";
 import type { CompanyInput } from "@/agent/prompt";
 import { Cited, quoteCitation, SERIES } from "./cited";
+import { useProcess } from "./process-context";
 import { playMorph, reducedMotion, type PillSnapshot } from "./morph";
 import { tileGroups, type TileKind } from "./tile-groups";
 
 // The text lenses: each 10-K's own themes as pills while Claude groups them,
 // then the overlap: each company's 10-K an outlined panel, subjects both name
-// where the panels cross. Tapping a pill or a subject opens a sheet with the
-// filing's own words.
+// where the panels cross. Tapping a pill or a subject shows the filing's own
+// words: in the panel beside the comparison on desktop, else in a dialog
+// (a bottom sheet on phones).
 
 const ICONS: Record<RowIcon, LucideIcon> = {
   competition: Swords, trade: Globe, "supply-chain": Truck, security: Lock, regulation: Gavel, "intellectual-property": Copyright, tax: Receipt,
@@ -35,7 +37,24 @@ const items = (c: CompanyInput, kind: TextKind): Item[] =>
 const toItem = (i: NonNullable<ReturnType<typeof findTextRef>>["item"]): Item =>
   "theme" in i ? { id: i.id, name: i.theme, text: i.summary, quotes: i.quotes } : { id: i.id, name: i.name, text: i.description, quotes: i.quotes };
 
-type SheetContent = { title: string; Icon?: LucideIcon; parts: { company: CompanyInput; si: number; items: Item[] }[]; what: string };
+export type ThemeContent = { title: string; Icon?: LucideIcon; parts: { company: CompanyInput; si: number; items: Item[] }[]; what: string };
+
+// Where a tapped subject shows: the desktop panel (where "How Claude built this"
+// lives) from 1100px, matching its CSS; below that, a dialog. Tapping the shown
+// subject again closes it; leaving (a mode switch, the tiles replacing the
+// pills) clears the panel.
+export const PANEL_QUERY = "(min-width: 1100px)";
+function useShowTheme() {
+  const { theme, setTheme } = useProcess();
+  const [sheet, setSheet] = useState<ThemeContent | null>(null);
+  useEffect(() => () => setTheme(null), [setTheme]);
+  const show = (key: string, content: ThemeContent) => {
+    if (!window.matchMedia(PANEL_QUERY).matches) return setSheet(content);
+    setTheme(theme?.key === key ? null : { key, content });
+  };
+  const dialog = sheet && <Sheet content={sheet} onClosed={() => setSheet(null)} />;
+  return { show, selected: theme?.key ?? null, dialog };
+}
 
 export interface Morph {
   stage: RefObject<HTMLElement | null>;
@@ -45,7 +64,7 @@ export interface Morph {
 // ---- While Claude groups: each 10-K's own list ----
 
 export function FilingPills({ companies, kind, freeform }: { companies: CompanyInput[]; kind: TextKind; freeform?: boolean }) {
-  const [sheet, setSheet] = useState<SheetContent | null>(null);
+  const { show, selected, dialog } = useShowTheme();
   const what = kind === "risks" ? "risk themes" : "business areas";
   return (
     <article className="card p-5 @xl:p-6">
@@ -71,7 +90,8 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
                     type="button"
                     data-pill={`${c.ticker}-${item.id}`}
                     data-side={si}
-                    onClick={() => setSheet({ title: item.name, parts: [{ company: c, si, items: [item] }], what })}
+                    data-selected={selected === `pill-${c.ticker}-${item.id}` || undefined}
+                    onClick={() => show(`pill-${c.ticker}-${item.id}`, { title: item.name, parts: [{ company: c, si, items: [item] }], what })}
                     className="pill-in max-w-full justify-self-start rounded-full border border-rule bg-surface px-3 py-1.5 text-left text-[13px] leading-snug hover:border-muted"
                     style={{ animationDelay: `${j * 55}ms` }}
                   >
@@ -82,7 +102,7 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
           </div>
         ))}
       </div>
-      {sheet && <Sheet content={sheet} onClosed={() => setSheet(null)} />}
+      {dialog}
     </article>
   );
 }
@@ -90,7 +110,7 @@ export function FilingPills({ companies, kind, freeform }: { companies: CompanyI
 // ---- Grouped: the overlap ----
 
 export function TextTiles({ rows, companies, what, morph }: { rows: { label: string; icon: RowIcon; refs: string[] }[]; companies: CompanyInput[]; what: string; morph?: Morph }) {
-  const [sheet, setSheet] = useState<SheetContent | null>(null);
+  const { show, selected, dialog } = useShowTheme();
   const root = useRef<HTMLDivElement>(null);
   const tickers = [companies[0].ticker, companies[1].ticker] as const;
   const groups = tileGroups(rows, tickers);
@@ -121,7 +141,7 @@ export function TextTiles({ rows, companies, what, morph }: { rows: { label: str
   const open = (index: number) => {
     const row = rows[index];
     const found = row.refs.flatMap((ref) => findTextRef(companies, ref) ?? []);
-    setSheet({
+    show(`tile-${index}`, {
       title: row.label,
       Icon: ICONS[row.icon] ?? Shapes,
       what,
@@ -132,7 +152,7 @@ export function TextTiles({ rows, companies, what, morph }: { rows: { label: str
   const chip = ({ row, index }: (typeof groups)[TileKind][number]) => {
     const Icon = ICONS[row.icon] ?? Shapes;
     return (
-      <button key={index} type="button" data-tile={index} onClick={() => open(index)} className="venn-chip">
+      <button key={index} type="button" data-tile={index} data-selected={selected === `tile-${index}` || undefined} onClick={() => open(index)} className="venn-chip">
         <Icon aria-hidden size={18} strokeWidth={1.75} />
         <span data-reveal>{row.label}</span>
       </button>
@@ -191,14 +211,14 @@ export function TextTiles({ rows, companies, what, morph }: { rows: { label: str
           {groups.second.length ? groups.second.map(chip) : none}
         </section>
       </div>
-      {sheet && <Sheet content={sheet} onClosed={() => setSheet(null)} />}
+      {dialog}
     </div>
   );
 }
 
-// ---- The filing's own words, in a sheet from the bottom ----
+// ---- The filing's own words: a dialog (bottom sheet on phones), or the desktop panel ----
 
-function Sheet({ content, onClosed }: { content: SheetContent; onClosed: () => void }) {
+function Sheet({ content, onClosed }: { content: ThemeContent; onClosed: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     ref.current?.showModal();
@@ -239,22 +259,27 @@ function Sheet({ content, onClosed }: { content: SheetContent; onClosed: () => v
             </svg>
           </button>
         </div>
-        {content.parts.map(({ company, si, items: its }) => (
-          <section key={company.ticker} className="mt-3 border-t border-rule pt-3">
-            <h4 className="flex items-center gap-2 text-sm font-semibold">
-              <span className="size-2.5 shrink-0 rounded-full" style={{ background: SERIES[si] }} />
-              {company.ticker}
-            </h4>
-            {its.length === 0 && <p className="mt-1.5 text-sm text-muted italic">Not among the {content.what} drawn from its 10-K.</p>}
-            {its.map((item) => (
-              <ItemBody key={item.id} item={item} company={company} showName={content.parts.length > 1} />
-            ))}
-          </section>
-        ))}
+        <ThemeBody content={content} />
       </div>
       <div aria-hidden className="sheet-fade" />
     </dialog>
   );
+}
+
+// Each company's summary and quotes for one subject.
+export function ThemeBody({ content }: { content: ThemeContent }) {
+  return content.parts.map(({ company, si, items: its }) => (
+    <section key={company.ticker} className="mt-3 border-t border-rule pt-3">
+      <h4 className="flex items-center gap-2 text-sm font-semibold">
+        <span className="size-2.5 shrink-0 rounded-full" style={{ background: SERIES[si] }} />
+        {company.ticker}
+      </h4>
+      {its.length === 0 && <p className="mt-1.5 text-sm text-muted italic">Not among the {content.what} drawn from its 10-K.</p>}
+      {its.map((item) => (
+        <ItemBody key={item.id} item={item} company={company} showName={content.parts.length > 1} />
+      ))}
+    </section>
+  ));
 }
 
 function ItemBody({ item, company, showName }: { item: Item; company: CompanyInput; showName: boolean }): ReactNode {

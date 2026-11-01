@@ -134,6 +134,10 @@ body {
 .venn-chip svg { flex: none; color: var(--muted); }
 .venn-chip:hover { transform: translateY(-2px); }
 .venn-chip:active { transform: scale(0.97); transition-duration: 0.1s; }
+/* The subject shown in the panel beside the comparison. */
+.venn-chip[data-selected] { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
+.venn-chip[data-selected] svg { color: var(--accent); }
+[data-pill][data-selected] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .venn-key { display: flex; align-items: center; gap: 10px; font-size: 0.8125rem; color: var(--muted); }
 /* Narrow: no room for side-by-side panels, so three stacked sections, each
    saying whose 10-K it comes from. */
@@ -234,6 +238,8 @@ body {
 .guideline summary::-webkit-details-marker { display: none; }
 @keyframes tick-in { from { transform: translateY(5px); opacity: 0; } }
 .mode-note { animation: tick-in 0.4s var(--ease-out); }
+/* The desktop panel swapping between the steps and a subject; restarts each time either is shown. */
+.theme-in { animation: tick-in 0.3s var(--ease-out); }
 .tick-in { animation: tick-in 0.35s var(--ease-spring); }
 @keyframes dot-in { from { transform: scale(0); } }
 .dot-in { animation: dot-in 0.4s var(--ease-spring) backwards; }
@@ -267,6 +273,6 @@ body {
   .featured-in { animation: none; }
   .featured-card, .featured-arrow { transition: none; }
   .featured-card:hover, .featured-card:hover .featured-arrow { transform: none; }
-  .step-dot, .step-dot::after, .tick-in, .mode-note, .popover-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
+  .step-dot, .step-dot::after, .tick-in, .mode-note, .theme-in, .popover-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
   .step-body, .step-body > div > div, .step-chevron, .process-aside, .process-full, .process-rail, .process-step::before { transition: none; }
 }

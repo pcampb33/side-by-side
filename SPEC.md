@@ -81,6 +81,17 @@ company header (fixed, not generated), metric cards, trend line, grouped bars, r
 
 **Model settings:** Sonnet 5.5 with streaming; effort set explicitly (start at `medium`, tune via evals). Opus 5.5 can't disable thinking and rejects forced `tool_choice`, so use `auto` + instructions (kept for Sonnet too). Check `stop_reason` for `refusal` and show an honest error, not an empty result.
 
+## 4a. Showing the process (decided 2026-11-01 by the owner)
+
+The site is a showcase of generative UI, so each comparison shows how it was made, without getting in the way.
+
+- **Strip:** under every comparison, collapsed to one line: the same five steps on every page (SEC data, annual reports read, lens brief, Claude composes, checks), each with a one-line general explanation and this run's count (e.g. "6 components, 2 sent back and fixed"). Tapping a step expands this run's real trace for it.
+- **Guidelines view for this comparison** (linked from the strip): what Claude was given and followed for this page: the lens brief, the components offered and the ones excluded, the grounding rules, the design tokens (and the kit pieces a freeform page used), and the full ordered trace: each tool call with its input, every call the checks sent back with their exact message, timings, model, tokens.
+- **Traces are recorded per run** (tool calls, check feedback, timings, tokens, code-check results), stored with the cached result and in the featured JSON. A run without a trace (older cache) shows the general explanation only.
+- **Freeform kit:** the frame provides the site's card, stat and chip styles and a chart helper that draws to scale from the data; the prompt asks Sonnet to use them; `checkPage` and the evals still apply. The trace lists which pieces a page used.
+- **README:** the general breakdown (the five steps and the rules), linking to a live guidelines view.
+- **One regeneration:** traces and the kit both change generation, so the featured comparisons are regenerated and reviewed by eye once, after both exist.
+
 ## 5. Access, cost, and logging
 
 - Auth.js with the Google provider, basic scopes (email, profile). Enabled by `REQUIRE_SIGN_IN=true`. If it is true and Google credentials are missing, the app refuses to start. Local clones leave it off (their own key).
@@ -139,4 +150,5 @@ Model-graded checks ("does this answer the lens?") only after real output has be
 8. Evals harness. *Check:* scorecard for all featured pairs, both modes; zero ungrounded numbers.
 9. Featured script + committed JSON + homepage. *Check:* a fresh clone renders all featured comparisons, both modes, with zero Claude or SEC calls.
 10. Auth, limits, spend tracking, logging, privacy note. *Check:* a non-owner account is stopped at 6; spend cap blocks with the right message.
-11. README (setup, env, architecture, screenshots/GIF), GitHub repo, Vercel deploy. **Ask the user before creating the repo, before the first push, and before deploying.**
+10a. *(2026-11-01)* Product app style + Overlap layout (done), then §4a: trace capture, strip and guidelines view; freeform kit; regenerate featured once and review by eye. *Check:* every featured comparison, both modes, shows a strip whose numbers match its trace and a guidelines view; a live text-lens run shows the pill-to-chip morph.
+11. README (setup, env, architecture, the general process breakdown, screenshots/GIF of a real generation), GitHub repo, Vercel deploy. **Ask the user before creating the repo, before the first push, and before deploying.**

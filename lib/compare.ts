@@ -35,8 +35,9 @@ export type CompareEvent =
   | { type: "blocked"; reason: BlockReason }
   | { type: "heartbeat" };
 
-// Components v2: text rows carry an icon. Freeform v2: Sonnet, minimal text.
-const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 2 };
+// Components v2: text rows carry an icon. Freeform v2: Sonnet, minimal text;
+// v3: the kit.
+const RESULT_VERSION: Record<Mode, number> = { components: 2, freeform: 3 };
 const resultKey = (tickers: readonly string[], lens: LensSlug, mode: Mode) => `result:v${RESULT_VERSION[mode]}:${tickers.join("|")}|${lens}|${mode}`;
 // A result saved before traces existed has none.
 export type Result = ({ components: Component[] } | { html: string }) & { trace?: Trace };
@@ -170,6 +171,7 @@ export async function runComparison(opts: {
       ms: { fetching, reading, composing, checks: lap() },
       usage: generated.usage,
       offered: generated.offered,
+      ...("kit" in generated && { kit: generated.kit }),
       prompt: generated.prompt,
       calls,
       checks,

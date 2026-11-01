@@ -200,9 +200,9 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
         </div>
       )}
 
-      {state.html && (
+      {state.html && state.companies && (
         <>
-          <FreeformFrame html={state.html} />
+          <FreeformFrame html={state.html} companies={state.companies} />
           <p className="text-sm text-muted">
             Claude wrote this page itself from the same filing data. Its numbers aren&apos;t linked to their filings; Components cites each one.
           </p>

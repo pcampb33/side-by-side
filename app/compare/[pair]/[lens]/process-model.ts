@@ -54,7 +54,7 @@ export const STEP_ABOUT: Record<StepId, string> = {
 };
 
 export const FREEFORM_COMPOSE_ABOUT =
-  "Claude Sonnet writes the whole page itself, from the same data. A page that loads anything from outside goes back with the reason, and Claude fixes it.";
+  "Claude Sonnet writes the whole page itself, from the same data, with the site's kit of cards and a chart helper that looks each value up. A page that loads anything from outside, or a chart the data can't draw, goes back with the reason, and Claude fixes it.";
 
 export const CHECK_NAMES: Record<CheckId, [string, string]> = {
   numbers: ["Numbers", "Every number on the page is a value in the filings, within rounding."],

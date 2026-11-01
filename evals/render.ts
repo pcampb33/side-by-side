@@ -1,5 +1,7 @@
 import type { Browser } from "playwright";
 import { checkPage } from "../agent/freeform.ts";
+import { kitHead } from "../agent/kit.ts";
+import type { CompanyInput } from "../agent/prompt.ts";
 import { themeCss } from "../lib/theme.ts";
 import type { Finding } from "./checks.ts";
 
@@ -9,7 +11,7 @@ import type { Finding } from "./checks.ts";
 // the text a reader sees once scroll-triggered content has drawn in, minus
 // axis ticks, for the number and quote checks (tooltips drawn only on hover
 // are not in it).
-export async function renderPage(browser: Browser, html: string): Promise<{ text: string; findings: Finding[] }> {
+export async function renderPage(browser: Browser, html: string, companies: CompanyInput[]): Promise<{ text: string; findings: Finding[] }> {
   const findings: Finding[] = [];
   const add = (detail: string) => findings.push({ check: "page", detail });
   const problem = checkPage(html);
@@ -25,8 +27,8 @@ export async function renderPage(browser: Browser, html: string): Promise<{ text
     page.on("console", (msg) => {
       if (msg.type() === "error") add(`Console error: ${msg.text().slice(0, 200)}`);
     });
-    // The site's theme variables, as the frame adds them.
-    await page.setContent(html.replace(/<head(\s[^>]*)?>/i, (tag) => `${tag}<style>${themeCss("light")}</style>`));
+    // The site's theme variables and the kit, as the frame adds them.
+    await page.setContent(html.replace(/<head(\s[^>]*)?>/i, (tag) => `${tag}<style>${themeCss("light")}</style>${kitHead(companies)}`));
     const scrollThrough = () =>
       page.evaluate(async () => {
         for (let y = 0; y < document.body.scrollHeight; y += 300) {

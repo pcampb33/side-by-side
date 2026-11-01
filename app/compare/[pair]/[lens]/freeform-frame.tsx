@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { kitHead } from "@/agent/kit";
+import type { CompanyInput } from "@/agent/prompt";
 import { themeCss, type ThemeChoice } from "@/lib/theme";
 import { useTheme } from "@/app/theme-switch";
 
@@ -13,19 +15,20 @@ const CSP = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-i
 // The frame can't be measured from outside, so the page reports its own height.
 const HEIGHT_SCRIPT = `addEventListener("DOMContentLoaded",function(){var b=document.body,p=function(){parent.postMessage({freeformHeight:Math.ceil(b.getBoundingClientRect().bottom+parseFloat(getComputedStyle(b).marginBottom||"0"))},"*")};new ResizeObserver(p).observe(b);addEventListener("load",p);p()});`;
 
-// The model's page with the CSP, the site's theme variables and the height
-// reporter first in its <head> (agent/freeform.ts checks it has one).
-export function framePage(html: string, theme: ThemeChoice = "system"): string {
-  const head = `<meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${themeCss(theme)}</style><script>${HEIGHT_SCRIPT}</script>`;
+// The model's page with the CSP, the site's theme variables, the kit
+// (agent/kit.ts) and the height reporter first in its <head>
+// (agent/freeform.ts checks it has one).
+export function framePage(html: string, companies: CompanyInput[], theme: ThemeChoice = "system"): string {
+  const head = `<meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${themeCss(theme)}</style>${kitHead(companies)}<script>${HEIGHT_SCRIPT}</script>`;
   return html.replace(/<head(\s[^>]*)?>/i, (tag) => tag + head);
 }
 
-export function FreeformFrame({ html }: { html: string }) {
+export function FreeformFrame({ html, companies }: { html: string; companies: CompanyInput[] }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number | null>(null);
   // A theme switch reloads the page, so colors it computed in script follow too.
   const theme = useTheme();
-  const srcDoc = useMemo(() => framePage(html, theme), [html, theme]);
+  const srcDoc = useMemo(() => framePage(html, companies, theme), [html, companies, theme]);
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {

@@ -12,6 +12,7 @@ import type { Component } from "../agent/catalog.ts";
 import { generatePage } from "../agent/freeform.ts";
 import { LENS_GUIDANCE } from "../agent/lenses.ts";
 import { generateComparison, type ModelId, type Usage } from "../agent/run.ts";
+import type { KitPiece } from "../agent/kit.ts";
 import { traceCall, type Trace, type TraceCall } from "../agent/trace.ts";
 import { FEATURED } from "../evals/cases.ts";
 import { checkResults } from "../evals/checks.ts";
@@ -28,7 +29,7 @@ const backend = await defaultBackend();
 const signal = new AbortController().signal;
 const browser = await chromium.launch();
 
-type Generated = ({ components: Component[] } | { html: string }) & { usage: Usage; model: ModelId; prompt: Trace["prompt"]; offered: string[] };
+type Generated = ({ components: Component[] } | { html: string; kit: KitPiece[] }) & { usage: Usage; model: ModelId; prompt: Trace["prompt"]; offered: string[] };
 
 // The first output whose checks all pass, with its trace (SPEC §4a) as the site records one.
 async function passing<T extends Generated>(
@@ -58,6 +59,7 @@ async function passing<T extends Generated>(
           ms: { fetching: base.fetching, reading: base.reading, composing, checks: Math.round(performance.now() - start) - composing },
           usage: out.usage,
           offered: out.offered,
+          ...("kit" in out && { kit: out.kit }),
           prompt: out.prompt,
           calls,
           checks: checkResults(findings, { numbers, quotes }, mode),

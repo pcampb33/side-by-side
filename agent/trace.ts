@@ -1,5 +1,6 @@
 import type { Mode } from "../lib/compare-url.ts";
 import type { LensSlug } from "../lib/lenses.ts";
+import type { KitPiece } from "./kit.ts";
 import type { ModelId, ToolSpec, Usage } from "./run.ts";
 
 // What one run did, recorded as it happens and stored with its result (cache
@@ -32,6 +33,7 @@ export interface Trace {
   ms: { fetching: number; reading: number | null; composing: number; checks: number };
   usage: Usage;
   offered: string[]; // the tools Claude was given
+  kit?: KitPiece[]; // freeform: the kit pieces the page used (absent before the kit)
   prompt: { system: string; user: string }; // exactly as sent
   calls: TraceCall[];
   checks: CheckResult[];

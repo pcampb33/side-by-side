@@ -17,7 +17,7 @@ export async function scoreOutput(
   let prose: string[];
   const findings: Finding[] = [];
   if ("html" in output) {
-    const page = await renderPage(browser, output.html);
+    const page = await renderPage(browser, output.html, companies);
     findings.push(...page.findings);
     prose = [page.text];
   } else {

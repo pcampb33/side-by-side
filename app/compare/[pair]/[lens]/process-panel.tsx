@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { COMPONENT_NAMES } from "@/agent/catalog";
+import { KIT_PIECES, type KitPiece } from "@/agent/kit";
 import { LENS_GUIDANCE } from "@/agent/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { Trace, TraceCall } from "@/agent/trace";
@@ -354,6 +355,22 @@ function ComponentChips({ input }: { input: ProcessInput }) {
   );
 }
 
+// The freeform kit (agent/kit.ts), shaded where this page used a piece.
+function KitChips({ used }: { used?: KitPiece[] }) {
+  return (
+    <>
+      <div className="flex flex-wrap gap-1.5">
+        {KIT_PIECES.map((p) => (
+          <span key={p} className={`rounded-full px-2 py-0.5 font-mono text-[11px] ${used?.includes(p) ? "bg-[color-mix(in_srgb,var(--series-a)_16%,var(--surface))]" : "bg-paper"}`}>
+            {p === "chart" ? "kit.chart()" : `kit-${p}`}
+          </span>
+        ))}
+      </div>
+      <p className="text-[11.5px] text-muted">The site&apos;s own pieces, added to the page by its frame; the chart helper looks every value up in the data.{used && " Shaded: used on this page."}</p>
+    </>
+  );
+}
+
 const callTitle = (call: TraceCall) => {
   const input = call.input as { title?: unknown; html?: unknown } | null;
   return typeof input?.title === "string" ? input.title : typeof input?.html === "string" ? `page, ${input.html}` : "";
@@ -421,6 +438,7 @@ const RULES = {
     "Every number is copied exactly from the data tables, with its company and fiscal year; nothing computed or rounded.",
     "Not reported stays not reported; never estimated around.",
     "One self-contained page: no fonts, images, scripts or links from outside.",
+    "Each kit chart names metric keys and years, checked against the data before the page is shown.",
     "Three to five neutral takeaways, never a winner or a prediction.",
   ],
 };
@@ -463,7 +481,7 @@ function Guidelines({ input }: { input: ProcessInput }) {
           ))}
         </ul>
       </Row>
-      <Row title="Design it draws with" note="tokens">
+      <Row title="Design it draws with" note={input.mode === "freeform" && trace?.kit ? `tokens · ${trace.kit.length} kit pieces` : "tokens"}>
         <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
           {[
             ["var(--series-a)", input.companies?.[0]?.ticker ?? "first"],
@@ -479,6 +497,7 @@ function Guidelines({ input }: { input: ProcessInput }) {
           ))}
           <span>· Plus Jakarta Sans</span>
         </div>
+        {input.mode === "freeform" && <KitChips used={trace?.kit} />}
       </Row>
       <Row title="Full trace" note={calls.length ? `${calls.length} call${calls.length === 1 ? "" : "s"}` : "not recorded"}>
         {calls.length ? <CallList calls={calls} inputs /> : <p className="text-muted">No calls recorded for this page.</p>}

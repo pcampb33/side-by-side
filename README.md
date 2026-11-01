@@ -3,7 +3,7 @@
 Pick two US public companies and a lens; Claude builds the comparison from their SEC filings. Every number on the
 page links to the filing it came from.
 
-![Opening a featured comparison, then switching to Freeform](docs/demo.gif)
+![A live generation: pick two companies and a lens, then watch Claude build the page and the panel record each step](docs/demo.gif)
 
 - **Five lenses:** Profitability, Growth, Balance-sheet risk, Risk exposure, Where they compete.
 - **Two modes.** *Components*: Claude composes the page from a fixed set of charts and cards through tool calls.
@@ -12,14 +12,41 @@ page links to the filing it came from.
   values up in the normalized filing data. Hover or tap any number for its filing (form, fiscal year, filed date)
   and a link to it on SEC.gov.
 - **Neutral.** Takeaways describe differences, never a winner. Not financial advice.
+- **Shows its work.** Beside every comparison, a panel shows how Claude built that page: the
+  [five steps](#how-each-page-is-made), each tool call, and everything Claude was given.
 
 | Components | Freeform |
 |---|---|
 | ![KO vs PEP, profitability, components](docs/components.png) | ![AMD vs NVDA, growth, freeform, dark](docs/freeform.png) |
 
-| Risk exposure: each 10-K's risk factors, grouped | Phone, dark |
+| Risk exposure: the themes each 10-K names, shared and not | Phone, dark |
 |---|---|
-| ![AAPL vs MSFT risk themes as tiles](docs/risk-tiles.png) | <img src="docs/mobile.png" alt="F vs GM on a phone, dark" width="300"> |
+| ![AAPL vs MSFT risk themes in overlapping panels](docs/risk-venn.png) | <img src="docs/mobile.png" alt="F vs GM on a phone, dark" width="300"> |
+
+## How each page is made
+
+<img src="docs/process.png" alt="The panel beside AAPL vs MSFT, risk exposure: five steps, each tool call, the checks" width="320" align="right">
+
+Every comparison goes through the same five steps, and the panel beside it (a strip under it on narrower screens)
+shows this run's numbers for each:
+
+1. **SEC data.** Each company's reported financials, read from its SEC XBRL filings: about 16 metrics over five
+   fiscal years, each value keeping the filing it came from. A metric a company doesn't report stays
+   `not reported`.
+2. **10-Ks read** (Risk exposure, Where they compete). Claude Haiku condenses the latest annual report's business
+   and risk sections into themes; code checks every quote word for word against the filing.
+3. **Lens brief.** What the lens asks and which components usually answer it. Claude chooses; the lens steers.
+4. **Claude composes.** Claude Sonnet calls components, naming metrics and years but never writing numbers. In
+   Freeform it writes the whole page, with the site's cards and a chart helper that looks each value up. A call
+   that breaks a rule goes back with the reason, and Claude fixes it.
+5. **Checks.** Code reads the finished page: every number must appear in the filings, nothing not reported may show
+   as a value, every quote must match, and a freeform page may load nothing from outside itself.
+
+Below the steps, the panel holds everything Claude was given and followed for that page: the lens brief, the
+components offered and excluded, the rules each call is checked against, the design tokens (and the kit pieces a
+freeform page used), the full trace with timings and token counts, and the exact prompt as sent. Each trace is
+recorded at generation time and stored with the result; `/compare/<pair>/<lens>/process` opens it as its own page.
+<br clear="right">
 
 ## How it works
 
@@ -44,8 +71,8 @@ flowchart LR
 | `featured/` | Five comparisons generated ahead of time and committed, so they open with no Claude or SEC calls. |
 | `app/` | Next.js App Router: pages, the streaming `/api/compare` route, sign-in. |
 
-A new comparison streams: progress steps, then a headline strip drawn in code (~1s), then each component as
-Claude shows it. Results are cached per pair, lens and mode.
+A new comparison streams: a headline strip drawn in code (~1s), then each component as Claude shows it, while the
+panel lights up step by step. Results are cached per pair, lens and mode, with their trace.
 
 ## Run it locally
 
@@ -64,7 +91,7 @@ your key, plus Claude Haiku 5.5 once per 10-K the first time a text lens reads i
 |---|---|
 | `npm run lint && npm run typecheck && npm test` | What CI runs. Never calls Claude or the SEC. |
 | `npm run eval -- [--model sonnet\|opus] [--only <case>]` | Generates the eval cases and scores them (`evals/out/`). Calls Claude. |
-| `npm run featured -- [--only <case>]` | Regenerates featured comparisons, keeping only runs that pass every check. Review each page by eye before committing it. |
+| `npm run featured -- [--only <case>] [--mode freeform]` | Regenerates featured comparisons, keeping only runs that pass every check (`--mode freeform`: only the freeform pages). Review each page by eye before committing it. |
 | `npm run eval:fixtures` | Rebuilds the eval fixtures from the SEC. |
 
 ## Deploy

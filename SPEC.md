@@ -30,7 +30,7 @@ Decided 2026-10-29. Each decision below was made explicitly; don't reopen one wi
 | Style | ~~Clean editorial.~~ *2026-11-01, owner, from three directions* (https://claude.ai/artifact/TP6X22KAhRudGLruveQNSo): **Product app**: soft white cards on a cool grey, 16px radius, soft shadows, pill controls, one sans family (Plus Jakarta Sans), indigo and teal series, shaded areas under lines, springy entrances. Text lenses use the **Overlap** layout (https://claude.ai/artifact/BWM2eEqQEfmNa9LtXeApNi): each company's panel outlined, offset and named on its edge, shared themes where they cross, tap a name to highlight its panel; stacked and self-labelled on phones. Wording stays as it was ("Risk themes: what each company names"); no risk weighting. Light + dark following system, manual switch (built before step 8; the freeform frame follows it). Fully responsive. Company names: EDGAR's all-caps names are title-cased, with a hand-kept override map for well-known names (JPMorgan, NVIDIA, Coca-Cola…) |
 | Cache backend | Local: gitignored `.cache/` folder. Deployed: Upstash Redis (also holds limits, spend, logs) |
 | Hosting | Vercel Hobby |
-| Repo | Public, `pcampb33/company-compare`, MIT, GitHub Actions CI (lint + typecheck + tests; never calls the API) |
+| Repo | Public, ~~`pcampb33/company-compare`~~ `pcampb33/side-by-side` (*2026-11-01, owner*; the site wordmark, `<title>`, package name and the repo link in `blocked-panel.tsx` follow it), MIT, GitHub Actions CI (lint + typecheck + tests; never calls the API) |
 | Agent sub-project | `agent/` module with its own README + an eval harness (`npm run eval`). Playground UI deferred. No visitor-facing agent settings |
 
 ## 2. Architecture
@@ -90,7 +90,9 @@ The site is a showcase of generative UI, so each comparison shows how it was mad
 - **Traces are recorded per run** (tool calls, check feedback, timings, tokens, code-check results), stored with the cached result and in the featured JSON. A run without a trace (older cache) shows the general explanation only.
 - **Freeform kit:** the frame provides the site's card, stat and chip styles and a chart helper that draws to scale from the data; the prompt asks Sonnet to use them; `checkPage` and the evals still apply. The trace lists which pieces a page used.
 - **README:** the general breakdown (the five steps and the rules), linking to a live guidelines view.
-- **One regeneration:** traces and the kit both change generation, so the featured comparisons are regenerated and reviewed by eye once, after both exist.
+- **Exact prompt** *(2026-11-01, owner)*: the guidelines view shows everything Claude received, as sent (system prompt and the full data payload), stored in the trace at run time so it stays true if `agent/prompt.ts` changes later. Closed by default.
+- **Live strip** *(2026-11-01, owner)*: on a live generation the strip is there from the start and each step lights up as it happens (SEC data, reports read, brief, each component call including send-backs, checks). Featured pages arrive whole and show it finished.
+- **One regeneration:** traces and the kit both change generation, so the featured comparisons are regenerated and reviewed by eye once, after both exist. *2026-11-01, owner:* that regeneration waits for the API key (step 11), so traces carry real token counts; login runs include ~32k tokens of Claude Code overhead per request. Until then, traces record which backend ran them.
 
 ## 5. Access, cost, and logging
 
@@ -150,5 +152,5 @@ Model-graded checks ("does this answer the lens?") only after real output has be
 8. Evals harness. *Check:* scorecard for all featured pairs, both modes; zero ungrounded numbers.
 9. Featured script + committed JSON + homepage. *Check:* a fresh clone renders all featured comparisons, both modes, with zero Claude or SEC calls.
 10. Auth, limits, spend tracking, logging, privacy note. *Check:* a non-owner account is stopped at 6; spend cap blocks with the right message.
-10a. *(2026-11-01)* Product app style + Overlap layout (done), then §4a: trace capture, strip and guidelines view; freeform kit; regenerate featured once and review by eye. *Check:* every featured comparison, both modes, shows a strip whose numbers match its trace and a guidelines view; a live text-lens run shows the pill-to-chip morph.
-11. README (setup, env, architecture, the general process breakdown, screenshots/GIF of a real generation), GitHub repo, Vercel deploy. **Ask the user before creating the repo, before the first push, and before deploying.**
+10a. *(2026-11-01)* Product app style + Overlap layout (done), then §4a: trace capture, strip and guidelines view; freeform kit. *Check:* a live run, both modes, shows the strip lighting up and a guidelines view whose numbers match its trace; a live text-lens run shows the pill-to-chip morph. (Regenerating the featured comparisons moved to step 11, on the API key.)
+11. API key, then regenerate the featured comparisons once (traces + kit) and review every page by eye, both modes; every featured comparison shows a strip whose numbers match its trace. README (setup, env, architecture, the general process breakdown, screenshots/GIF of a real generation), GitHub repo, Vercel deploy. **Ask the user before creating the repo, before the first push, and before deploying.**

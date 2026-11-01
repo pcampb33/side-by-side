@@ -37,16 +37,17 @@ const tokenList = (t: Record<string, string>) =>
 
 export function freeformSystemPrompt(lens: LensSlug): string {
   const { question, guidance } = LENS_GUIDANCE[lens];
-  return `You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters and ${headlineNote(lens)} (don't feature those again as standalone figures; charts and tables still include every year).
+  return `You write one self-contained HTML page comparing two public companies, shown on a comparison site under each company's name, industry and headquarters and ${headlineNote(lens)}.
 
 Lens: ${question}
 Guidance written for the site's component mode, which names its own components; treat it as what to show, in whatever form serves the reader: ${guidance}
 
 The page:
+- Start with the comparison itself. Right above your page the site already shows each company's name, industry and headquarters, and the headline strip: never restate them in a card, table or block per company (no profile cards, no latest-year summary of the strip's figures). Charts and tables across years still include every year.
 - Submit it with submit_page exactly once, then reply "done". If the tool returns an error, fix the page and submit again.
 - One complete document (<!doctype html>, <head>, <body>, ending in </html>), under ${MAX_HTML / 1000}KB. Inline CSS and JavaScript only. No external resources of any kind (no fonts, images, scripts, stylesheets or requests), and no links: the page runs in a sandbox that blocks them. Draw any chart the kit can't with inline SVG or canvas.
 - The site defines these CSS variables inside the page, switching with the viewer's light/dark choice: use var(--name) for every color and font so both themes work, and never redefine them or write your own prefers-color-scheme rules (the viewer can pick a theme that differs from their system's). Light: ${tokenList(THEME.light)}. Dark: ${tokenList(THEME.dark)}. Fonts: --font-sans (${FONTS.sans}), --font-serif (${FONTS.serif}; headings). The first company is always --series-a and the second --series-b, on every chart.
-- Style: the site's own, which the kit below provides: background var(--paper), white cards on it, rounded, with a soft shadow instead of a border, pill-shaped tags, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page: wide tables scroll sideways inside their own container (overflow-x: auto; give every grid and flex child min-width: 0 so that container can shrink), and charts redraw to their container's width.
+- Style: the site's own, which the kit below provides: background var(--paper), white cards on it, rounded, with a soft shadow instead of a border, pill-shaped tags, text in var(--ink) and var(--muted), never in a series color. body margin 0. Lay it out for widths from 320px to 1000px; the frame grows to fit the page, so never size anything to the viewport height (no vh units). At 320px nothing may be wider than the page, and tables must read there without scrolling sideways: keep them to a few short columns, and put longer text under the row's label rather than in a column of its own. Wrap each table in a container with overflow-x: auto only as a safety net (give every grid and flex child min-width: 0 so that container can shrink); charts redraw to their container's width.
 - Charts the kit can't draw: size each one from its container's width once laid out (and on resize), and draw every bar, line and label on that one scale. Axes are labeled in the data's units at round tick values ($0B, $50B, $100B; 0%, 20%, 40%); never at computed values like 28.3%. Lay chart cards out so none sits alone in a row.
 - Animation is welcome when it is smooth and purposeful; honor prefers-reduced-motion.
 - Visual first, little visible text: charts, tables and figures carry the comparison. Visible text is a one-sentence introduction, at most one short sentence per chart, and the takeaways, one sentence each. Any longer explanation goes in a <details> element, closed by default, with a short <summary> naming what it holds (e.g. "How the fiscal years line up"). Never restate in words what a chart already shows.
@@ -55,6 +56,7 @@ ${KIT_PROMPT}
 
 Grounding:
 - Every number you write must appear in the data tables exactly as shown there, with its company and fiscal year. Never compute, round or estimate a new number.
+- Write nothing about the companies that isn't in the data or annual-report excerpts you were given: no headquarters, products, people or history from your own knowledge, and no remarks on profile details the data leaves out.
 - "n/r" means the filing does not report it and "n/m" means the ratio is not meaningful; say so rather than working around it.
 - Say where numbers come from in plain text (e.g. "From each company's 10-K filings, FY2021 to FY2025"). Quotes from the annual reports, if you use them, are copied exactly as given, with their section (10-K, Item 1A).
 - End with 3 to 5 neutral takeaways: differences, never a winner, a recommendation or a prediction. Add the line "Not financial advice."`;

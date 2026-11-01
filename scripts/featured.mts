@@ -1,9 +1,10 @@
-// npm run featured -- [--only <text>]
+// npm run featured -- [--only <text>] [--mode freeform]
 // Generates each featured comparison (evals/cases.ts) in both modes and saves
 // it to featured/<pair>-<lens>.json with everything the page needs (profiles,
 // financials, condensed 10-Ks, components, freeform page), so the site shows
 // it with no Claude or SEC calls. A run is kept only when every eval check
-// passes; up to three tries per mode. --only keeps the ids containing the text.
+// passes; up to three tries per mode. --only keeps the ids containing the text;
+// --mode freeform regenerates only the freeform page and keeps the saved components.
 import fs from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
@@ -23,7 +24,7 @@ import type { Featured } from "../lib/featured.ts";
 
 const MODEL: ModelId = "claude-sonnet-5-5";
 const TRIES = 3;
-const { values: args } = parseArgs({ options: { only: { type: "string" } } });
+const { values: args } = parseArgs({ options: { only: { type: "string" }, mode: { type: "string" } } });
 const outDir = path.join(import.meta.dirname, "..", "featured");
 const backend = await defaultBackend();
 const signal = new AbortController().signal;
@@ -90,7 +91,11 @@ try {
     const base = { lens, at, fetching, reading };
     const profiles = await Promise.all(companies.map((c) => getProfile(c.financials.cik)));
     const score = (out: { components: Component[] } | { html: string }) => scoreOutput(out, lens, companies, browser);
-    const comp = await passing("components", (onCall) => generateComparison({ lens, companies, backend, signal, model: MODEL, onCall, onComponent: () => {} }), score, base);
+    const file = path.join(outDir, `${id}.json`);
+    const kept: Featured | null = args.mode === "freeform" ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
+    const comp = kept?.traces?.components
+      ? { out: { components: kept.components }, trace: kept.traces.components }
+      : await passing("components", (onCall) => generateComparison({ lens, companies, backend, signal, model: MODEL, onCall, onComponent: () => {} }), score, base);
     const free = await passing("freeform", (onCall) => generatePage({ lens, companies, backend, signal, model: MODEL, onCall }), score, base);
     const featured: Featured = {
       tickers,
@@ -102,7 +107,7 @@ try {
       html: free.out.html,
       traces: { components: comp.trace, freeform: free.trace },
     };
-    fs.writeFileSync(path.join(outDir, `${id}.json`), JSON.stringify(featured, null, 1) + "\n");
+    fs.writeFileSync(file, JSON.stringify(featured, null, 1) + "\n");
   }
 } finally {
   await browser.close();

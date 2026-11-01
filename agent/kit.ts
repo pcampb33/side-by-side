@@ -173,7 +173,7 @@ const KIT_CSS = `
 
 // Plain JavaScript run inside the sandboxed page: no imports, no network.
 const KIT_SCRIPT = String.raw`(function(){
-var D=window.KIT_DATA,NS="http://www.w3.org/2000/svg",uid=0;
+var D=window.KIT_DATA,NS="http://www.w3.org/2000/svg",uid=0,linked=[];
 var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.documentElement.classList.add("kit-js");
 function svg(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
@@ -204,6 +204,9 @@ function chart(target,spec){
   // Colors inline: a page's own .a/.b rules would otherwise repaint the legend (kit styles have zero specificity).
   D.companies.forEach(function(c,ci){var y=year!==undefined&&cats[0].cells[ci].fy;html("span","kit-chip "+(ci?"b":"a"),legend,c.ticker+(y&&!cats[0].cells[ci].none?" · FY"+y:"")).style.cssText="background:var(--paper);color:var(--ink)"});
   var tip=html("div","kit-tip",host),box=html("div","",host),id="kit"+(++uid),width=0,active=null,place=null,shown=false;
+  // Charts across the years share one hovered year (their x axes are the same years).
+  var go=function(i){if(year===undefined)linked.forEach(function(f){f(i)});else place(i)};
+  if(year===undefined)linked.push(function(i){if(place)place(i)});
   function draw(){
     var W=box.clientWidth;if(!W||W===width)return;width=W;box.textContent="";
     var H=W<480?200:240,lw=Math.max.apply(null,tk.map(function(t){return tick(t,unit).length}))*6.6+12;
@@ -253,11 +256,11 @@ function chart(target,spec){
       c.cells.forEach(function(cl,ci){var r=html("div","",tip);html("i","",r).style.background="var(--series-"+(ci?"b":"a")+")";if(cl.none){html("span","",r,D.companies[ci].ticker+" has no FY"+cl.fy);return}html("b","",r,cl.text);r.appendChild(document.createTextNode(" "));html("span","",r,D.companies[ci].ticker+(year!==undefined?" FY"+cl.fy:""))});
       var px=x(i);tip.style.left=px>W/2?"":(px+12)+"px";tip.style.right=px>W/2?(W-px+12)+"px":"";tip.classList.add("on");
     };
-    var pick=function(e){var r=s.getBoundingClientRect(),rel=e.clientX-r.left-M.l;place(Math.max(0,Math.min(k-1,line?Math.round(rel/iw*(k-1)):Math.floor(rel/band))))};
+    var pick=function(e){var r=s.getBoundingClientRect(),rel=e.clientX-r.left-M.l;go(Math.max(0,Math.min(k-1,line?Math.round(rel/iw*(k-1)):Math.floor(rel/band))))};
     s.addEventListener("pointermove",pick);s.addEventListener("pointerdown",pick);
-    s.addEventListener("pointerleave",function(){place(null)});s.addEventListener("blur",function(){place(null)});
-    s.addEventListener("focus",function(){place(k-1)});
-    s.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")place(Math.max(0,(active==null?0:active)-1));if(e.key==="ArrowRight")place(Math.min(k-1,(active==null?0:active)+1))});
+    s.addEventListener("pointerleave",function(){go(null)});s.addEventListener("blur",function(){go(null)});
+    s.addEventListener("focus",function(){go(k-1)});
+    s.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")go(Math.max(0,(active==null?0:active)-1));if(e.key==="ArrowRight")go(Math.min(k-1,(active==null?0:active)+1))});
   }
   draw();new ResizeObserver(function(){draw()}).observe(box);
   // Draws in once, when it first scrolls into view.

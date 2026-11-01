@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useLayoutEffect, useRef, useState } from "react";
+import { createContext, use, useId, useLayoutEffect, useRef, useState } from "react";
 import type { CompanyInput } from "@/agent/prompt";
 import { formatTick, formatValue } from "@/lib/format";
 import { valueDef, type ValueKey } from "@/lib/values";
@@ -29,17 +29,26 @@ function niceTicks(min: number, max: number, count = 4): number[] {
   return ticks;
 }
 
+// The fiscal year hovered on any trend line, shown on every one of them.
+const HoverYear = createContext<[number | null, (fy: number | null) => void]>([null, () => {}]);
+
+export function YearLink({ children }: { children: React.ReactNode }) {
+  return <HoverYear value={useState<number | null>(null)}>{children}</HoverYear>;
+}
+
 const HEIGHT = 240;
 const M = { top: 12, right: 24, bottom: 28, left: 52 };
 
 export function TrendLine({ metric, companies }: { metric: ValueKey; companies: CompanyInput[] }) {
   const [ref, width] = useWidth();
-  const [active, setActive] = useState<number | null>(null);
+  const [hovered, setHovered] = use(HoverYear);
   // useId can contain characters a url(#id) reference would need escaped.
   const gradient = `area${useId().replace(/[^\w-]/g, "")}`;
   const { unit } = valueDef(metric);
   // The union of both companies' fiscal-year labels: their years need not match.
   const years = [...new Set(companies.flatMap((c) => c.financials.fiscalYears))].sort();
+  const active = hovered === null || !years.includes(hovered) ? null : years.indexOf(hovered);
+  const setActive = (i: number | null) => setHovered(i === null ? null : years[i]);
   const series = companies.map((c) => years.map((fy) => lookup(c, metric, fy)));
   const values = series.flat().flatMap((l) => (l.kind === "value" ? [l.value] : []));
   const ticks = niceTicks(Math.min(0, ...values), Math.max(0, ...values));
@@ -90,8 +99,8 @@ export function TrendLine({ metric, companies }: { metric: ValueKey; companies: 
             onFocus={() => setActive(years.length - 1)}
             onBlur={() => setActive(null)}
             onKeyDown={(e) => {
-              if (e.key === "ArrowLeft") setActive((a) => Math.max(0, (a ?? 0) - 1));
-              if (e.key === "ArrowRight") setActive((a) => Math.min(years.length - 1, (a ?? 0) + 1));
+              if (e.key === "ArrowLeft") setActive(Math.max(0, (active ?? 0) - 1));
+              if (e.key === "ArrowRight") setActive(Math.min(years.length - 1, (active ?? 0) + 1));
             }}
           >
             {ticks.map((t) => (

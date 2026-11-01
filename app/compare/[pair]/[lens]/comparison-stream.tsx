@@ -17,6 +17,7 @@ import { HeadlineStrip } from "./headline-strip";
 import { Info } from "./popover";
 import { snapshotPills, type PillSnapshot } from "./morph";
 import { ComponentView } from "./renderers";
+import { YearLink } from "./trend-line";
 import { FilingPills, type TextKind } from "./text-tiles";
 
 // Reads POST /api/compare's event stream: progress steps first, then each
@@ -230,14 +231,16 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
 
       {/* Two charts side by side once the comparison is wide enough (chart-pairs.ts). */}
       {state.companies && (state.components.length > 0 || building) && (
-        <div className="grid gap-4 @4xl:grid-cols-2">
-          {state.components.map((c, i) => (
-            <div key={i} className={`min-w-0 ${full[i] ? "@4xl:col-span-2" : ""}`}>
-              <ComponentView component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />
-            </div>
-          ))}
-          {building && <div className={`card min-h-32 animate-pulse ${loadingCardFull(names, true) ? "@4xl:col-span-2" : ""}`} aria-hidden />}
-        </div>
+        <YearLink>
+          <div className="grid gap-4 @4xl:grid-cols-2">
+            {state.components.map((c, i) => (
+              <div key={i} className={`min-w-0 ${full[i] ? "@4xl:col-span-2" : ""}`}>
+                <ComponentView component={c} companies={state.companies!} morph={i === firstText ? { stage, pills } : undefined} />
+              </div>
+            ))}
+            {building && <div className={`card min-h-32 animate-pulse ${loadingCardFull(names, true) ? "@4xl:col-span-2" : ""}`} aria-hidden />}
+          </div>
+        </YearLink>
       )}
 
       {state.html && state.companies && (

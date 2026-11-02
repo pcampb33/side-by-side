@@ -206,8 +206,13 @@ export function Legend({ companies, kind }: { companies: CompanyInput[]; kind: "
 
 export function TableView({ children }: { children: React.ReactNode }) {
   return (
-    <details className="mt-3 text-sm">
-      <summary className="cursor-pointer text-muted hover:text-ink">Table view</summary>
+    <details className="table-view mt-3 text-sm">
+      <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 text-muted hover:text-ink">
+        <span aria-hidden className="step-chevron text-[17px] leading-none">
+          ›
+        </span>
+        Table view
+      </summary>
       <div className="mt-2 overflow-x-auto">{children}</div>
     </details>
   );

@@ -265,8 +265,13 @@ body {
 .step-body > div > div { opacity: 0; transition: opacity var(--dur-base) var(--ease-out); }
 .process-step[data-open] .step-body > div > div { opacity: 1; transition-delay: 0.1s; }
 .step-chevron { display: inline-block; transition: transform var(--dur-base) var(--ease-spring); }
-.process-step[data-open] > button .step-chevron, .guideline[open] .step-chevron { transform: rotate(90deg); }
-.guideline summary::-webkit-details-marker { display: none; }
+.process-step[data-open] > button .step-chevron, details[open] > summary .step-chevron { transform: rotate(90deg); }
+.guideline summary::-webkit-details-marker, .table-view summary::-webkit-details-marker { display: none; }
+/* Disclosures open and close smoothly where the browser can animate to auto height; elsewhere they snap. */
+details { interpolate-size: allow-keywords; }
+details::details-content { height: 0; overflow: clip; transition: height var(--dur-fast) ease-in, content-visibility var(--dur-fast) ease-in allow-discrete; }
+details[open]::details-content { height: auto; transition-duration: var(--dur-base); transition-timing-function: var(--ease-out); }
+.table-view[open] tbody tr { animation: tick-in var(--dur-base) var(--ease-out) backwards; animation-delay: calc(60ms + (sibling-index() - 1) * 35ms); }
 @keyframes tick-in { from { transform: translateY(5px); opacity: 0; } }
 .mode-note { animation: tick-in var(--dur-base) var(--ease-out); }
 /* The desktop panel swapping between the steps and a subject; restarts each time either is shown. */
@@ -323,7 +328,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mode-thumb, .theme-thumb, .freeform, .toast, .compact-bar { transition: none; }
+  .mode-thumb, .theme-thumb, .freeform, .toast, .compact-bar, details::details-content { transition: none; }
+  .table-view[open] tbody tr { animation: none; }
   .venn-panel, .venn-chip, .venn-tab, .pop-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .venn-chip:hover, .venn-tab:hover { transform: none; }
   .featured-in { animation: none; }

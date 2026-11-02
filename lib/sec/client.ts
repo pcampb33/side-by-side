@@ -108,12 +108,10 @@ const NAMES: Record<string, string> = {
   "NVIDIA CORP": "NVIDIA Corp",
   "PEPSICO INC": "PepsiCo Inc",
   "PROCTER & GAMBLE Co": "Procter & Gamble Co",
-  "QUALCOMM INC/DE": "Qualcomm Inc",
   "RIO TINTO LTD": "Rio Tinto Ltd",
   "RIO TINTO PLC": "Rio Tinto PLC",
   "SCHWAB CHARLES CORP": "Charles Schwab Corp",
   "UNITEDHEALTH GROUP INC": "UnitedHealth Group Inc",
-  "WELLS FARGO & COMPANY/MN": "Wells Fargo & Company",
 };
 
 // A third of EDGAR names are all caps ("MICROSOFT CORP", "BANK OF AMERICA
@@ -122,7 +120,8 @@ const NAMES: Record<string, string> = {
 // Jpmorgan), and short unknown words stay upper on the guess they're acronyms,
 // so well-known names whose rules come out wrong are kept by hand in NAMES.
 export function displayName(title: string): string {
-  const name = title.replace(/(\s+\/[A-Z]{1,5}\/?|\/)+$/, "").trim();
+  // Without a space only two letters or NEW ("INC/DE", "CO/NEW"), so "A/S" stays.
+  const name = title.replace(/(\s+\/[A-Z]{1,5}\/?|\/([A-Za-z]{2}|NEW)\/?|\/)+$/, "").trim();
   if (NAMES[name]) return NAMES[name];
   if (/[a-z]/.test(name)) return name;
   return name

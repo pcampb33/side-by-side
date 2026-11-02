@@ -73,6 +73,13 @@ describe("displayName", () => {
     ["COCA COLA CO", "Coca-Cola Co"],
     ["ELI LILLY & Co", "Eli Lilly & Co"],
     ["QUALCOMM INC/DE", "Qualcomm Inc"],
+    ["RPM INTERNATIONAL INC/DE/", "RPM International Inc"],
+    ["WELLS FARGO & COMPANY/MN", "Wells Fargo & Company"],
+    ["LAMAR ADVERTISING CO/NEW", "Lamar Advertising Co"],
+    ["Pioneer Bancorp, Inc./MD", "Pioneer Bancorp, Inc."],
+    ["Core Scientific, Inc./tx", "Core Scientific, Inc."],
+    ["GENMAB A/S", "Genmab A/S"],
+    ["Siemens Energy AG/ADR", "Siemens Energy AG/ADR"],
   ])("%s → %s", (title, expected) => {
     expect(displayName(title)).toBe(expected);
   });

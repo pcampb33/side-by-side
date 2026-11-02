@@ -157,7 +157,7 @@ Model-graded checks ("does this answer the lens?") only after real output has be
 - **R2, XBRL tag variance.** The normalization layer is the real work. Test on AAPL, MSFT, NVDA, KO, F, JPM before any UI.
 - **R3, 10-K extraction.** Large filings exceed 100k tokens (Haiku's higher price tier above 100k); still about a cent per filing. Quote verification is mandatory.
 - **R4, Vercel function duration.** A streamed generation runs 20-40s; confirm the current Hobby max duration and set `maxDuration` on the route. *2026-10-31:* Vercel's docs (updated 2026-08-24) give Hobby with Fluid compute (default) 300s default and max. Measured: freeform 88-97s, uncached text lens 49-71s. Set `maxDuration = 300` and stream a heartbeat while the model works (HTTP/1.1 clients may close idle connections).
-- **R5, Spend-limit floor.** Confirm the Anthropic console accepts a ~$6 workspace limit.
+- **R5, Spend-limit floor.** Confirm the Anthropic console accepts a ~$6 workspace limit. *2026-11-02:* it does: workspace `side-by-side` has a $6 monthly limit (the org's $200 still applies above it).  The deployed key now lives in that workspace.
 - **R6, Cost estimates are unmeasured** (~$0.15-0.40 per Opus comparison; Sonnet, chosen at step 8, is half the price per token and writes fewer tokens). The eval run records real usage; revisit the budget after it.
 
 ## 10. Build order (each step done only when its check passes)

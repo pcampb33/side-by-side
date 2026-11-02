@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { Component } from "@/agent/catalog";
 import type { CompanyInput } from "@/agent/prompt";
 import { formatTick, formatValue } from "@/lib/format";
@@ -233,15 +234,32 @@ function CostBreakdown({ year, companies }: { year: Year; companies: CompanyInpu
 }
 
 function Takeaways({ items }: { items: string[] }) {
+  // The card rises, then each line a beat apart, so the eye reads them in order;
+  // held until it scrolls into view (on a saved page it mounts below the fold).
+  const ref = useRef<HTMLElement>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setSeen(true);
+      observer.disconnect();
+    }, { threshold: 0.25 });
+    observer.observe(ref.current!);
+    return () => observer.disconnect();
+  }, []);
   return (
-    <article className="card pop-in p-5 @xl:p-6">
+    <article ref={ref} className="takeaways card rise-in p-5 @xl:p-6" data-seen={seen || undefined}>
       <h3 className="font-display text-xl font-semibold tracking-tight">Key differences</h3>
       <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed marker:text-muted">
-        {items.map((item) => (
-          <li key={item}>{item}</li>
+        {items.map((item, i) => (
+          <li key={item} className="rise-in" style={{ animationDelay: `${180 + i * 110}ms` }}>
+            {item}
+          </li>
         ))}
       </ul>
-      <p className="mt-4 text-xs text-muted">Written by Claude from the comparison above. Neutral differences, not a recommendation.</p>
+      <p className="rise-in mt-4 text-xs text-muted" style={{ animationDelay: `${380 + items.length * 110}ms` }}>
+        Written by Claude from the comparison above. Neutral differences, not a recommendation.
+      </p>
     </article>
   );
 }

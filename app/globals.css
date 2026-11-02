@@ -109,6 +109,9 @@ body {
 .card { background: var(--surface); border-radius: 1rem; box-shadow: var(--shadow); }
 @keyframes pop-in { from { opacity: 0; transform: scale(0.96) translateY(8px); } }
 .pop-in { animation: pop-in var(--dur-slow) var(--ease-out) backwards; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } }
+.rise-in { animation: rise-in var(--dur-slow) var(--ease-out) backwards; }
+.takeaways:not([data-seen]), .takeaways:not([data-seen]) .rise-in { animation-play-state: paused; }
 
 /* Text lenses (text-tiles.tsx): each company's 10-K is an outlined panel, the
    two offset so they visibly cross; subjects both name sit where they cross. */
@@ -330,7 +333,7 @@ details[open]::details-content { height: auto; transition-duration: var(--dur-ba
 @media (prefers-reduced-motion: reduce) {
   .mode-thumb, .theme-thumb, .freeform, .toast, .compact-bar, details::details-content { transition: none; }
   .table-view[open] tbody tr { animation: none; }
-  .venn-panel, .venn-chip, .venn-tab, .pop-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
+  .venn-panel, .venn-chip, .venn-tab, .pop-in, .rise-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .venn-chip:hover, .venn-tab:hover { transform: none; }
   .featured-in { animation: none; }
   .featured-card, .featured-arrow { transition: none; }

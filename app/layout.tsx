@@ -53,6 +53,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <Link href="/privacy" className="text-accent hover:underline">
                   Privacy details
                 </Link>
+                {" · "}
+                <Link href="/terms" className="text-accent hover:underline">
+                  Terms
+                </Link>
               </p>
             )}
           </div>

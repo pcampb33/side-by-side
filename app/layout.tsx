@@ -49,7 +49,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {signInOn && (
               <p>
                 Privacy: signing in gives this site your Google email. Each new comparison is logged with your email, IP address, the
-                companies compared and its cost, kept 14 days to enforce the limits. Nothing else is stored about you.
+                companies compared and its cost, kept 14 days to enforce the limits. Nothing else is stored about you.{" "}
+                <Link href="/privacy" className="text-accent hover:underline">
+                  Privacy details
+                </Link>
               </p>
             )}
           </div>

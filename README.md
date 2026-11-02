@@ -3,6 +3,8 @@
 Pick two US public companies and a lens; Claude builds the comparison from their SEC filings. Every number on the
 page links to the filing it came from.
 
+**Live:** https://side-by-side-jet.vercel.app
+
 ![A live generation: pick two companies and a lens, then watch Claude build the page and the panel record each step](docs/demo.gif)
 
 - **Five lenses:** Profitability, Growth, Balance-sheet risk, Risk exposure, Where they compete.
@@ -45,7 +47,8 @@ shows this run's numbers for each:
 Below the steps, the panel holds everything Claude was given and followed for that page: the lens brief, the
 components offered and excluded, the rules each call is checked against, the design tokens (and the kit pieces a
 freeform page used), the full trace with timings and token counts, and the exact prompt as sent. Each trace is
-recorded at generation time and stored with the result; `/compare/<pair>/<lens>/process` opens it as its own page.
+recorded at generation time and stored with the result; `/compare/<pair>/<lens>/process` opens it as its own page
+([AAPL vs MSFT, risk exposure](https://side-by-side-jet.vercel.app/compare/AAPL-vs-MSFT/risk-exposure/process)).
 <br clear="right">
 
 ## How it works

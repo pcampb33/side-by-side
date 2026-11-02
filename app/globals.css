@@ -300,6 +300,9 @@ details[open]::details-content { height: auto; transition-duration: var(--dur-ba
 .process-full, .process-rail { transition: opacity var(--dur-base) var(--ease-out) var(--dur-fast), visibility 0s; }
 .process-aside[data-rail] .process-full, .process-aside:not([data-rail]) .process-rail { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity var(--dur-fast) var(--ease-out), visibility 0s var(--dur-fast); }
 .process-full { width: clamp(300px, calc(29.4vw - 23px), 420px); }
+/* Both cards in one cell, pinned right: the aside gets the panel's height, so a short page's footer clears it. */
+.process-stack { display: grid; grid-template-columns: max-content; justify-content: end; align-items: start; }
+.process-stack > * { grid-area: 1 / 1; justify-self: end; }
 /* Comparison pages widen (with the header and footer) to fit the panel. */
 @media (min-width: 1100px) {
   body:has(main[data-wide]) .site-width { max-width: 90rem; }

@@ -61,15 +61,15 @@ export function ProcessAside() {
 
   return (
     <aside className="process-aside sticky top-4 hidden self-start min-[1100px]:block" data-rail={rail || undefined} aria-label="How Claude built this">
-      <div className="relative">
-        <div className="process-full card absolute top-0 right-0 flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden" inert={rail}>
+      <div className="process-stack">
+        <div className="process-full card flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden" inert={rail}>
           {/* Kept mounted under a subject, so its expanded steps and live follow survive. */}
           <div className={`${theme ? "hidden" : "flex"} theme-in min-h-0 flex-1 flex-col`}>
             {input && <ProcessPanel key={expandAt.n} input={input} variant="aside" focus={expandAt.step} onCollapse={() => saveRail(true)} />}
           </div>
           {theme && <ThemeView key={theme.key} theme={theme} onClose={() => setTheme(null)} />}
         </div>
-        <div className="process-rail card absolute top-0 right-0 w-14" inert={!rail}>
+        <div className="process-rail card w-14" inert={!rail}>
           {input && (
             <ProcessRail
               input={input}

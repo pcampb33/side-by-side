@@ -14,6 +14,7 @@ import { BlockedPanel } from "./blocked-panel";
 import { fullWidth, loadingCardFull } from "./chart-pairs";
 import { FreeformFrame } from "./freeform-frame";
 import { useProcess } from "./process-context";
+import { processSteps, type ProcessInput, type StepId } from "./process-model";
 import { HeadlineStrip } from "./headline-strip";
 import { Info } from "./popover";
 import { snapshotPills, type PillSnapshot } from "./morph";
@@ -194,10 +195,16 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
   const stage = useRef<HTMLElement>(null);
   const pills = useRef<PillSnapshot[] | null>(null);
   const { setInput } = useProcess();
+  const timing = useRef<{ startedAt: number; doneAt: Partial<Record<StepId, number>> }>({ startedAt: 0, doneAt: {} });
+
+  // A new run's clock starts (declared first, so the effect below never reads the old one).
+  useEffect(() => {
+    timing.current = { startedAt: Date.now(), doneAt: {} };
+  }, [pair, lens, mode, run]);
 
   // The process panel, strip and overlay show this run as it happens.
   useEffect(() => {
-    setInput({
+    const input: ProcessInput = {
       lens: lens as LensSlug,
       mode,
       status: state.status,
@@ -206,7 +213,11 @@ function Stream({ pair, lens, mode }: { pair: string; lens: string; mode: Mode }
       shown: state.html ? 1 : state.components.length,
       calls: state.calls,
       trace: state.trace,
-    });
+    };
+    // Each step's finish, timed here (the panel may mount mid-run); a saved result has no live timing.
+    const { startedAt, doneAt } = timing.current;
+    for (const step of processSteps(input)) if (step.state === "done" && doneAt[step.id] === undefined) doneAt[step.id] = Date.now() - startedAt;
+    setInput({ ...input, timing: state.cached ? null : { startedAt, doneAt: { ...doneAt } } });
   }, [state, lens, mode, setInput]);
 
   useEffect(() => {

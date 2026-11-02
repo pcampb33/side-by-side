@@ -21,9 +21,28 @@ const MODEL_NAMES: Record<string, string> = { "claude-sonnet-5-5": "Claude Sonne
 const seconds = (ms: number) => `${(ms / 1000).toFixed(ms < 10_000 ? 1 : 0)} s`;
 const kilo = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n));
 
+const tokens = (trace: Trace) =>
+  trace.backend === "api" ? `${kilo(trace.usage.inputTokens)} in / ${kilo(trace.usage.outputTokens)} out` : "local login run (token counts come with the API key)";
+
 export function runSummary(trace: Trace): string {
-  const tokens = trace.backend === "api" ? `${kilo(trace.usage.inputTokens)} in / ${kilo(trace.usage.outputTokens)} out` : "local login run (token counts come with the API key)";
-  return `${MODEL_NAMES[trace.model] ?? trace.model} · ${seconds(trace.ms.composing)} · ${tokens}`;
+  return `${MODEL_NAMES[trace.model] ?? trace.model} · ${seconds(trace.ms.composing)} · ${tokens(trace)}`;
+}
+
+// The run's clock while it generates.
+function Elapsed({ since }: { since: number }) {
+  const [now, setNow] = useState(since);
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 100);
+    return () => clearInterval(timer);
+  }, []);
+  return <span className="tabular-nums">{seconds(Math.max(0, now - since))}</span>;
+}
+
+// How long a step took in a watched run: from the previous step's finish to its own.
+function stepTime(doneAt: Partial<Record<StepId, number>>, id: StepId): number | undefined {
+  const at = doneAt[id];
+  if (at === undefined) return undefined;
+  return at - Math.max(0, ...Object.values(doneAt).filter((t) => t < at));
 }
 
 export function CheckIcon({ className = "size-3.5" }: { className?: string }) {
@@ -104,13 +123,18 @@ export function ProcessPanel({
   };
 
   const trace = input.trace;
+  const timing = input.timing;
   const meta = live
-    ? `Generating now · ${MODEL_NAMES["claude-sonnet-5-5"]}`
-    : trace
-      ? `${input.mode === "freeform" ? "Freeform" : "Components"} · ${runSummary(trace)}`
-      : input.status === "done"
-        ? "Saved before runs were recorded: the general steps, with this page's data."
-        : "";
+    ? timing
+      ? <>Generating · <Elapsed since={timing.startedAt} /> · {MODEL_NAMES["claude-sonnet-5-5"]}</>
+      : `Generating now · ${MODEL_NAMES["claude-sonnet-5-5"]}`
+    : trace && timing
+      ? `Done in ${seconds(Math.max(0, ...Object.values(timing.doneAt)))} · ${MODEL_NAMES[trace.model] ?? trace.model} · ${tokens(trace)}`
+      : trace
+        ? `${input.mode === "freeform" ? "Freeform" : "Components"} · ${runSummary(trace)}`
+        : input.status === "done"
+          ? "Saved before runs were recorded: the general steps, with this page's data."
+          : "";
 
   return (
     <div
@@ -168,6 +192,7 @@ export function ProcessPanel({
                     ) : (
                       step.count
                     )}
+                    {timing && stepTime(timing.doneAt, step.id) !== undefined && <span className="tabular-nums"> · {seconds(stepTime(timing.doneAt, step.id)!)}</span>}
                   </small>
                 </span>
                 <span aria-hidden className="step-chevron text-lg leading-none text-muted">

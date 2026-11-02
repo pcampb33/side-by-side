@@ -25,6 +25,8 @@ export interface ProcessInput {
   shown: number; // components (or the page) on screen
   calls: TraceCall[]; // live, before the trace arrives
   trace: Trace | null;
+  // A run watched live: when it started (epoch ms) and how far in each step finished.
+  timing?: { startedAt: number; doneAt: Partial<Record<StepId, number>> } | null;
 }
 
 export interface StepView {

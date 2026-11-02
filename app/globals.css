@@ -184,6 +184,11 @@ body {
 .sheet[data-closing] { animation: sheet-down var(--dur-fast) ease-in forwards; }
 .sheet::backdrop { background: rgb(0 0 0 / 0.38); animation: fade-in var(--dur-base) var(--ease-out); }
 .sheet[data-closing]::backdrop { animation: fade-in var(--dur-fast) ease-in reverse forwards; }
+/* Dragged by its top on phones: follows the finger, the backdrop fading with it; springs back when let go short. */
+.sheet:not([data-dragging]) { transition: transform var(--dur-base) var(--ease-spring); }
+.sheet::backdrop { opacity: calc(1 - var(--sheet-drag, 0)); transition: opacity var(--dur-base) var(--ease-out); }
+.sheet[data-dragging]::backdrop { transition: none; }
+@media (width < 640px) { .sheet-grip { touch-action: none; cursor: grab; } }
 @keyframes sheet-up { from { transform: translateY(100%); } }
 @keyframes sheet-down { to { transform: translateY(100%); } }
 /* Wider than a phone: a dialog centered in the window, easing in and out. */
@@ -331,7 +336,7 @@ details[open]::details-content { height: auto; transition-duration: var(--dur-ba
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mode-thumb, .theme-thumb, .freeform, .toast, .compact-bar, details::details-content { transition: none; }
+  .mode-thumb, .theme-thumb, .freeform, .toast, .compact-bar, details::details-content, .sheet:not([data-dragging]) { transition: none; }
   .table-view[open] tbody tr { animation: none; }
   .venn-panel, .venn-chip, .venn-tab, .pop-in, .rise-in, .pill-in, .shimmer, .sheet[open], .sheet[data-closing], .sheet::backdrop { animation: none; transition: none; }
   .venn-chip:hover, .venn-tab:hover { transform: none; }

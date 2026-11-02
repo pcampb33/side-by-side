@@ -233,6 +233,40 @@ function Sheet({ content, onClosed }: { content: ThemeContent; onClosed: () => v
     d.addEventListener("animationend", done, { once: true });
     setTimeout(done, 300);
   };
+
+  // Phones: the top of the sheet follows a finger down; a long pull or a flick
+  // closes it (the slide-down starts from where it is), a short one springs back.
+  const drag = useRef<{ startY: number; lastY: number; lastT: number; v: number } | null>(null);
+  const grab = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!matchMedia("(width < 640px)").matches || (e.target as HTMLElement).closest("button")) return;
+    drag.current = { startY: e.clientY, lastY: e.clientY, lastT: e.timeStamp, v: 0 };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    ref.current!.dataset.dragging = "";
+  };
+  const follow = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = drag.current;
+    if (!g) return;
+    g.v = (e.clientY - g.lastY) / Math.max(1, e.timeStamp - g.lastT);
+    g.lastY = e.clientY;
+    g.lastT = e.timeStamp;
+    const d = ref.current!;
+    const dy = e.clientY - g.startY;
+    const y = dy > 0 ? dy : dy / 4; // upward: resists
+    d.style.transform = `translateY(${y}px)`;
+    d.style.setProperty("--sheet-drag", String(Math.max(0, y) / d.offsetHeight));
+  };
+  const release = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = drag.current;
+    if (!g) return;
+    drag.current = null;
+    const d = ref.current!;
+    delete d.dataset.dragging;
+    const flick = e.timeStamp - g.lastT < 100 && g.v > 0.6; // px/ms, still moving when let go
+    if (e.type === "pointerup" && (e.clientY - g.startY > d.offsetHeight * 0.3 || flick)) return close();
+    d.style.transform = "";
+    d.style.setProperty("--sheet-drag", "0");
+  };
+
   const { Icon } = content;
   return (
     <dialog
@@ -247,17 +281,19 @@ function Sheet({ content, onClosed }: { content: ThemeContent; onClosed: () => v
       onClick={(e) => e.target === ref.current && close()}
     >
       <div className="px-5 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] sm:px-6">
-        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-rule sm:invisible" />
-        <div className="flex items-center justify-between gap-3">
-          <h3 id="sheet-title" className="flex items-center gap-2.5 font-display text-xl font-semibold tracking-tight">
-            {Icon && <Icon aria-hidden size={22} strokeWidth={1.75} className="shrink-0 text-muted" />}
-            {content.title}
-          </h3>
-          <button type="button" onClick={close} aria-label="Close" className="grid size-11 shrink-0 place-items-center rounded-full bg-paper hover:bg-rule">
-            <svg viewBox="0 0 16 16" aria-hidden className="size-4">
-              <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          </button>
+        <div className="sheet-grip -mx-5 -mt-2 px-5 pt-2 pb-1" onPointerDown={grab} onPointerMove={follow} onPointerUp={release} onPointerCancel={release}>
+          <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-rule sm:invisible" />
+          <div className="flex items-center justify-between gap-3">
+            <h3 id="sheet-title" className="flex items-center gap-2.5 font-display text-xl font-semibold tracking-tight">
+              {Icon && <Icon aria-hidden size={22} strokeWidth={1.75} className="shrink-0 text-muted" />}
+              {content.title}
+            </h3>
+            <button type="button" onClick={close} aria-label="Close" className="grid size-11 shrink-0 place-items-center rounded-full bg-paper hover:bg-rule">
+              <svg viewBox="0 0 16 16" aria-hidden className="size-4">
+                <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
         </div>
         <ThemeBody content={content} />
       </div>

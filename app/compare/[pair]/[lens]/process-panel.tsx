@@ -126,7 +126,7 @@ export function ProcessPanel({
   const timing = input.timing;
   const meta = live
     ? timing
-      ? <>Generating · <Elapsed since={timing.startedAt} /> · {MODEL_NAMES["claude-sonnet-5-5"]}</>
+      ? <>Generating · <Elapsed since={timing.startedAt} /> · <span className="whitespace-nowrap">{MODEL_NAMES["claude-sonnet-5-5"]}</span></>
       : `Generating now · ${MODEL_NAMES["claude-sonnet-5-5"]}`
     : trace && timing
       ? `Done in ${seconds(Math.max(0, ...Object.values(timing.doneAt)))} · ${MODEL_NAMES[trace.model] ?? trace.model} · ${tokens(trace)}`

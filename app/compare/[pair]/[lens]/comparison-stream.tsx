@@ -8,7 +8,8 @@ import type { LensSlug } from "@/lib/lenses";
 import type { CompanyInput } from "@/agent/prompt";
 import type { Trace, TraceCall } from "@/agent/trace";
 import type { CompareEvent } from "@/lib/compare";
-import { parseMode, type Mode } from "@/lib/compare-url";
+import { parseMode, parsePair, type Mode } from "@/lib/compare-url";
+import { findLens } from "@/lib/lenses";
 import { BlockedPanel } from "./blocked-panel";
 import { fullWidth, loadingCardFull } from "./chart-pairs";
 import { FreeformFrame } from "./freeform-frame";
@@ -89,16 +90,44 @@ export function ComparisonStream({ pair, lens }: { pair: string; lens: string })
       window.history.pushState(null, "", url);
     });
   };
+  const toggleRow = useRef<HTMLDivElement>(null);
   return (
     <>
-      <div className="mt-8 flex flex-wrap-reverse items-center justify-end gap-x-6 gap-y-3">
+      <div ref={toggleRow} className="mt-8 flex scroll-mt-4 flex-wrap-reverse items-center justify-end gap-x-6 gap-y-3">
         <ModeNote key={mode} mode={mode} />
         <ModeSwitch mode={mode} onChange={choose} />
       </div>
+      <CompactHeader pair={pair} lens={lens} toggleRow={toggleRow}>
+        {/* Back to the toggle first: the new mode starts there (and would otherwise load short and clamp the scroll). */}
+        <ModeSwitch compact mode={mode} onChange={(next) => (toggleRow.current!.scrollIntoView({ block: "start" }), choose(next))} />
+      </CompactHeader>
       <ViewTransition key={mode} enter={MODE_SLIDE.enter} exit={MODE_SLIDE.exit} default="none">
         <Stream pair={pair} lens={lens} mode={mode} />
       </ViewTransition>
     </>
+  );
+}
+
+// Once the mode toggle scrolls away, the title and the toggle slide down in a bar
+// that stays at the top of the comparison's column (so never over the panel).
+function CompactHeader({ pair, lens, toggleRow, children }: { pair: string; lens: string; toggleRow: React.RefObject<HTMLDivElement | null>; children: React.ReactNode }) {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setOn(!entry.isIntersecting && entry.boundingClientRect.top < 0));
+    observer.observe(toggleRow.current!);
+    return () => observer.disconnect();
+  }, [toggleRow]);
+  const tickers = parsePair(pair);
+  return (
+    <div className="sticky top-0 z-30 h-0">
+      <div className="compact-bar card" data-on={on || undefined} inert={!on}>
+        <span className="min-w-0 truncate font-display font-semibold tracking-tight">
+          {tickers?.[0]} <span className="text-muted">vs</span> {tickers?.[1]}
+          <span className="hidden font-normal text-muted sm:inline"> · {findLens(lens)?.label}</span>
+        </span>
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -134,13 +163,14 @@ function ModeNote({ mode }: { mode: Mode }) {
   );
 }
 
-function ModeSwitch({ mode, onChange }: { mode: Mode; onChange: (mode: Mode) => void }) {
+// `compact`: the smaller one in the compact header, which never shrinks.
+function ModeSwitch({ mode, onChange, compact = false }: { mode: Mode; onChange: (mode: Mode) => void; compact?: boolean }) {
   const modes = [
     { mode: "components", label: "Components" },
     { mode: "freeform", label: "Freeform" },
   ] as const;
   return (
-    <div role="radiogroup" aria-label="How Claude builds the comparison" className="mode-switch relative grid grid-cols-2 rounded-full border border-rule bg-surface p-1 text-sm">
+    <div role="radiogroup" aria-label="How Claude builds the comparison" className={`mode-switch relative grid grid-cols-2 rounded-full border border-rule bg-surface p-1 ${compact ? "flex-none text-xs" : "text-sm"}`}>
       <span aria-hidden className="mode-thumb absolute inset-y-1 left-1 rounded-full bg-ink" data-second={mode === "freeform" || undefined} />
       {modes.map((m) => (
         <button
@@ -149,7 +179,7 @@ function ModeSwitch({ mode, onChange }: { mode: Mode; onChange: (mode: Mode) => 
           role="radio"
           aria-checked={mode === m.mode}
           onClick={() => mode !== m.mode && onChange(m.mode)}
-          className={`relative z-10 rounded-full px-4 py-1.5 transition-colors duration-(--dur-base) ${mode === m.mode ? "text-paper" : "text-muted hover:text-ink"}`}
+          className={`relative z-10 rounded-full ${compact ? "px-3 py-1" : "px-4 py-1.5"} transition-colors duration-(--dur-base) ${mode === m.mode ? "text-paper" : "text-muted hover:text-ink"}`}
         >
           {m.label}
         </button>

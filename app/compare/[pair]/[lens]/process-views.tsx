@@ -121,7 +121,8 @@ export function ProcessStrip() {
   // The comparison reads ?mode= from the URL: keeping it keeps the run going.
   const query = useSearchParams().toString();
   if (!input) return null;
-  const href = `${pathname}/process${query ? `?${query}` : ""}`;
+  // Still mounted under the open overlay, where the path already ends in /process.
+  const href = `${pathname.replace(/\/process$/, "")}/process${query ? `?${query}` : ""}`;
   return (
     <nav aria-label="How Claude built this" className="process-strip card mt-6 flex items-center gap-1 overflow-x-auto p-2 min-[1100px]:hidden">
       <span className="px-2 text-xs font-semibold whitespace-nowrap text-muted">How Claude built this</span>

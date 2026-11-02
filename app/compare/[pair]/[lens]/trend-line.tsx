@@ -92,11 +92,13 @@ export function TrendLine({ metric, companies }: { metric: ValueKey; companies: 
             role="img"
             aria-label={`${valueDef(metric).label} by fiscal year; values in the table below`}
             tabIndex={0}
-            className="block touch-pan-y outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            // No text selection or callout on a long press; a lifted finger keeps the year (a tap
+            // elsewhere blurs and clears it); only keyboard focus jumps to the latest year.
+            className="block touch-pan-y select-none outline-none [-webkit-touch-callout:none] focus-visible:ring-2 focus-visible:ring-accent"
             onPointerMove={(e) => pick(e.clientX, e.currentTarget.getBoundingClientRect())}
             onPointerDown={(e) => pick(e.clientX, e.currentTarget.getBoundingClientRect())}
-            onPointerLeave={() => setActive(null)}
-            onFocus={() => setActive(years.length - 1)}
+            onPointerLeave={(e) => e.pointerType !== "touch" && setActive(null)}
+            onFocus={(e) => e.currentTarget.matches(":focus-visible") && setActive(years.length - 1)}
             onBlur={() => setActive(null)}
             onKeyDown={(e) => {
               if (e.key === "ArrowLeft") setActive(Math.max(0, (active ?? 0) - 1));

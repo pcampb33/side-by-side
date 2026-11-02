@@ -146,7 +146,7 @@ const KIT_CSS = `
 :where(.kit-js .kit-card:not(.kit-seen)){opacity:0}
 :where(.kit-js .kit-card.kit-seen){animation:kit-pop .56s cubic-bezier(.34,1.56,.64,1) backwards}
 :where(.kit-chart){position:relative;min-width:0}
-:where(.kit-chart) svg{display:block;overflow:visible;touch-action:pan-y;outline:none}
+:where(.kit-chart) svg{display:block;overflow:visible;touch-action:pan-y;outline:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 :where(.kit-chart) svg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 :where(.kit-chart) text{font:11px var(--font-sans);fill:var(--muted);font-variant-numeric:tabular-nums}
 :where(.kit-legend){display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
@@ -258,8 +258,9 @@ function chart(target,spec){
     };
     var pick=function(e){var r=s.getBoundingClientRect(),rel=e.clientX-r.left-M.l;go(Math.max(0,Math.min(k-1,line?Math.round(rel/iw*(k-1)):Math.floor(rel/band))))};
     s.addEventListener("pointermove",pick);s.addEventListener("pointerdown",pick);
-    s.addEventListener("pointerleave",function(){go(null)});s.addEventListener("blur",function(){go(null)});
-    s.addEventListener("focus",function(){go(k-1)});
+    // A lifted finger keeps the year (a tap elsewhere blurs and clears it); only keyboard focus jumps to the latest.
+    s.addEventListener("pointerleave",function(e){if(e.pointerType!=="touch")go(null)});s.addEventListener("blur",function(){go(null)});
+    s.addEventListener("focus",function(){if(s.matches(":focus-visible"))go(k-1)});
     s.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")go(Math.max(0,(active==null?0:active)-1));if(e.key==="ArrowRight")go(Math.min(k-1,(active==null?0:active)+1))});
   }
   draw();new ResizeObserver(function(){draw()}).observe(box);

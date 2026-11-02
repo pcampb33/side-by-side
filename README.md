@@ -104,10 +104,12 @@ comparisons per account per day, and a monthly budget tracked as actual token sp
 
 1. **Anthropic:** in the Console, create a workspace for this app, set its monthly spend limit a little above your
    budget (e.g. $6 for $5), and create an API key in it.
-2. **Upstash:** create a Redis database; copy its REST URL and token.
+2. **Upstash:** create a Redis database; copy its REST URL and token. (Added through the Vercel marketplace, it
+   injects them as `KV_REST_API_URL`/`_TOKEN`; set the `UPSTASH_REDIS_REST_*` names below as well.)
 3. **Google:** in Google Cloud → APIs & Services, set up the OAuth consent screen (email and profile scopes) and
    create an OAuth client ID of type *Web application* with the redirect URI
-   `https://<your-domain>/api/auth/callback/google`.
+   `https://<your-domain>/api/auth/callback/google`. Until the app is published, only listed test users can sign
+   in; publishing asks for home, privacy and terms links on the Branding page (`/`, `/privacy`, `/terms`).
 4. **Vercel:** import the repo, set the variables below, deploy. Generation routes run up to 300 seconds.
 
 | Variable | Needed | Purpose |

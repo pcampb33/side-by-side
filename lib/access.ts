@@ -66,6 +66,15 @@ export function accessGate(opts: {
     ran = true;
   }
 
+  async function charge(model: ModelId, usage: Usage) {
+    const cost = costUsd(model, usage);
+    totals.inputTokens += usage.inputTokens;
+    totals.outputTokens += usage.outputTokens;
+    totals.costUsd += cost;
+    await store.incrbyfloat(spendKey, cost);
+    await store.expire(spendKey, 62 * DAY);
+  }
+
   return {
     wrap(backend: Backend): Backend {
       return async (run) => {
@@ -74,14 +83,15 @@ export function accessGate(opts: {
         // A text lens reads two annual reports at once: one count per request.
         started ??= start();
         await started;
-        const usage = await backend(run);
-        const cost = costUsd(run.model, usage);
-        totals.inputTokens += usage.inputTokens;
-        totals.outputTokens += usage.outputTokens;
-        totals.costUsd += cost;
-        await store.incrbyfloat(spendKey, cost);
-        await store.expire(spendKey, 62 * DAY);
-        return usage;
+        try {
+          const usage = await backend(run);
+          await charge(run.model, usage);
+          return usage;
+        } catch (err) {
+          // A failed or cancelled run is billed for what it had used.
+          if (err instanceof ComparisonError && err.usage) await charge(run.model, err.usage);
+          throw err;
+        }
       };
     },
     // One entry per request that ran Claude, kept 14 days.

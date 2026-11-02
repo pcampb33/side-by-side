@@ -160,6 +160,40 @@ describe("apiBackend (mock model)", () => {
     const model = new MockLanguageModelV3({ doStream: [step(finish("content-filter"))] });
     await expect(generateComparison({ lens: "growth", companies, backend: apiBackend(model), signal, onComponent: () => {} })).rejects.toThrow(/declined/);
   });
+
+  it("reports the tokens used before a run failed: finished steps, plus the step in flight", async () => {
+    const model = new MockLanguageModelV3({
+      doStream: [
+        step(toolCall("1", "trend_line", { title: "Revenue", key: "revenue" }), finish("tool-calls")),
+        step(
+          { type: "raw", rawValue: { type: "message_start", message: { usage: { input_tokens: 150 } } } },
+          { type: "tool-input-start", id: "2", toolName: "takeaways" },
+          { type: "tool-input-delta", id: "2", delta: "x".repeat(30) },
+          { type: "error", error: new Error("Overloaded") },
+        ),
+      ],
+    });
+    const err = await apiBackend(model)({ model: "claude-sonnet-5-5", system: "", user: "", tools: componentTools("growth", companies, () => {}), signal }).catch((e) => e);
+    expect(err).toBeInstanceOf(ComparisonError);
+    expect(err.message).toMatch(/Overloaded/);
+    expect(err.usage).toEqual({ inputTokens: 250, outputTokens: 20 });
+  });
+
+  it("reports the tokens used before the visitor left", async () => {
+    const abort = new AbortController();
+    const chunks: LanguageModelV3StreamPart[] = [
+      { type: "raw", rawValue: { type: "message_start", message: { usage: { input_tokens: 150 } } } },
+      ...text("x".repeat(30)),
+      ...text("never sent"),
+      finish("stop"),
+    ];
+    // A chunk every 100 ms; the visitor leaves between the first text block's delta and its end.
+    const model = new MockLanguageModelV3({ doStream: [{ stream: simulateReadableStream({ chunks, chunkDelayInMs: 100 }) }] });
+    setTimeout(() => abort.abort(), 250);
+    const err = await apiBackend(model)({ model: "claude-sonnet-5-5", system: "", user: "", tools: [], signal: abort.signal }).catch((e) => e);
+    expect(err.message).toMatch(/cancelled/);
+    expect(err.usage).toEqual({ inputTokens: 150, outputTokens: 10 });
+  });
 });
 
 describe("generateComparison's trace", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Backend } from "../agent/run.ts";
+import { ComparisonError, type Backend } from "../agent/run.ts";
 import { accessGate, Blocked, costUsd, DAILY_LIMIT, type Store } from "./access.ts";
 
 // The four Redis commands the gate uses, in memory, with TTLs recorded.
@@ -109,6 +109,19 @@ describe("accessGate", () => {
     abort.abort();
     await expect(gate(store, "visitor@example.com").wrap(sonnet)({ ...run(), signal: abort.signal })).rejects.toThrow("cancelled");
     expect(data.size).toBe(0);
+  });
+
+  it("charges the tokens a failed or cancelled run had already used", async () => {
+    const { store, data } = memoryStore();
+    const g = gate(store, "visitor@example.com");
+    const cancelled: Backend = async () => {
+      throw new ComparisonError("The request was cancelled.", { inputTokens: 100_000, outputTokens: 10_000 });
+    };
+    await expect(g.wrap(cancelled)(run())).rejects.toThrow("cancelled");
+    await g.log();
+    expect(data.get("spend:2026-11")).toBeCloseTo(0.3);
+    const [key] = [...data.keys()].filter((k) => k.startsWith("log:"));
+    expect(data.get(key)).toMatchObject({ inputTokens: 100_000, outputTokens: 10_000 });
   });
 
   it("logs each request that ran Claude for 14 days, and nothing else", async () => {

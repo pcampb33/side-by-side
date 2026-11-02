@@ -29,7 +29,14 @@ export type ModelId = "claude-opus-5-5" | "claude-sonnet-5-5" | "claude-haiku-5-
 // refusal, the step limit or an API failure, and returns token usage.
 export type Backend = (run: { model: ModelId; system: string; user: string; tools: ToolSpec[]; signal: AbortSignal }) => Promise<Usage>;
 
-export class ComparisonError extends Error {}
+export class ComparisonError extends Error {
+  // Tokens a failed run had already used: billed all the same.
+  usage?: Usage;
+  constructor(message: string, usage?: Usage) {
+    super(message);
+    this.usage = usage;
+  }
+}
 
 export const MAX_STEPS = 12;
 

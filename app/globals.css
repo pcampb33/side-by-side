@@ -224,6 +224,20 @@ body {
 .featured-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgb(25 28 40 / 0.06), 0 14px 34px rgb(25 28 40 / 0.12); }
 .featured-arrow { transition: transform var(--dur-base) var(--ease-out); }
 .featured-card:hover .featured-arrow { transform: translateX(4px); }
+/* Home sparklines: both lines draw in when the card first scrolls into view, then the area and end dots. */
+.spark { flex: none; }
+.spark-plot { display: block; width: 100%; height: 3.5rem; overflow: visible; }
+@media (width >= 40rem) { .spark-wide { width: 36%; align-self: center; } .spark-wide .spark-plot { height: 6rem; } }
+.spark-cap { margin-top: 2px; font-size: 0.75rem; color: var(--muted); text-align: right; }
+.spark-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.spark-area { opacity: 0; }
+.spark-end { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.spark[data-drawn] .spark-line { animation: spark-draw var(--dur-slow) var(--ease-out) calc(var(--spark-delay) + var(--j) * 120ms) forwards; }
+.spark[data-drawn] .spark-area { animation: spark-area var(--dur-base) var(--ease-out) calc(var(--spark-delay) + 500ms) forwards; }
+.spark[data-drawn] .spark-end { animation: spark-end var(--dur-base) var(--ease-spring) calc(var(--spark-delay) + 500ms + var(--j) * 120ms) forwards; }
+@keyframes spark-draw { to { stroke-dashoffset: 0; } }
+@keyframes spark-area { to { opacity: 0.1; } }
+@keyframes spark-end { from { opacity: 1; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
 
 /* How Claude built this (SPEC 4a): steps, live states, accordion, rail, overlay. */
 .step-dot { position: relative; z-index: 1; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--surface); color: var(--muted); font-family: var(--font-mono, ui-monospace, monospace); font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--rule); transition: box-shadow var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
@@ -308,6 +322,10 @@ body {
   .featured-in { animation: none; }
   .featured-card, .featured-arrow { transition: none; }
   .featured-card:hover, .featured-card:hover .featured-arrow { transform: none; }
+  .spark .spark-line { stroke-dashoffset: 0; }
+  .spark .spark-area { opacity: 0.1; }
+  .spark .spark-end { opacity: 1; }
+  .spark[data-drawn] :is(.spark-line, .spark-area, .spark-end) { animation: none; }
   .step-dot, .step-dot::after, .tick-in, .mode-note, .theme-in, .popover-in, .dot-in, .follow-chip, .follow-chip::before, .process-overlay, .process-scrim { animation: none; }
   .step-body, .step-body > div > div, .step-chevron, .process-aside, .process-full, .process-rail, .process-step::before { transition: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0s !important; animation-delay: 0s !important; }

@@ -70,7 +70,7 @@ flowchart LR
 | `lib/filings` | The latest 10-K, condensed once per filing by Claude Haiku 5.5 (business, themed risks with quotes). Every quote is checked against the filing text. |
 | `lib/cache` | One interface: a local `.cache/` folder, or Upstash Redis when deployed. |
 | `agent/` | Lens + mode + data → components or an HTML page. No Next.js imports. [Its README](agent/README.md). |
-| `evals/` | Code checks on real output: every number in prose appears in the data, no `not reported` shown as a value, valid components, self-contained freeform pages. |
+| `evals/` | Code checks on real output: every number in prose appears in the data, no `not reported` shown as a value, valid components, self-contained freeform pages. Optional model-graded checks (Claude Opus) for what code can't judge: does the page answer the lens, do shared rows pair the same subject, does it claim anything beyond the data. |
 | `featured/` | Five comparisons generated ahead of time and committed, so they open with no Claude or SEC calls. |
 | `app/` | Next.js App Router: pages, the streaming `/api/compare` route, sign-in. |
 
@@ -93,8 +93,8 @@ your key, plus Claude Haiku 5.5 once per 10-K the first time a text lens reads i
 | Command | |
 |---|---|
 | `npm run lint && npm run typecheck && npm test` | What CI runs. Never calls Claude or the SEC. |
-| `npm run eval -- [--model sonnet\|opus] [--only <case>]` | Generates the eval cases and scores them (`evals/out/`). Calls Claude. |
-| `npm run featured -- [--only <case>] [--mode freeform]` | Regenerates featured comparisons, keeping only runs that pass every check (`--mode freeform`: only the freeform pages). Review each page by eye before committing it. |
+| `npm run eval -- [--model sonnet\|opus] [--only <case>] [--score-only] [--grade]` | Generates the eval cases and scores them (`evals/out/`). Calls Claude. `--score-only` rescores the saved runs without calling Claude; `--grade` adds the model-graded checks. |
+| `npm run featured -- [--only <case>] [--mode components\|freeform]` | Regenerates featured comparisons, keeping only runs that pass every check (`--mode`: only that mode's pages). Review each page by eye before committing it. |
 | `npm run eval:fixtures` | Rebuilds the eval fixtures from the SEC. |
 
 ## Deploy

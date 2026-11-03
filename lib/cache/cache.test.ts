@@ -33,6 +33,17 @@ describe("fsCache", () => {
     expect(await cache.get("short")).toBeUndefined();
     expect(await cache.get("forever")).toBe(2);
   });
+
+  it("claims a key once, again after delete or expiry", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    const cache = fsCache(dir);
+    expect(await cache.claim("run", 60)).toBe(true);
+    expect(await cache.claim("run", 60)).toBe(false);
+    await cache.delete("run");
+    expect(await cache.claim("run", 60)).toBe(true);
+    vi.setSystemTime(Date.now() + 61_000);
+    expect(await cache.claim("run", 60)).toBe(true);
+  });
 });
 
 describe("upstashCache", () => {
@@ -42,11 +53,19 @@ describe("upstashCache", () => {
       store.set(key, value);
       return "OK" as const;
     });
-    const cache = upstashCache({ get: (async (key: string) => store.get(key) ?? null) as never, set: set as never });
+    const cache = upstashCache({ get: (async (key: string) => store.get(key) ?? null) as never, set: set as never, del: vi.fn() as never });
     expect(await cache.get("k")).toBeUndefined();
     await cache.set("k", { v: 1 }, 30);
     expect(set).toHaveBeenCalledWith("k", { v: 1 }, { ex: 30 });
     expect(await cache.get("k")).toEqual({ v: 1 });
+  });
+
+  it("claims with SET NX EX", async () => {
+    const set = vi.fn().mockResolvedValueOnce("OK").mockResolvedValueOnce(null);
+    const cache = upstashCache({ get: vi.fn() as never, set: set as never, del: vi.fn() as never });
+    expect(await cache.claim("run", 300)).toBe(true);
+    expect(await cache.claim("run", 300)).toBe(false);
+    expect(set).toHaveBeenCalledWith("run", true, { nx: true, ex: 300 });
   });
 });
 
@@ -67,6 +86,12 @@ describe("cached", () => {
         throw new Error("redis unreachable");
       },
       set: async () => {
+        throw new Error("redis unreachable");
+      },
+      claim: async () => {
+        throw new Error("redis unreachable");
+      },
+      delete: async () => {
         throw new Error("redis unreachable");
       },
     };

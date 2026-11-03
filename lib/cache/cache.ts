@@ -7,6 +7,8 @@ import { Redis } from "@upstash/redis";
 export interface CacheBackend {
   get(key: string): Promise<unknown>; // undefined on a miss
   set(key: string, value: unknown, ttlSeconds?: number): Promise<void>;
+  claim(key: string, ttlSeconds: number): Promise<boolean>; // sets the key unless it exists; true if it did
+  delete(key: string): Promise<void>;
 }
 
 export function fsCache(dir: string): CacheBackend {
@@ -30,10 +32,19 @@ export function fsCache(dir: string): CacheBackend {
       await fs.writeFile(tmp, JSON.stringify({ expiresAt: ttlSeconds ? Date.now() + ttlSeconds * 1000 : null, value }));
       await fs.rename(tmp, file(key));
     },
+    // Check-then-set: not atomic, which is fine for one local server.
+    async claim(key, ttlSeconds) {
+      if ((await this.get(key)) !== undefined) return false;
+      await this.set(key, true, ttlSeconds);
+      return true;
+    },
+    async delete(key) {
+      await fs.rm(file(key), { force: true });
+    },
   };
 }
 
-export function upstashCache(redis: Pick<Redis, "get" | "set">): CacheBackend {
+export function upstashCache(redis: Pick<Redis, "get" | "set" | "del">): CacheBackend {
   return {
     async get(key) {
       const value = await redis.get(key);
@@ -41,6 +52,12 @@ export function upstashCache(redis: Pick<Redis, "get" | "set">): CacheBackend {
     },
     async set(key, value, ttlSeconds) {
       await (ttlSeconds ? redis.set(key, value, { ex: ttlSeconds }) : redis.set(key, value));
+    },
+    async claim(key, ttlSeconds) {
+      return (await redis.set(key, true, { nx: true, ex: ttlSeconds })) === "OK";
+    },
+    async delete(key) {
+      await redis.del(key);
     },
   };
 }

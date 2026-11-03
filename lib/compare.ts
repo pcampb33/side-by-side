@@ -108,6 +108,7 @@ export async function runComparison(opts: {
     mark = now;
     return ms;
   };
+  let running: string | undefined; // the claim this request holds while it runs the model
   try {
     emit({ type: "progress", step: "fetching" });
     const companies = await Promise.all(tickers.map(loadCompany));
@@ -132,17 +133,28 @@ export async function runComparison(opts: {
       if ("html" in result) emit({ type: "page", html: result.html });
       else for (const component of result.components) emit({ type: "component", component });
     };
-    if (!opts.regenerate) {
+    // Shows the saved result; false when there is none.
+    const replay = async () => {
       const hit = (await cache.get(key).catch((err) => console.error(`[compare] cache read failed for ${key}:`, err))) as Result | undefined;
-      if (hit) {
-        show(hit);
-        if (hit.trace) emit({ type: "trace", trace: hit.trace });
-        emit({ type: "done", cached: true });
-        return;
-      }
-    }
+      if (!hit) return false;
+      show(hit);
+      if (hit.trace) emit({ type: "trace", trace: hit.trace });
+      emit({ type: "done", cached: true });
+      return true;
+    };
+    if (!opts.regenerate && (await replay())) return;
 
     emit({ type: "progress", step: "building" });
+    // On Vercel a run goes on after its visitor leaves (SPEC §4a), so a reload
+    // mid-run would pay for a second one. Instead, while another request runs
+    // this comparison, this one waits for it to end and shows what it saved,
+    // or runs it if it saved nothing. An unreachable cache doesn't block a run.
+    const claim = `running:${key}`;
+    while (!(await cache.claim(claim, RUN_TTL).catch(() => true))) {
+      await runEnded(claim, opts.signal);
+      if (await replay()) return;
+    }
+    running = claim;
     lap();
     const calls: TraceCall[] = [];
     const onCall = (call: Omit<TraceCall, "ms">) => {
@@ -185,5 +197,18 @@ export async function runComparison(opts: {
     if (err instanceof ComparisonError) return emit({ type: "error", message: err.message });
     console.error("[compare] failed:", err);
     emit({ type: "error", message: "The comparison failed unexpectedly. Try again in a minute." });
+  } finally {
+    if (running) await getCache().delete(running).catch((err) => console.error(`[compare] could not release ${running}:`, err));
   }
+}
+
+// The route's maxDuration: a run stopped at the limit can't hold its claim longer.
+const RUN_TTL = 300;
+const POLL_MS = 2000;
+
+async function runEnded(claim: string, signal: AbortSignal): Promise<void> {
+  do {
+    await new Promise((resolve) => setTimeout(resolve, POLL_MS));
+    if (signal.aborted) throw new ComparisonError("The request was cancelled.");
+  } while ((await getCache().get(claim).catch(() => undefined)) !== undefined);
 }

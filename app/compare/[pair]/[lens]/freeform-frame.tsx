@@ -16,11 +16,12 @@ const CSP = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-i
 const HEIGHT_SCRIPT = `addEventListener("DOMContentLoaded",function(){var b=document.body,p=function(){parent.postMessage({freeformHeight:Math.ceil(b.getBoundingClientRect().bottom+parseFloat(getComputedStyle(b).marginBottom||"0"))},"*")};new ResizeObserver(p).observe(b);addEventListener("load",p);p()});`;
 
 // The model's page with the CSP, the site's theme variables, the kit
-// (agent/kit.ts) and the height reporter first in its <head>
-// (agent/freeform.ts checks it has one).
+// (agent/kit.ts) and the height reporter ahead of everything it wrote, right
+// after its doctype: a meta CSP only governs what follows it. The parser
+// puts them in the page's <head>.
 export function framePage(html: string, companies: CompanyInput[], theme: ThemeChoice = "system"): string {
   const head = `<meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${themeCss(theme)}</style>${kitHead(companies)}<script>${HEIGHT_SCRIPT}</script>`;
-  return html.replace(/<head(\s[^>]*)?>/i, (tag) => tag + head);
+  return html.replace(/^\s*(<!doctype[^>]*>)?/i, (doctype) => doctype + head);
 }
 
 export function FreeformFrame({ html, companies }: { html: string; companies: CompanyInput[] }) {

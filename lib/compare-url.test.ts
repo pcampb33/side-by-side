@@ -15,6 +15,8 @@ describe("compare URLs", () => {
     expect(parsePair("AAPL-vs-AAPL")).toBeNull();
     expect(parsePair("AAPL-vs-MSFT-vs-NVDA")).toBeNull();
     expect(parsePair("AA PL-vs-MSFT")).toBeNull();
+    expect(parsePair("%E0-vs-MSFT")).toBeNull();
+    expect(canonicalComparePath("/compare/%/growth")).toBeNull();
   });
 
   it("canonicalizes order and case, and leaves the canonical form alone", () => {

@@ -3,8 +3,10 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, describe, expect, it, vi } from "vitest";
 import { ComparisonError, type Backend } from "../agent/run.ts";
+import { Blocked } from "./access.ts";
 import type { CacheBackend } from "./cache/cache.ts";
 import { runComparison, type CompareEvent } from "./compare.ts";
+import { getAnnualReport, getCondensedFiling } from "./data.ts";
 import { normalize } from "./normalize/normalize.ts";
 
 const shared = vi.hoisted(() => ({ cache: undefined as unknown as CacheBackend, dir: "" }));
@@ -88,5 +90,30 @@ describe("runComparison while the same comparison is running", () => {
     expect(second).toHaveBeenCalledOnce();
     expect(b.at(-1)).toEqual({ type: "done", cached: false });
     claim.mockRestore();
+  });
+});
+
+describe("runComparison on a text lens with sign-in on", () => {
+  const report = (accn: string) => ({ accn, document: "x.htm", periodEnd: "2025-09-27" }) as unknown as Awaited<ReturnType<typeof getAnnualReport>>;
+  const textRequest = (pair: [string, string], admit: () => Promise<void>, events: CompareEvent[]) =>
+    runComparison({ tickers: pair, lens: "risk-exposure", mode: "components", regenerate: false, signal: new AbortController().signal, emit: (e) => events.push(e), backend: model(), admit });
+
+  it("checks the visitor may generate before downloading a 10-K that isn't condensed yet", async () => {
+    vi.mocked(getAnnualReport).mockResolvedValue(report("not-condensed"));
+    vi.mocked(getCondensedFiling).mockClear();
+    const events: CompareEvent[] = [];
+    await textRequest(["AAPL", "MSFT"], async () => Promise.reject(new Blocked("sign-in")), events);
+    expect(getCondensedFiling).not.toHaveBeenCalled();
+    expect(events.at(-1)).toEqual({ type: "blocked", reason: "sign-in" });
+  });
+
+  it("reads a 10-K that is already condensed without checking", async () => {
+    await shared.cache.set("condensed", { report: report("condensed") });
+    vi.mocked(getAnnualReport).mockResolvedValue(report("condensed"));
+    vi.mocked(getCondensedFiling).mockClear().mockResolvedValue({ report: report("condensed") } as unknown as Awaited<ReturnType<typeof getCondensedFiling>>);
+    const admit = vi.fn(async () => Promise.reject(new Blocked("sign-in")));
+    await textRequest(["KO", "MSFT"], admit, []);
+    expect(admit).not.toHaveBeenCalled();
+    expect(getCondensedFiling).toHaveBeenCalledTimes(2);
   });
 });

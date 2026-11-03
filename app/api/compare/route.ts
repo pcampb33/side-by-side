@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       // Clients and proxies may close a connection that stays idle while the
       // model works.
       const heartbeat = setInterval(() => emit({ type: "heartbeat" }), 15_000);
-      await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit, backend });
+      await runComparison({ tickers, lens: lens.slug, mode: parsed.data.mode, regenerate: parsed.data.regenerate, signal: abort.signal, emit, backend, admit: gate?.admit });
       clearInterval(heartbeat);
       await gate?.log().catch((err) => console.error("[compare] log write failed:", err));
       if (!abort.signal.aborted) controller.close();

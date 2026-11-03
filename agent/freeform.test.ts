@@ -31,6 +31,7 @@ describe("checkPage", () => {
     ['<a href="https://www.sec.gov/">SEC</a>', /href other than/],
     ["<div style=\"background:url('https://example.com/a.png')\"></div>", /external url/],
     ["<script>fetch('/api/compare')</script>", /network request/],
+    ["<script>navigator.sendBeacon('https://example.com', 'x')</script>", /network request/],
   ])("refuses %s", (body, problem) => {
     expect(checkPage(page(body))).toMatch(problem);
   });

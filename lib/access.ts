@@ -4,7 +4,9 @@ import { ComparisonError, type Backend, type ModelId, type Usage } from "../agen
 // Limits, spend and logs (SPEC §1, §5), on only when REQUIRE_SIGN_IN=true.
 // The gate wraps the backend, so it acts the first time a request is about
 // to run Claude: a cached or featured comparison never reaches it, and
-// neither does a request that fails before generating. Days and months are UTC.
+// neither does a request that fails before generating. `admit` runs the same
+// checks earlier, before work that only a run needs (downloading a 10-K that
+// isn't condensed yet). Days and months are UTC.
 
 export const DAILY_LIMIT = 5;
 const DAY = 86_400;
@@ -75,14 +77,16 @@ export function accessGate(opts: {
     await store.expire(spendKey, 62 * DAY);
   }
 
+  // A text lens reads two annual reports at once: one count per request.
+  const admit = () => (started ??= start());
+
   return {
+    admit,
     wrap(backend: Backend): Backend {
       return async (run) => {
         // A visitor who left while the data loaded isn't charged a comparison.
         if (run.signal.aborted) throw new ComparisonError("The request was cancelled.");
-        // A text lens reads two annual reports at once: one count per request.
-        started ??= start();
-        await started;
+        await admit();
         try {
           const usage = await backend(run);
           await charge(run.model, usage);

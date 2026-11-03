@@ -4,7 +4,13 @@
 const TICKER = /^[A-Z0-9][A-Z0-9.-]{0,9}$/;
 
 export function parsePair(pair: string): [string, string] | null {
-  const parts = decodeURIComponent(pair).toUpperCase().split("-VS-");
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(pair);
+  } catch {
+    return null; // a malformed %-escape
+  }
+  const parts = decoded.toUpperCase().split("-VS-");
   if (parts.length !== 2) return null;
   const [a, b] = parts;
   if (!TICKER.test(a) || !TICKER.test(b) || a === b) return null;

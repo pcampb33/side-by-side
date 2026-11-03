@@ -24,7 +24,7 @@ export function checkPage(html: string): string | null {
     [/\bhref\s*=\s*["']?\s*(?!["']?#)/i, "an href other than a #fragment (links can't open from the page)"],
     [/url\(\s*["']?\s*(?:https?:)?\/\//i, "an external url()"],
     [/@import\b/i, "@import"],
-    [/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|importScripts)\s*\(|\bnew\s+(?:XMLHttpRequest|WebSocket|EventSource)\b|\bimport\s*\(/, "a network request"],
+    [/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|importScripts|sendBeacon)\s*\(|\bnew\s+(?:XMLHttpRequest|WebSocket|EventSource)\b|\bimport\s*\(/, "a network request"],
   ];
   const found = external.filter(([re]) => re.test(html)).map(([, what]) => what);
   return found.length ? `The page must be self-contained, but it has ${found.join(", ")}. Inline everything and submit again.` : null;

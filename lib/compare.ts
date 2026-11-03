@@ -65,11 +65,14 @@ const withFiscalYear = (c: CompanyInput, filing: CondensedFiling) => {
   return { ...filing, fiscalYear: i >= 0 ? c.financials.fiscalYears[i] : Number(filing.report.periodEnd.slice(0, 4)) };
 };
 
-// Reads the company's latest 10-K into c.filing (text lenses).
-export async function attachFiling(c: CompanyInput, backend: Backend, signal: AbortSignal): Promise<void> {
+// Reads the company's latest 10-K into c.filing (text lenses). A 10-K not yet
+// condensed is downloaded only once `admit` (lib/access.ts) lets the request
+// run Claude, so a visitor who may not can't make the server fetch it.
+export async function attachFiling(c: CompanyInput, backend: Backend, signal: AbortSignal, admit?: () => Promise<void>): Promise<void> {
   const cik = c.financials.cik;
   const report = await getAnnualReport(cik);
   if (!report) throw new ComparisonError(`${c.ticker} has no 10-K annual report to read.`);
+  if (admit && (await getCache().get(condensedFilingKey(report.accn)).catch(() => undefined)) === undefined) await admit();
   c.filing = withFiscalYear(c, await getCondensedFiling({ cik, name: c.name, report, model: backend, signal }));
 }
 
@@ -98,6 +101,7 @@ export async function runComparison(opts: {
   signal: AbortSignal;
   emit: (event: CompareEvent) => void;
   backend?: Backend;
+  admit?: () => Promise<void>; // sign-in and limits (lib/access.ts), when on
 }): Promise<void> {
   const { tickers, lens, mode, emit } = opts;
   const at = new Date().toISOString();
@@ -120,7 +124,7 @@ export async function runComparison(opts: {
       emit({ type: "progress", step: "reading" });
       await Promise.all(
         companies.map(async (c) => {
-          await attachFiling(c, backend, opts.signal);
+          await attachFiling(c, backend, opts.signal, opts.admit);
           emit({ type: "filing", ticker: c.ticker, filing: c.filing! });
         }),
       );

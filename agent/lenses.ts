@@ -27,7 +27,7 @@ export const LENS_GUIDANCE: Record<LensSlug, { question: string; guidance: strin
   "balance-sheet-risk": {
     question: "How much financial cushion does each company have against a bad year?",
     guidance:
-      "Cash, long-term debt, shareholders' equity, total assets and liabilities, and long-term debt to equity are the core. Cash runway only where it is reported. Dividends and buybacks show cash leaving. Note when a metric is not reported rather than working around it.",
+      "Always show cash (a trend_line): it is the first cushion against a bad year. Long-term debt, shareholders' equity, total assets and liabilities, and long-term debt to equity are the rest of the core. Cash runway only where it is reported. Dividends and buybacks show cash leaving. Note when a metric is not reported rather than working around it.",
     needsFilings: false,
     headline: ["cash", "longTermDebt", "equity", "debtToEquity"],
     excluded: ["risk_themes", "business_overlap"],

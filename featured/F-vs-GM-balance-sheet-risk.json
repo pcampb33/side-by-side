@@ -5,7 +5,7 @@
  ],
  "lens": "balance-sheet-risk",
  "model": "claude-sonnet-5-5",
- "generatedAt": "2026-11-01",
+ "generatedAt": "2026-11-03",
  "companies": [
   {
    "ticker": "F",
@@ -2508,56 +2508,52 @@
   {
    "name": "trend_line",
    "input": {
-    "title": "Shareholders' equity over time",
-    "key": "equity",
-    "caption": "Equity is the book cushion left after liabilities."
-   }
-  },
-  {
-   "name": "grouped_bars",
-   "input": {
-    "title": "Assets vs liabilities, latest year",
-    "keys": [
-     "totalAssets",
-     "totalLiabilities"
-    ],
-    "year": "latest"
+    "title": "Cash over five years",
+    "key": "cash"
    }
   },
   {
    "name": "trend_line",
    "input": {
-    "title": "Free cash flow",
+    "title": "Shareholders' equity over five years",
+    "key": "equity"
+   }
+  },
+  {
+   "name": "trend_line",
+   "input": {
+    "title": "Total liabilities over five years",
+    "key": "totalLiabilities"
+   }
+  },
+  {
+   "name": "trend_line",
+   "input": {
+    "title": "Free cash flow over five years",
     "key": "freeCashFlow"
    }
   },
   {
    "name": "grouped_bars",
    "input": {
-    "title": "Cash returned to shareholders, latest year",
+    "title": "Cash leaving: dividends and buybacks, FY2024",
     "keys": [
      "dividendsPaid",
      "buybacks"
     ],
-    "year": "latest"
-   }
-  },
-  {
-   "name": "trend_line",
-   "input": {
-    "title": "Operating margin",
-    "key": "operatingMargin"
+    "year": 2024,
+    "caption": "Ford's long-term debt and debt-to-equity are not reported, so only GM's leverage can be shown."
    }
   },
   {
    "name": "takeaways",
    "input": {
     "items": [
-     "Ford's equity fell from $44.8B in FY2024 to $36.0B in FY2025, while GM's moved from $63.1B to $61.1B.",
-     "Ford's liabilities were $253.2B against $289.2B of assets; GM's were $218.1B against $281.3B.",
-     "GM reports long-term debt ($131.6B in FY2025, 2.15× equity). Ford does not report long-term debt, so its ratio can't be compared.",
-     "Ford's operating margin was −4.9% in FY2025, with a net loss of $8.2B. GM's operating margin was 1.6% and its net income was $2.7B.",
-     "GM paid $657M in dividends and spent $6.0B on buybacks in FY2025. Ford paid $3.0B in dividends and spent $0 on buybacks. Cash runway is n/m for both."
+     "Cash was similar at the latest year-end: Ford $23.4B and GM $20.9B. Ford's cash was $22.9B in FY2024 and GM's was $19.9B.",
+     "Ford's equity fell from $44.8B in FY2024 to $36.0B in FY2025, after an operating loss of −$9.2B. GM's equity moved from $63.1B to $61.1B.",
+     "Ford's total liabilities were $253.2B against $289.2B of assets. GM's were $218.1B against $281.3B.",
+     "Ford does not report long-term debt, so its debt-to-equity is n/r. GM's long-term debt was $131.6B, or 2.15× equity.",
+     "Free cash flow was positive for both in FY2025: Ford $12.5B and GM $17.6B. GM's buybacks were $6.0B, and Ford's were $0."
     ]
    }
   }
@@ -2570,16 +2566,16 @@
    "lens": "balance-sheet-risk",
    "model": "claude-sonnet-5-5",
    "backend": "api",
-   "at": "2026-11-01T20:18:36.909Z",
+   "at": "2026-11-03T00:51:50.004Z",
    "ms": {
-    "fetching": 8,
+    "fetching": 11,
     "reading": null,
-    "composing": 6517,
-    "checks": 3
+    "composing": 7243,
+    "checks": 2
    },
    "usage": {
-    "inputTokens": 17437,
-    "outputTokens": 831
+    "inputTokens": 17493,
+    "outputTokens": 822
    },
    "offered": [
     "metric_cards",
@@ -2590,89 +2586,85 @@
     "takeaways"
    ],
    "prompt": {
-    "system": "You build a comparison of two public companies by calling UI component tools. The page already shows each company's name, industry and headquarters and, above your components, a headline strip of each company's latest-year Cash, Long-term debt, Shareholders' equity, Long-term debt to equity: don't repeat those latest-year values as metric cards (trends and other years are fine).\n\nLens: How much financial cushion does each company have against a bad year?\nCash, long-term debt, shareholders' equity, total assets and liabilities, and long-term debt to equity are the core. Cash runway only where it is reported. Dividends and buybacks show cash leaving. Note when a metric is not reported rather than working around it.\n\nRules:\n- Respond only through tool calls, in the order the reader should see them: usually 3 to 6 components, at most 8, then takeaways last. When takeaways succeeds, reply \"done\".\n- Components take metric keys and fiscal years, never numbers, and annual-report ids (AAPL-r2), never quotes. The page looks every value and quote up and cites its filing.\n- Takeaways are neutral differences, never a winner, a recommendation or a prediction. Any number you write must appear in the data tables exactly as shown.\n- \"n/r\" means the filing does not report it and \"n/m\" means the ratio is not meaningful (e.g. negative equity). Never estimate around them; say they are not reported when it matters.\n- The two companies may have different fiscal year ends; \"latest\" picks each company's own latest year.\n- If a tool returns an error, fix the call and try again.",
+    "system": "You build a comparison of two public companies by calling UI component tools. The page already shows each company's name, industry and headquarters and, above your components, a headline strip of each company's latest-year Cash, Long-term debt, Shareholders' equity, Long-term debt to equity: don't repeat those latest-year values as metric cards (trends and other years are fine).\n\nLens: How much financial cushion does each company have against a bad year?\nAlways show cash (a trend_line): it is the first cushion against a bad year. Long-term debt, shareholders' equity, total assets and liabilities, and long-term debt to equity are the rest of the core. Cash runway only where it is reported. Dividends and buybacks show cash leaving. Note when a metric is not reported rather than working around it.\n\nRules:\n- Respond only through tool calls, in the order the reader should see them: usually 3 to 6 components, at most 8, then takeaways last. When takeaways succeeds, reply \"done\".\n- Components take metric keys and fiscal years, never numbers, and annual-report ids (AAPL-r2), never quotes. The page looks every value and quote up and cites its filing.\n- Takeaways are neutral differences, never a winner, a recommendation or a prediction. Any number you write must appear in the data tables exactly as shown.\n- \"n/r\" means the filing does not report it and \"n/m\" means the ratio is not meaningful (e.g. negative equity). Never estimate around them; say they are not reported when it matters.\n- The two companies may have different fiscal year ends; \"latest\" picks each company's own latest year.\n- If a tool returns an error, fix the call and try again.",
     "user": "Compare F and GM.\n\nF: Ford Motor Co (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $136.3B | $158.1B | $176.2B | $185.0B | $187.3B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $4.5B | $6.3B | $5.5B | $5.2B | −$9.2B\nnetIncome | Net income | $17.9B | −$2.0B | $4.3B | $5.9B | −$8.2B\nrnd | R&D | $7.6B | $7.8B | $8.2B | $8.0B | $9.4B\ncash | Cash | $20.5B | $25.1B | $24.9B | $22.9B | $23.4B\ntotalAssets | Total assets | $257.0B | $255.9B | $273.3B | $285.2B | $289.2B\ntotalLiabilities | Total liabilities | $208.4B | $212.7B | $230.5B | $240.3B | $253.2B\nlongTermDebt | Long-term debt | n/r | n/r | n/r | n/r | n/r\nequity | Shareholders' equity | $48.5B | $43.2B | $42.8B | $44.8B | $36.0B\noperatingCashFlow | Operating cash flow | $15.8B | $6.9B | $14.9B | $15.4B | $21.3B\ncapex | Capital expenditure | $6.2B | $6.9B | $8.2B | $8.7B | $8.8B\ndividendsPaid | Dividends paid | $403M | $2.0B | $5.0B | $3.1B | $3.0B\nbuybacks | Share buybacks | $0 | $484M | $335M | $426M | $0\ndilutedEps | Diluted EPS | $4.45 | −$0.49 | $1.08 | $1.46 | −$2.06\nsharesOutstanding | Shares outstanding | 4.0B | 4.0B | 4.0B | 4.0B | 4.0B\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 3.3% | 4.0% | 3.1% | 2.8% | −4.9%\nnetMargin | Net margin | 13.2% | −1.3% | 2.5% | 3.2% | −4.4%\nrevenueGrowth | Revenue growth (YoY) | 7.2% | 15.9% | 11.5% | 5.0% | 1.2%\nfreeCashFlow | Free cash flow | $9.6B | −$13.0M | $6.7B | $6.7B | $12.5B\ndebtToEquity | Long-term debt to equity | n/r | n/r | n/r | n/r | n/r\nrndToRevenue | R&D % of revenue | 5.6% | 4.9% | 4.7% | 4.3% | 5.0%\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m\n\nGM: General Motors Co (fiscal years end 12-31; latest FY2025)\nkey | label | FY2021 | FY2022 | FY2023 | FY2024 | FY2025\nrevenue | Revenue | $127.0B | $156.7B | $171.8B | $187.4B | $185.0B\ngrossProfit | Gross profit | n/r | n/r | n/r | n/r | n/r\noperatingIncome | Operating income | $9.3B | $10.3B | $9.3B | $12.8B | $2.9B\nnetIncome | Net income | $10.0B | $9.9B | $10.1B | $6.0B | $2.7B\nrnd | R&D | n/r | n/r | n/r | n/r | n/r\ncash | Cash | $20.1B | $19.2B | $18.9B | $19.9B | $20.9B\ntotalAssets | Total assets | $244.7B | $264.0B | $273.1B | $279.8B | $281.3B\ntotalLiabilities | Total liabilities | $178.9B | $191.8B | $204.8B | $214.2B | $218.1B\nlongTermDebt | Long-term debt | $109.9B | $116.2B | $123.5B | $131.8B | $131.6B\nequity | Shareholders' equity | $59.7B | $67.8B | $64.3B | $63.1B | $61.1B\noperatingCashFlow | Operating cash flow | $15.2B | $16.0B | $20.9B | $20.1B | $26.9B\ncapex | Capital expenditure | $7.5B | $9.2B | $11.0B | $10.8B | $9.3B\ndividendsPaid | Dividends paid | $186M | $397M | $597M | $653M | $657M\nbuybacks | Share buybacks | $0 | $2.5B | $11.1B | $7.1B | $6.0B\ndilutedEps | Diluted EPS | $6.70 | $6.13 | $7.32 | $6.37 | $3.27\nsharesOutstanding | Shares outstanding | 1.5B | 1.4B | 1.2B | 995M | 904M\ngrossMargin | Gross margin | n/r | n/r | n/r | n/r | n/r\noperatingMargin | Operating margin | 7.3% | 6.6% | 5.4% | 6.8% | 1.6%\nnetMargin | Net margin | 7.9% | 6.3% | 5.9% | 3.2% | 1.5%\nrevenueGrowth | Revenue growth (YoY) | 3.7% | 23.4% | 9.6% | 9.1% | −1.3%\nfreeCashFlow | Free cash flow | $7.7B | $6.8B | $10.0B | $9.3B | $17.6B\ndebtToEquity | Long-term debt to equity | 1.84× | 1.71× | 1.92× | 2.09× | 2.15×\nrndToRevenue | R&D % of revenue | n/r | n/r | n/r | n/r | n/r\ncashRunwayYears | Cash runway (years) | n/m | n/m | n/m | n/m | n/m"
    },
    "calls": [
     {
      "tool": "trend_line",
      "input": {
-      "title": "Shareholders' equity over time",
-      "key": "equity",
-      "caption": "Equity is the book cushion left after liabilities."
+      "title": "Cash over five years",
+      "key": "cash"
      },
      "ok": true,
      "message": "Shown.",
-     "ms": 3413
-    },
-    {
-     "tool": "grouped_bars",
-     "input": {
-      "title": "Assets vs liabilities, latest year",
-      "keys": [
-       "totalAssets",
-       "totalLiabilities"
-      ],
-      "year": "latest"
-     },
-     "ok": true,
-     "message": "Shown.",
-     "ms": 3413
+     "ms": 3400
     },
     {
      "tool": "trend_line",
      "input": {
-      "title": "Free cash flow",
+      "title": "Shareholders' equity over five years",
+      "key": "equity"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3400
+    },
+    {
+     "tool": "trend_line",
+     "input": {
+      "title": "Total liabilities over five years",
+      "key": "totalLiabilities"
+     },
+     "ok": true,
+     "message": "Shown.",
+     "ms": 3400
+    },
+    {
+     "tool": "trend_line",
+     "input": {
+      "title": "Free cash flow over five years",
       "key": "freeCashFlow"
      },
      "ok": true,
      "message": "Shown.",
-     "ms": 3413
+     "ms": 3400
     },
     {
      "tool": "grouped_bars",
      "input": {
-      "title": "Cash returned to shareholders, latest year",
+      "title": "Cash leaving: dividends and buybacks, FY2024",
       "keys": [
        "dividendsPaid",
        "buybacks"
       ],
-      "year": "latest"
+      "year": 2024,
+      "caption": "Ford's long-term debt and debt-to-equity are not reported, so only GM's leverage can be shown."
      },
      "ok": true,
      "message": "Shown.",
-     "ms": 3414
-    },
-    {
-     "tool": "trend_line",
-     "input": {
-      "title": "Operating margin",
-      "key": "operatingMargin"
-     },
-     "ok": true,
-     "message": "Shown.",
-     "ms": 3414
+     "ms": 3400
     },
     {
      "tool": "takeaways",
      "input": {
       "items": [
-       "Ford's equity fell from $44.8B in FY2024 to $36.0B in FY2025, while GM's moved from $63.1B to $61.1B.",
-       "Ford's liabilities were $253.2B against $289.2B of assets; GM's were $218.1B against $281.3B.",
-       "GM reports long-term debt ($131.6B in FY2025, 2.15× equity). Ford does not report long-term debt, so its ratio can't be compared.",
-       "Ford's operating margin was −4.9% in FY2025, with a net loss of $8.2B. GM's operating margin was 1.6% and its net income was $2.7B.",
-       "GM paid $657M in dividends and spent $6.0B on buybacks in FY2025. Ford paid $3.0B in dividends and spent $0 on buybacks. Cash runway is n/m for both."
+       "Cash was similar at the latest year-end: Ford $23.4B and GM $20.9B. Ford's cash was $22.9B in FY2024 and GM's was $19.9B.",
+       "Ford's equity fell from $44.8B in FY2024 to $36.0B in FY2025, after an operating loss of −$9.2B. GM's equity moved from $63.1B to $61.1B.",
+       "Ford's total liabilities were $253.2B against $289.2B of assets. GM's were $218.1B against $281.3B.",
+       "Ford does not report long-term debt, so its debt-to-equity is n/r. GM's long-term debt was $131.6B, or 2.15× equity.",
+       "Free cash flow was positive for both in FY2025: Ford $12.5B and GM $17.6B. GM's buybacks were $6.0B, and Ford's were $0."
       ]
      },
      "ok": true,
      "message": "Shown.",
-     "ms": 5837
+     "ms": 6155
     }
    ],
    "checks": [
     {
      "check": "numbers",
-     "checked": 23,
+     "checked": 24,
      "findings": []
     },
     {

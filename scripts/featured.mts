@@ -1,10 +1,10 @@
-// npm run featured -- [--only <text>] [--mode freeform]
+// npm run featured -- [--only <text>] [--mode components|freeform]
 // Generates each featured comparison (evals/cases.ts) in both modes and saves
 // it to featured/<pair>-<lens>.json with everything the page needs (profiles,
 // financials, condensed 10-Ks, components, freeform page), so the site shows
 // it with no Claude or SEC calls. A run is kept only when every eval check
 // passes; up to three tries per mode. --only keeps the ids containing the text;
-// --mode freeform regenerates only the freeform page and keeps the saved components.
+// --mode regenerates only that mode and keeps the other from the saved file.
 import fs from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
@@ -92,11 +92,13 @@ try {
     const profiles = await Promise.all(companies.map((c) => getProfile(c.financials.cik)));
     const score = (out: { components: Component[] } | { html: string }) => scoreOutput(out, lens, companies, browser);
     const file = path.join(outDir, `${id}.json`);
-    const kept: Featured | null = args.mode === "freeform" ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
-    const comp = kept?.traces?.components
+    const kept: Featured | null = args.mode ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
+    const comp = args.mode === "freeform" && kept?.traces?.components
       ? { out: { components: kept.components }, trace: kept.traces.components }
       : await passing("components", (onCall) => generateComparison({ lens, companies, backend, signal, model: MODEL, onCall, onComponent: () => {} }), score, base);
-    const free = await passing("freeform", (onCall) => generatePage({ lens, companies, backend, signal, model: MODEL, onCall }), score, base);
+    const free = args.mode === "components" && kept?.traces?.freeform
+      ? { out: { html: kept.html }, trace: kept.traces.freeform }
+      : await passing("freeform", (onCall) => generatePage({ lens, companies, backend, signal, model: MODEL, onCall }), score, base);
     const featured: Featured = {
       tickers,
       lens,

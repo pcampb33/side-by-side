@@ -13,7 +13,7 @@ import type { Finding } from "./checks.ts";
 const RUBRIC = {
   answersLens: "The page answers the lens question, not just shows numbers near the topic.",
   mergedSubjects:
-    "Every row or tile that pairs both companies is about the same subject in both filings (compare the ids' themes and descriptions in the data). Two different subjects under one shared label fail. Pass when nothing pairs both companies.",
+    "Every row or tile that pairs both companies is about the same subject in both filings (compare the ids' themes and descriptions in the data). Two different subjects under one shared label fail. A business area may sit in two rows when its description covers both markets (Google Cloud sells AI models too); a risk theme may not. Pass when nothing pairs both companies.",
   claimsBeyondData:
     "Every factual claim comes from the data given (figures, filing text, names). Facts from general knowledge fail: headquarters, employee counts, market share, products or events the data never mentions. Neutral explanation of what a metric means is fine.",
 } as const;

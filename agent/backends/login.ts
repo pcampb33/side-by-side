@@ -54,7 +54,10 @@ export const loginBackend: Backend = async ({ model, system, user, tools, signal
     if (message.subtype !== "success" || message.is_error) {
       throw new ComparisonError(`The model run failed${"errors" in message && message.errors.length ? `: ${message.errors.join("; ")}` : "."}`);
     }
-    return { inputTokens: message.usage.input_tokens, outputTokens: message.usage.output_tokens };
+    // Claude Code caches the prompt, so most input arrives as cache reads and
+    // writes; count all of it, as the API reports it.
+    const u = message.usage;
+    return { inputTokens: u.input_tokens + u.cache_read_input_tokens + u.cache_creation_input_tokens, outputTokens: u.output_tokens };
   }
   throw new ComparisonError(signal.aborted ? "The request was cancelled." : "The model run ended without a result.");
 };

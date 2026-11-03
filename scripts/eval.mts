@@ -1,10 +1,11 @@
-// npm run eval -- [--model sonnet|opus] [--only <text>] [--score-only] [--out <dir>]
+// npm run eval -- [--model sonnet|opus] [--only <text>] [--score-only] [--out <dir>] [--grade]
 // Generates every eval case (evals/cases.ts) in both modes from the saved
 // fixtures, runs the code-only checks (evals/checks.ts) and prints a
 // scorecard. Each run is saved to evals/out/<model>/, so --score-only
 // rescores the saved runs without calling Claude. --only keeps the cases whose
 // id contains the text (e.g. KO-PEP, freeform). --out saves to evals/out/<dir>
-// instead (repeat runs, to see variance). Run by hand; never in CI.
+// instead (repeat runs, to see variance). --grade adds the model-graded
+// checks (evals/judge.ts, Opus). Run by hand; never in CI.
 import fs from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
@@ -16,6 +17,7 @@ import type { CompanyInput } from "../agent/prompt.ts";
 import { generateComparison, type Backend, type Usage } from "../agent/run.ts";
 import { defaultBackend } from "../lib/compare.ts";
 import { CASES, caseId } from "../evals/cases.ts";
+import { judge } from "../evals/judge.ts";
 import type { CheckName, Finding } from "../evals/checks.ts";
 import { scoreOutput } from "../evals/score.ts";
 
@@ -24,7 +26,7 @@ const MODES = ["components", "freeform"] as const;
 type Mode = (typeof MODES)[number];
 
 const { values: args } = parseArgs({
-  options: { model: { type: "string", default: "sonnet" }, only: { type: "string" }, "score-only": { type: "boolean", default: false }, out: { type: "string" } },
+  options: { model: { type: "string", default: "sonnet" }, only: { type: "string" }, "score-only": { type: "boolean", default: false }, out: { type: "string" }, grade: { type: "boolean", default: false } },
 });
 const model = MODELS[args.model as keyof typeof MODELS];
 if (!model) throw new Error(`--model must be one of ${Object.keys(MODELS).join(", ")}`);
@@ -83,7 +85,12 @@ async function generate(id: string, c: (typeof CASES)[number], mode: Mode, compa
 
 async function score(run: Run, c: (typeof CASES)[number], companies: CompanyInput[], browser: Browser) {
   if (run.error) return { findings: [] as Finding[], numbers: 0, quotes: 0 };
-  return scoreOutput(run.html ? { html: run.html } : { components: run.components! }, c.lens, companies, browser);
+  const s = await scoreOutput(run.html ? { html: run.html } : { components: run.components! }, c.lens, companies, browser);
+  if (args.grade) {
+    const page = run.html ? { text: s.prose.join("\n") } : { components: run.components! };
+    s.findings.push(...(await judge({ lens: c.lens, companies, page, backend: await defaultBackend() })).findings);
+  }
+  return s;
 }
 
 fs.mkdirSync(outDir, { recursive: true });
@@ -114,8 +121,8 @@ try {
       const rejected = run.calls.filter((call) => !call.ok).length;
       rows.push(
         run.error
-          ? `| ${caseId(c)} | ${mode} | error: ${run.error} | | | | | | ${rejected} | ${run.seconds}s | |`
-          : `| ${caseId(c)} | ${mode} | ${count("numbers") ? `✗ ${count("numbers")}/${s.numbers}` : `✓ ${s.numbers}`} | ${count("quotes") ? `✗ ${count("quotes")}/${s.quotes}` : `✓ ${s.quotes}`} | ${cell("notReported")} | ${cell("components", mode === "components")} | ${cell("lens", mode === "components")} | ${cell("page", mode === "freeform")} | ${rejected} | ${run.seconds}s | ${run.usage?.outputTokens ?? ""} |`,
+          ? `| ${caseId(c)} | ${mode} | error: ${run.error} | | | | | | | ${rejected} | ${run.seconds}s | |`
+          : `| ${caseId(c)} | ${mode} | ${count("numbers") ? `✗ ${count("numbers")}/${s.numbers}` : `✓ ${s.numbers}`} | ${count("quotes") ? `✗ ${count("quotes")}/${s.quotes}` : `✓ ${s.quotes}`} | ${cell("notReported")} | ${cell("components", mode === "components")} | ${cell("lens", mode === "components")} | ${cell("page", mode === "freeform")} | ${cell("judge", args.grade)} | ${rejected} | ${run.seconds}s | ${run.usage?.outputTokens ?? ""} |`,
       );
       if (s.findings.length || rejected) {
         details.push(`\n### ${id}`);
@@ -133,8 +140,8 @@ const scorecard = [
   "",
   "Numbers and quotes: ungrounded / checked. Rejected: tool calls the run refused and the model then fixed. Tokens: output (login runs add Claude Code overhead to input, so input is not shown).",
   "",
-  "| case | mode | numbers | quotes | not reported | components | lens | page | rejected | time | tokens |",
-  "|---|---|---|---|---|---|---|---|---|---|---|",
+  "| case | mode | numbers | quotes | not reported | components | lens | page | judge | rejected | time | tokens |",
+  "|---|---|---|---|---|---|---|---|---|---|---|---|",
   ...rows,
   "",
   `Ungrounded numbers: ${ungrounded}`,

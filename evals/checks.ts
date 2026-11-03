@@ -11,7 +11,7 @@ import { VALUE_KEYS, valueAt, valueDef, type Unit, type ValueKey } from "../lib/
 // The code-only eval checks (SPEC §7). Each returns findings, one per
 // problem, with enough of the text around it to judge it by eye.
 
-export type CheckName = "numbers" | "quotes" | "notReported" | "components" | "lens" | "page";
+export type CheckName = "numbers" | "quotes" | "notReported" | "components" | "lens" | "page" | "judge";
 export interface Finding {
   check: CheckName;
   detail: string;

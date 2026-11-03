@@ -13,7 +13,7 @@ export async function scoreOutput(
   lens: LensSlug,
   companies: CompanyInput[],
   browser: Browser,
-): Promise<{ findings: Finding[]; numbers: number; quotes: number }> {
+): Promise<{ findings: Finding[]; numbers: number; quotes: number; prose: string[] }> {
   let prose: string[];
   const findings: Finding[] = [];
   if ("html" in output) {
@@ -27,5 +27,5 @@ export async function scoreOutput(
   const numbers = checkNumbers(prose, companies);
   const quotes = checkQuotes(prose, companies);
   findings.push(...numbers.findings, ...quotes.findings, ...checkNotReported(prose, companies));
-  return { findings, numbers: numbers.checked, quotes: quotes.checked };
+  return { findings, numbers: numbers.checked, quotes: quotes.checked, prose };
 }
